@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { fetchData } from "@/lib/api";
+import { fetchData, postData } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -108,6 +109,60 @@ export default function CoursePlayerPage() {
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
   const [openChapters, setOpenChapters] = useState<Set<string>>(new Set());
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const queryClient = useQueryClient();
+
+  const { data: progressData } = useQuery<{
+    completedLessonIds: string[];
+    totalLessons: number;
+    completedCount: number;
+    percent: number;
+  }>({
+    queryKey: ["lesson-progress", courseId],
+    queryFn: () => fetchData(`/enrollments/progress/course/${courseId}`),
+    enabled: !!courseId,
+  });
+
+  const completedSet = new Set(progressData?.completedLessonIds ?? []);
+
+  const toggleMutation = useMutation({
+    mutationFn: (lessonId: string) =>
+      postData<{ completed: boolean }>(`/enrollments/progress/${lessonId}`, {}),
+    onMutate: async (lessonId) => {
+      await queryClient.cancelQueries({ queryKey: ["lesson-progress", courseId] });
+      const prev = queryClient.getQueryData<{
+        completedLessonIds: string[];
+        totalLessons: number;
+        completedCount: number;
+        percent: number;
+      }>(["lesson-progress", courseId]);
+      if (prev) {
+        const wasCompleted = prev.completedLessonIds.includes(lessonId);
+        const newIds = wasCompleted
+          ? prev.completedLessonIds.filter((id) => id !== lessonId)
+          : [...prev.completedLessonIds, lessonId];
+        queryClient.setQueryData(["lesson-progress", courseId], {
+          ...prev,
+          completedLessonIds: newIds,
+          completedCount: newIds.length,
+          percent:
+            prev.totalLessons > 0
+              ? Math.round((newIds.length / prev.totalLessons) * 100)
+              : 0,
+        });
+      }
+      return { prev };
+    },
+    onError: (_err, _lessonId, context: any) => {
+      if (context?.prev)
+        queryClient.setQueryData(["lesson-progress", courseId], context.prev);
+      toast.error("Failed to update progress");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["lesson-progress", courseId] });
+      queryClient.invalidateQueries({ queryKey: ["progress-overview"] });
+    },
+  });
 
   useEffect(() => {
     fetchData<Course>(`/enrollments/learn/${courseId}`)
@@ -250,8 +305,8 @@ export default function CoursePlayerPage() {
                 )}
               </div>
 
-              {/* Prev / Next */}
-              <div className="flex gap-3">
+              {/* Prev / Next / Mark Complete */}
+              <div className="flex flex-wrap gap-3">
                 <Button
                   variant="outline"
                   size="sm"
@@ -268,6 +323,21 @@ export default function CoursePlayerPage() {
                   className="rounded-xl"
                 >
                   Next →
+                </Button>
+                <Button
+                  size="sm"
+                  variant={completedSet.has(activeLesson.id) ? "default" : "outline"}
+                  className={cn(
+                    "rounded-xl gap-1.5 ml-auto",
+                    completedSet.has(activeLesson.id)
+                      ? "bg-green-600 hover:bg-green-700 text-white border-green-600"
+                      : ""
+                  )}
+                  onClick={() => toggleMutation.mutate(activeLesson.id)}
+                  disabled={toggleMutation.isPending}
+                >
+                  <IconCheck size={14} />
+                  {completedSet.has(activeLesson.id) ? "Completed" : "Mark Complete"}
                 </Button>
               </div>
 
@@ -329,6 +399,14 @@ export default function CoursePlayerPage() {
             <p className="text-xs text-muted-foreground mt-0.5">
               {allLessons.length} lessons · {course.chapters.length} chapters
             </p>
+            {progressData && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {progressData.completedCount}/{progressData.totalLessons} completed ·{" "}
+                <span className="text-blue-500 font-semibold">
+                  {progressData.percent}%
+                </span>
+              </p>
+            )}
           </div>
 
           <div className="flex-1">
@@ -364,7 +442,9 @@ export default function CoursePlayerPage() {
                         )}
                       >
                         <div className="shrink-0">
-                          {isActive ? (
+                          {completedSet.has(lesson.id) ? (
+                            <IconCheck size={14} className="text-green-500" />
+                          ) : isActive ? (
                             <IconPlayerPlay size={14} className="text-blue-600" />
                           ) : lesson.videoUrl ? (
                             <IconPlayerPlay size={14} className="text-gray-400" />

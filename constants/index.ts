@@ -37,19 +37,16 @@ export const userNavLinks: NavLinkProps[] = [
     label: "My Courses",
     slug: "/dashboard/courses",
     icon: IconBook,
-    comingSoon: true,
   },
   {
     label: "Progress",
     slug: "/dashboard/progress",
     icon: IconChartHistogram,
-    comingSoon: true,
   },
   {
     label: "Certificates",
     slug: "/dashboard/certificates",
     icon: IconFileCertificate,
-    comingSoon: true,
   },
   {
     label: "Leaderboard",

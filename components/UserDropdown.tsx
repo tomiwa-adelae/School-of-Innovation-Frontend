@@ -27,6 +27,7 @@ import { useSignout } from "@/hooks/use-signout";
 import { useAuth } from "@/store/useAuth";
 import Link from "next/link";
 import { DEFAULT_PROFILE_IMAGE } from "@/constants";
+import { IconSchool } from "@tabler/icons-react";
 
 type RoleConfig = {
   label: string;
@@ -89,19 +90,24 @@ const ROLE_CONFIG: Record<string, RoleConfig> = {
     badgeClass: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
     links: [
       {
-        href: "/admin",
+        href: "/a/dashboard",
         label: "Admin Overview",
         icon: <ShieldCheckIcon size={15} />,
       },
       {
-        href: "/admin/users",
+        href: "/a/users",
         label: "All Users",
         icon: <UsersIcon size={15} />,
       },
       {
-        href: "/admin/instructors",
+        href: "/a/instructors",
         label: "Instructor Approvals",
         icon: <ClipboardListIcon size={15} />,
+      },
+      {
+        href: "/a/courses",
+        label: "Courses",
+        icon: <IconSchool size={15} />,
       },
     ],
   },

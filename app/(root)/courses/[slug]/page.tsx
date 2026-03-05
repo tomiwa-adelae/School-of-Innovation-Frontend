@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { publicFetch, fetchData, postData } from "@/lib/api";
+import { publicFetch, fetchData, postData, deleteData } from "@/lib/api";
 import { useAuth } from "@/store/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +27,8 @@ import {
   IconDownload,
   IconRocket,
   IconCurrencyDollar,
+  IconStar,
+  IconStarFilled,
 } from "@tabler/icons-react";
 
 interface Lesson {
@@ -74,6 +76,21 @@ interface CourseDetail {
   };
   _count: { enrollments: number; chapters: number };
   chapters: Chapter[];
+  avgRating: number | null;
+  reviewCount: number;
+}
+
+interface ReviewItem {
+  id: string;
+  rating: number;
+  body: string | null;
+  createdAt: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    image: string | null;
+    username: string;
+  };
 }
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -159,6 +176,15 @@ export default function CourseDetailPage() {
   const [enrolling, setEnrolling] = useState(false);
   const [checkingEnrollment, setCheckingEnrollment] = useState(false);
 
+  // Reviews state
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [avgRating, setAvgRating] = useState<number | null>(null);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [myReview, setMyReview] = useState<ReviewItem | null>(null);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewBody, setReviewBody] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+
   useEffect(() => {
     publicFetch<CourseDetail>(`/public/courses/${slug}`)
       .then(setCourse)
@@ -175,6 +201,25 @@ export default function CourseDetailPage() {
       .catch(() => {})
       .finally(() => setCheckingEnrollment(false));
   }, [user, course]);
+
+  // Fetch reviews
+  useEffect(() => {
+    if (!course) return;
+    publicFetch<{ reviews: ReviewItem[]; avgRating: number | null; total: number }>(
+      `/reviews/${course.id}`
+    )
+      .then((data) => {
+        setReviews(data.reviews);
+        setAvgRating(data.avgRating);
+        setReviewCount(data.total);
+        if (user) {
+          setMyReview(
+            data.reviews.find((r) => r.user.username === user.username) ?? null
+          );
+        }
+      })
+      .catch(() => {});
+  }, [course, user]);
 
   async function handleEnroll() {
     if (!user) {
@@ -281,6 +326,13 @@ export default function CourseDetailPage() {
                 <span className="flex items-center gap-1.5">
                   <IconUsers size={15} />
                   {course._count.enrollments.toLocaleString()} enrolled
+                </span>
+              )}
+              {course.avgRating && (
+                <span className="flex items-center gap-1.5">
+                  <IconStarFilled size={15} className="text-yellow-400" />
+                  {course.avgRating.toFixed(1)}
+                  <span className="text-gray-400">({course.reviewCount})</span>
                 </span>
               )}
             </div>
@@ -395,6 +447,211 @@ export default function CourseDetailPage() {
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Reviews */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-black text-gray-900 dark:text-white text-lg">
+                  Student Reviews
+                </h2>
+                {avgRating && (
+                  <div className="flex items-center gap-1.5">
+                    <IconStarFilled size={18} className="text-yellow-400" />
+                    <span className="font-black text-gray-900 dark:text-white">
+                      {avgRating.toFixed(1)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      ({reviewCount})
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Write a review (enrolled, logged in, not yet reviewed) */}
+              {enrolled && user && !myReview && (
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-5 mb-4">
+                  <p className="font-bold text-sm text-gray-900 dark:text-white mb-3">
+                    Leave a Review
+                  </p>
+                  {/* Star picker */}
+                  <div className="flex gap-1 mb-3">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setReviewRating(s)}
+                        className="p-0.5 transition-transform hover:scale-110"
+                      >
+                        {s <= reviewRating ? (
+                          <IconStarFilled size={22} className="text-yellow-400" />
+                        ) : (
+                          <IconStar size={22} className="text-gray-300" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  <textarea
+                    value={reviewBody}
+                    onChange={(e) => setReviewBody(e.target.value)}
+                    placeholder="Share your experience (optional)"
+                    maxLength={1000}
+                    rows={3}
+                    className="w-full text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <Button
+                    size="sm"
+                    className="mt-3 rounded-xl"
+                    disabled={reviewRating === 0 || submittingReview}
+                    onClick={async () => {
+                      setSubmittingReview(true);
+                      try {
+                        const r = await postData<ReviewItem>(
+                          `/reviews/${course.id}`,
+                          {
+                            rating: reviewRating,
+                            body: reviewBody || undefined,
+                          }
+                        );
+                        setMyReview(r);
+                        setReviews((prev) => [r, ...prev]);
+                        setReviewCount((c) => c + 1);
+                        setAvgRating(
+                          (prev) =>
+                            Math.round(
+                              (((prev ?? 0) * (reviewCount) + reviewRating) /
+                                (reviewCount + 1)) *
+                                10
+                            ) / 10
+                        );
+                        toast.success("Review submitted!");
+                      } catch {
+                        toast.error("Failed to submit review");
+                      } finally {
+                        setSubmittingReview(false);
+                      }
+                    }}
+                  >
+                    {submittingReview ? (
+                      <IconLoader2 size={14} className="animate-spin" />
+                    ) : (
+                      "Submit Review"
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {/* Own existing review */}
+              {myReview && (
+                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-3xl border border-blue-100 dark:border-blue-900 p-5 mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold text-blue-600">
+                      Your Review
+                    </p>
+                    <button
+                      className="text-xs text-red-500 hover:underline"
+                      onClick={async () => {
+                        try {
+                          await deleteData(`/reviews/${myReview.id}`);
+                          setReviews((prev) =>
+                            prev.filter((r) => r.id !== myReview.id)
+                          );
+                          setReviewCount((c) => Math.max(0, c - 1));
+                          setMyReview(null);
+                          toast.success("Review deleted");
+                        } catch {
+                          toast.error("Failed to delete review");
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div className="flex gap-0.5 mb-1.5">
+                    {[1, 2, 3, 4, 5].map((s) =>
+                      s <= myReview.rating ? (
+                        <IconStarFilled
+                          key={s}
+                          size={14}
+                          className="text-yellow-400"
+                        />
+                      ) : (
+                        <IconStar key={s} size={14} className="text-gray-300" />
+                      )
+                    )}
+                  </div>
+                  {myReview.body && (
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {myReview.body}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* All other reviews */}
+              {reviews.filter((r) => r.id !== myReview?.id).length === 0 &&
+              !myReview ? (
+                <p className="text-sm text-muted-foreground">
+                  No reviews yet.{" "}
+                  {enrolled ? "Be the first to review!" : ""}
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {reviews
+                    .filter((r) => r.id !== myReview?.id)
+                    .map((review) => (
+                      <div
+                        key={review.id}
+                        className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-black text-blue-600 dark:text-blue-300 text-sm shrink-0">
+                            {review.user.firstName[0]}
+                            {review.user.lastName[0]}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="font-bold text-sm text-gray-900 dark:text-white">
+                                {review.user.firstName} {review.user.lastName}
+                              </p>
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                {new Date(review.createdAt).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex gap-0.5 my-1">
+                              {[1, 2, 3, 4, 5].map((s) =>
+                                s <= review.rating ? (
+                                  <IconStarFilled
+                                    key={s}
+                                    size={12}
+                                    className="text-yellow-400"
+                                  />
+                                ) : (
+                                  <IconStar
+                                    key={s}
+                                    size={12}
+                                    className="text-gray-300"
+                                  />
+                                )
+                              )}
+                            </div>
+                            {review.body && (
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {review.body}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
 
