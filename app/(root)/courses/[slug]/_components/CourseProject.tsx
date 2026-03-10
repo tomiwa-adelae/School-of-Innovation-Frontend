@@ -31,7 +31,7 @@ export const CourseProject = () => {
   ];
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="container">
         <div className="flex flex-col lg:flex-row gap-20">
           {/* Left: Tech Stack */}

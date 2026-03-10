@@ -35,7 +35,7 @@ export const LearningFlow = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50 overflow-hidden">
+    <section className="py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="container">
         <div className="text-center mb-20">
           <h2 className="text-blue-600 font-bold tracking-widest uppercase text-sm mb-4">

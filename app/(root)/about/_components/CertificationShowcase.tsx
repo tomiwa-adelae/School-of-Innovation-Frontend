@@ -8,7 +8,7 @@ import {
 
 export const CertificationShowcase = () => {
   return (
-    <section className="py-24 bg-gray-950 text-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-gray-950 text-white overflow-hidden">
       <div className="container">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           {/* Left: Certificate Mockup */}

@@ -92,7 +92,7 @@ export const CourseSyllabus = () => {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-4xl">
           <h2 className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-4">

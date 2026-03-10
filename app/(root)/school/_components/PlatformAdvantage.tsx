@@ -49,7 +49,7 @@ export const PlatformAdvantage = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-950 text-white relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-gray-950 text-white relative overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px]" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px]" />

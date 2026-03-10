@@ -30,13 +30,13 @@ export const ClarityHub = () => {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-16">
           {/* FAQ Accordion */}
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-8">
-              Got Questions? <br />
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Got Questions? <br className="hidden lg:block" />
               <span className="text-blue-600">We've Got Answers.</span>
             </h2>
             <div className="space-y-4">
@@ -46,9 +46,9 @@ export const ClarityHub = () => {
                     onClick={() =>
                       setOpenIndex(openIndex === index ? null : index)
                     }
-                    className="w-full flex justify-between items-center py-6 text-left hover:text-blue-600 transition-colors"
+                    className="w-full flex justify-between items-center py-4 text-left hover:text-blue-600 transition-colors"
                   >
-                    <span className="text-lg font-bold text-gray-800">
+                    <span className="text-base font-medium text-gray-800">
                       {faq.q}
                     </span>
                     {openIndex === index ? (
@@ -60,7 +60,9 @@ export const ClarityHub = () => {
                   <div
                     className={`overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-40 pb-6" : "max-h-0"}`}
                   >
-                    <p className="text-gray-600 leading-relaxed">{faq.a}</p>
+                    <p className="text-gray-600 text-base leading-relaxed">
+                      {faq.a}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -68,7 +70,7 @@ export const ClarityHub = () => {
           </div>
 
           {/* Newsletter / Community Capture */}
-          <div className="bg-blue-600 rounded-3xl p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden">
+          <div className="bg-primary rounded-3xl p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden">
             {/* Decorative Icon */}
             <IconMessageCircle
               size={120}

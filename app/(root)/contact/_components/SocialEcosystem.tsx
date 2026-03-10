@@ -10,7 +10,7 @@ import {
 
 export const SocialEcosystem = () => {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         <div className="bg-blue-600 rounded-[3rem] p-8 md:p-16 text-white relative overflow-hidden">
           {/* Decorative Background Icon */}

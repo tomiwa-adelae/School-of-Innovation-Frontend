@@ -53,22 +53,22 @@ export const Footer = () => {
             <h4 className="text-white font-bold mb-6">The Conference</h4>
             <ul className="space-y-4 text-sm">
               <li>
-                <a href="#speakers" className="hover:text-blue-500 transition">
+                <a href="#speakers" className="hover:text-primary transition">
                   Speakers 2026
                 </a>
               </li>
               <li>
-                <a href="#schedule" className="hover:text-blue-500 transition">
+                <a href="#schedule" className="hover:text-primary transition">
                   Event Roadmap
                 </a>
               </li>
               <li>
-                <a href="#tickets" className="hover:text-blue-500 transition">
+                <a href="#tickets" className="hover:text-primary transition">
                   Get Your Tickets
                 </a>
               </li>
               <li>
-                <a href="#gallery" className="hover:text-blue-500 transition">
+                <a href="#gallery" className="hover:text-primary transition">
                   Past Editions
                 </a>
               </li>
@@ -118,15 +118,21 @@ export const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Contact Us</h4>
             <ul className="space-y-4 text-sm">
-              <li className="flex items-center gap-3">
+              <a
+                href={`mailto:admin@innovationconference.com.ng`}
+                className="flex items-center gap-3"
+              >
                 <IconMail size={18} className="text-blue-500" />
                 admin@innovationconference.com.ng
-              </li>
-              <li className="flex items-center gap-3">
+              </a>
+              <a
+                href={`tel:+2348101569177`}
+                className="flex items-center gap-3"
+              >
                 <IconPhone size={18} className="text-blue-500" />
                 +234 810 156 9177
-              </li>
-              <li className="flex items-center gap-3 uppercase tracking-tighter">
+              </a>
+              <li className="flex items-center gap-3">
                 <IconMapPin size={18} className="text-blue-500" />
                 Lagos, Nigeria
               </li>
@@ -135,7 +141,7 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase tracking-widest font-medium">
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase font-medium">
           <p>© {currentYear} Innovation 4.0. Powered by Cornerstone Intl.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white transition">

@@ -28,7 +28,7 @@ export const CourseFinale = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         {/* Specific FAQ */}
         <div className="max-w-4xl mx-auto mb-24">

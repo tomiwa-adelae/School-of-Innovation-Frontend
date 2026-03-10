@@ -33,7 +33,7 @@ export const ContactChannels = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         <div className="grid lg:grid-cols-3 gap-12 mb-20">
           {departments.map((dept, index) => (

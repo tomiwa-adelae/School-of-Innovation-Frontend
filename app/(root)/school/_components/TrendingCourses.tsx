@@ -48,7 +48,7 @@ export const TrendingCourses = () => {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-16">

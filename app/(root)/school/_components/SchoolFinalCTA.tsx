@@ -27,7 +27,7 @@ export const SchoolFinalCTA = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-16 mb-24">
           {/* Left: FAQ Heading */}

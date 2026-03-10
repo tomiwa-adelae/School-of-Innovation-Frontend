@@ -35,7 +35,7 @@ export const InstructorSpotlight = () => {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container">
         {/* Header */}
         <div className="max-w-3xl mb-16">

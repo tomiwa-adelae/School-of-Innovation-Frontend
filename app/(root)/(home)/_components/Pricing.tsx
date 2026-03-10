@@ -7,10 +7,11 @@ import {
   IconCircleNumber2,
   IconCircleNumber3,
 } from "@tabler/icons-react";
+import { ComingSoon } from "@/components/ComingSoon";
 
 export const Pricing = () => {
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -21,7 +22,8 @@ export const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid relative md:grid-cols-3 gap-8 mb-20">
+          <ComingSoon />
           {/* Tier 1: Digital Learner */}
           <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
             <div className="mb-6">

@@ -10,7 +10,7 @@ import {
 
 export const InstructorDeepDive = () => {
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         <div className="bg-white rounded-[3rem] p-8 md:p-16 shadow-xl border border-gray-100 overflow-hidden relative">
           {/* Background Decoration */}

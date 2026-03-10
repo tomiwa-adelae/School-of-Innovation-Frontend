@@ -160,7 +160,9 @@ export default function CoursesPage() {
 
   // Fetch categories
   useEffect(() => {
-    fetchData<Category[]>("/categories").then(setCategories).catch(() => {});
+    fetchData<Category[]>("/categories")
+      .then(setCategories)
+      .catch(() => {});
   }, []);
 
   // Fetch courses
@@ -174,7 +176,7 @@ export default function CoursesPage() {
     params.set("limit", "24");
 
     publicFetch<{ courses: PublicCourse[]; total: number }>(
-      `/public/courses?${params.toString()}`
+      `/public/courses?${params.toString()}`,
     )
       .then((data) => {
         setCourses(data.courses);
@@ -185,7 +187,10 @@ export default function CoursesPage() {
   }, [debouncedSearch, selectedCategory, selectedLevel, selectedPricing]);
 
   const hasFilters =
-    !!selectedCategory || !!selectedLevel || !!selectedPricing || !!debouncedSearch;
+    !!selectedCategory ||
+    !!selectedLevel ||
+    !!selectedPricing ||
+    !!debouncedSearch;
 
   function clearFilters() {
     setSearch("");
@@ -264,7 +269,7 @@ export default function CoursesPage() {
                         "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
                         !selectedCategory
                           ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
+                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
                       )}
                     >
                       All Categories
@@ -277,7 +282,7 @@ export default function CoursesPage() {
                           "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
                           selectedCategory === cat.slug
                             ? "bg-blue-600 text-white font-bold"
-                            : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
+                            : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
                         )}
                       >
                         {cat.name}
@@ -301,7 +306,7 @@ export default function CoursesPage() {
                         "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
                         selectedLevel === value
                           ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
+                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
                       )}
                     >
                       {label}
@@ -324,7 +329,7 @@ export default function CoursesPage() {
                         "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
                         selectedPricing === value
                           ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800"
+                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
                       )}
                     >
                       {label}
@@ -338,11 +343,14 @@ export default function CoursesPage() {
           {/* Course grid */}
           <div className="flex-1">
             {loading ? (
-              <div className="flex items-center justify-center py-24">
-                <IconLoader2 size={28} className="animate-spin text-muted-foreground" />
+              <div className="flex items-center justify-center py-16 md:py-24">
+                <IconLoader2
+                  size={28}
+                  className="animate-spin text-muted-foreground"
+                />
               </div>
             ) : courses.length === 0 ? (
-              <div className="text-center py-24 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <div className="text-center py-16 md:py-24 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                 <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <IconBook size={28} className="text-muted-foreground" />
                 </div>
@@ -355,7 +363,11 @@ export default function CoursesPage() {
                     : "No published courses yet. Check back soon!"}
                 </p>
                 {hasFilters && (
-                  <Button variant="outline" onClick={clearFilters} className="rounded-xl">
+                  <Button
+                    variant="outline"
+                    onClick={clearFilters}
+                    className="rounded-xl"
+                  >
                     Clear filters
                   </Button>
                 )}

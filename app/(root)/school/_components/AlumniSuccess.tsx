@@ -32,7 +32,7 @@ export const AlumniSuccess = () => {
   ];
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-20">

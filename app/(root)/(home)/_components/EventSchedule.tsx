@@ -42,20 +42,20 @@ export const EventSchedule = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-900 text-white">
+    <section className="py-16 md:py-24 bg-gray-900 text-white">
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">
           <div className="max-w-xl">
-            <h2 className="text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
               The <span className="text-blue-500">Innovation</span> Roadmap
             </h2>
-            <p className="text-gray-400">
+            <p className="text-gray-400 text-lg">
               A carefully curated journey designed to transform your mindset
               from a dreamer to a doer. Everything from networking to
               high-octane performances.
             </p>
           </div>
-          <div className="bg-white/5 border border-white/10 p-4 rounded-2xl flex items-center gap-4">
+          <div className="bg-white/5 border hidden md:flex border-white/10 p-4 rounded-2xl items-center gap-4">
             <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
               <IconMapPin size={24} />
             </div>
@@ -66,9 +66,9 @@ export const EventSchedule = () => {
           </div>
         </div>
 
-        <div className="relative border-l border-white/10 ml-4 md:ml-12 space-y-12">
+        <div className="relative border-l border-white/10 ml-4 md:ml-12 space-y-6">
           {schedule.map((item, index) => (
-            <div key={index} className="relative pl-10 group">
+            <div key={index} className="relative pl-4 md:pl-10 group">
               {/* Timeline Dot */}
               <div
                 className={`absolute -left-[13px] top-0 w-6 h-6 rounded-full border-4 border-gray-900 ${item.color} group-hover:scale-125 transition-transform`}
@@ -80,13 +80,13 @@ export const EventSchedule = () => {
                     <span className={`p-2 rounded-xl text-white ${item.color}`}>
                       {item.icon}
                     </span>
-                    <span className="text-blue-400 font-mono font-bold tracking-widest text-lg">
+                    <span className="text-blue-400 font-bold text-base">
                       {item.time}
                     </span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                <p className="text-gray-400 max-w-2xl leading-relaxed">
+                <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                <p className="text-gray-400 text-base max-w-2xl leading-relaxed">
                   {item.desc}
                 </p>
               </div>

@@ -45,7 +45,7 @@ export const CategoryBrowser = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
