@@ -5,6 +5,7 @@ import {
   IconTrophy,
   IconArrowRight,
 } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 
 export const LearningFlow = () => {
   const steps = [
@@ -38,15 +39,15 @@ export const LearningFlow = () => {
     <section className="py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="container">
         <div className="text-center mb-20">
-          <h2 className="text-blue-600 font-bold tracking-widest uppercase text-sm mb-4">
+          <h2 className="text-primary font-semibold uppercase text-sm mb-2">
             The Student Journey
           </h2>
-          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
             How You'll <span className="text-gray-400">Master Innovation.</span>
           </h3>
         </div>
 
-        <div className="relative flex flex-col lg:flex-row gap-12 items-start">
+        <div className="relative flex flex-col lg:flex-row gap-8 items-start">
           {/* Connector Line (Desktop Only) */}
           <div className="hidden lg:block absolute top-24 left-0 w-full h-0.5 bg-gray-200 z-0" />
 
@@ -62,7 +63,7 @@ export const LearningFlow = () => {
               </div>
 
               {/* Card */}
-              <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
+              <div className="bg-white p-10 rounded-md border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                 <div
                   className={`w-16 h-16 ${step.lightColor} rounded-2xl flex items-center justify-center mb-6`}
                 >
@@ -92,13 +93,10 @@ export const LearningFlow = () => {
           <p className="text-gray-500 mb-6 font-medium">
             Ready to start your first lesson?
           </p>
-          <button className="group flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200">
+          <Button>
             Browse the Course Library
-            <IconArrowRight
-              size={20}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </button>
+            <IconArrowRight />
+          </Button>
         </div>
       </div>
     </section>

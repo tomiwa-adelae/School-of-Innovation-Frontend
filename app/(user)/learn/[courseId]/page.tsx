@@ -21,6 +21,15 @@ import {
   IconCheck,
   IconAlertCircle,
 } from "@tabler/icons-react";
+import { Loader } from "@/components/Loader";
+import { PageHeader } from "@/components/PageHeader";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface Resource {
   id: string;
@@ -67,7 +76,8 @@ function formatDuration(seconds: number) {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
-  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  if (h > 0)
+    return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
@@ -87,7 +97,9 @@ function extractText(raw: string | null): string {
       else if (node.type === "hardBreak") lines.push("\n");
       else if (Array.isArray(node.content)) {
         node.content.forEach(walk);
-        if (["paragraph", "heading", "listItem", "blockquote"].includes(node.type)) {
+        if (
+          ["paragraph", "heading", "listItem", "blockquote"].includes(node.type)
+        ) {
           lines.push("\n");
         }
       }
@@ -129,7 +141,9 @@ export default function CoursePlayerPage() {
     mutationFn: (lessonId: string) =>
       postData<{ completed: boolean }>(`/enrollments/progress/${lessonId}`, {}),
     onMutate: async (lessonId) => {
-      await queryClient.cancelQueries({ queryKey: ["lesson-progress", courseId] });
+      await queryClient.cancelQueries({
+        queryKey: ["lesson-progress", courseId],
+      });
       const prev = queryClient.getQueryData<{
         completedLessonIds: string[];
         totalLessons: number;
@@ -159,7 +173,9 @@ export default function CoursePlayerPage() {
       toast.error("Failed to update progress");
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["lesson-progress", courseId] });
+      queryClient.invalidateQueries({
+        queryKey: ["lesson-progress", courseId],
+      });
       queryClient.invalidateQueries({ queryKey: ["progress-overview"] });
     },
   });
@@ -205,7 +221,7 @@ export default function CoursePlayerPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[70vh]">
-        <IconLoader2 size={28} className="animate-spin text-muted-foreground" />
+        <Loader />
       </div>
     );
   }
@@ -213,22 +229,20 @@ export default function CoursePlayerPage() {
   if (error || !course) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] gap-4 px-4">
-        <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-2xl flex items-center justify-center">
+        <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-md flex items-center justify-center">
           <IconAlertCircle size={28} className="text-red-500" />
         </div>
-        <p className="font-black text-gray-900 dark:text-white text-lg text-center">
+        <p className="font-semibold text-lg text-center">
           {error ?? "Course not found"}
         </p>
         <div className="flex gap-3">
-          <Link href="/courses">
-            <Button variant="outline" className="rounded-xl">
-              Browse Courses
-            </Button>
-          </Link>
+          <Button variant="outline" asChild>
+            <Link href="/courses">Browse Courses</Link>
+          </Button>
           {error?.includes("not enrolled") && (
-            <Link href={`/courses`}>
-              <Button className="rounded-xl">Enroll Now</Button>
-            </Link>
+            <Button asChild>
+              <Link href={`/courses`}>Enroll Now</Link>
+            </Button>
           )}
         </div>
       </div>
@@ -240,64 +254,60 @@ export default function CoursePlayerPage() {
     ? allLessons.findIndex((l) => l.id === activeLesson.id)
     : -1;
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
-  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+  const nextLesson =
+    currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
   const notes = extractText(activeLesson?.description ?? null);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
-      {/* Top bar */}
-      <div className="shrink-0 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-2.5 flex items-center gap-3">
-        <Link
-          href="/dashboard"
-          className="text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <IconArrowLeft size={18} />
-        </Link>
-        <div className="flex-1 min-w-0">
-          <p className="font-black text-sm text-gray-900 dark:text-white truncate">
-            {course.title}
-          </p>
-          {activeLesson && (
-            <p className="text-xs text-muted-foreground truncate">{activeLesson.title}</p>
-          )}
-        </div>
-        <p className="text-xs text-muted-foreground shrink-0">
-          {course.instructor.firstName} {course.instructor.lastName}
-        </p>
-      </div>
+    <div className="flex flex-col overflow-hidden">
+      <PageHeader
+        description={
+          <div className="flex items-center justify-between gap-2">
+            {activeLesson && (
+              <p className="text-xs text-muted-foreground truncate">
+                {activeLesson.title}
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground shrink-0">
+              {course.instructor.firstName} {course.instructor.lastName}
+            </p>
+          </div>
+        }
+        back
+        title={course.title}
+      />
 
       {/* Main area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Video + lesson content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="lg:col-span-2 flex-1 overflow-y-auto">
           {/* Video */}
-          <div className="bg-black">
+          <Card className="p-0 overflow-hidden border-0 shadow-none">
             {activeLesson?.videoUrl ? (
               <video
                 ref={videoRef}
                 key={activeLesson.id}
                 src={activeLesson.videoUrl}
                 controls
-                className="w-full aspect-video max-h-[65vh]"
                 poster={activeLesson.thumbnailUrl ?? undefined}
                 autoPlay
                 preload="metadata"
               />
             ) : (
-              <div className="w-full aspect-video max-h-[65vh] flex flex-col items-center justify-center text-white gap-3">
-                <IconBook size={40} className="text-gray-500" />
-                <p className="text-sm text-gray-400">No video for this lesson</p>
+              <div className="w-full aspect-video flex flex-col items-center justify-center gap-3">
+                <IconBook size={40} className="text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  No video for this lesson
+                </p>
               </div>
             )}
-          </div>
+          </Card>
 
           {/* Lesson meta */}
           {activeLesson && (
-            <div className="p-6 space-y-5">
+            <div className="mt-8 space-y-5">
               <div className="flex items-start justify-between gap-4 flex-wrap">
-                <h1 className="text-xl font-black text-gray-900 dark:text-white">
-                  {activeLesson.title}
-                </h1>
+                <CardTitle>{activeLesson.title}</CardTitle>
                 {formatDuration(activeLesson.duration) && (
                   <Badge variant="secondary" className="text-xs shrink-0">
                     {formatDuration(activeLesson.duration)}
@@ -312,45 +322,47 @@ export default function CoursePlayerPage() {
                   size="sm"
                   disabled={!prevLesson}
                   onClick={() => prevLesson && selectLesson(prevLesson)}
-                  className="rounded-xl"
                 >
-                  ← Previous
+                  Previous
                 </Button>
                 <Button
                   size="sm"
                   disabled={!nextLesson}
                   onClick={() => nextLesson && selectLesson(nextLesson)}
-                  className="rounded-xl"
                 >
-                  Next →
+                  Next
                 </Button>
                 <Button
                   size="sm"
-                  variant={completedSet.has(activeLesson.id) ? "default" : "outline"}
+                  variant={
+                    completedSet.has(activeLesson.id) ? "default" : "outline"
+                  }
                   className={cn(
-                    "rounded-xl gap-1.5 ml-auto",
+                    "ml-auto",
                     completedSet.has(activeLesson.id)
                       ? "bg-green-600 hover:bg-green-700 text-white border-green-600"
-                      : ""
+                      : "",
                   )}
                   onClick={() => toggleMutation.mutate(activeLesson.id)}
                   disabled={toggleMutation.isPending}
                 >
-                  <IconCheck size={14} />
-                  {completedSet.has(activeLesson.id) ? "Completed" : "Mark Complete"}
+                  <IconCheck />
+                  {completedSet.has(activeLesson.id)
+                    ? "Completed"
+                    : "Mark Complete"}
                 </Button>
               </div>
 
               {/* Notes / transcript */}
               {notes && (
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5">
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">
-                    Lesson Notes
-                  </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                    {notes}
-                  </p>
-                </div>
+                <Card>
+                  <CardHeader className="border-b">
+                    <CardTitle>Lesson Notes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>{notes}</CardDescription>
+                  </CardContent>
+                </Card>
               )}
 
               {/* Resources */}
@@ -391,89 +403,117 @@ export default function CoursePlayerPage() {
         </div>
 
         {/* Sidebar: curriculum */}
-        <aside className="hidden lg:flex flex-col w-80 border-l border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto">
-          <div className="p-4 border-b border-gray-100 dark:border-gray-800">
-            <p className="font-black text-sm text-gray-900 dark:text-white">
-              Course Content
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {allLessons.length} lessons · {course.chapters.length} chapters
-            </p>
-            {progressData && (
-              <p className="text-xs text-muted-foreground mt-1">
-                {progressData.completedCount}/{progressData.totalLessons} completed ·{" "}
-                <span className="text-blue-500 font-semibold">
-                  {progressData.percent}%
-                </span>
+        <aside className="flex flex-col space-y-4 overflow-y-auto">
+          <Card className="">
+            <CardHeader className="border-b">
+              <CardTitle>Course Content</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {allLessons.length} lessons · {course.chapters.length} chapters
               </p>
-            )}
-          </div>
+              {progressData && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {progressData.completedCount}/{progressData.totalLessons}{" "}
+                  completed ·{" "}
+                  <span className="text-blue-500 font-semibold">
+                    {progressData.percent}%
+                  </span>
+                </p>
+              )}
+            </CardContent>
+          </Card>
 
-          <div className="flex-1">
-            {course.chapters.map((chapter) => {
-              const isOpen = openChapters.has(chapter.id);
-              return (
-                <div key={chapter.id} className="border-b border-gray-50 dark:border-gray-800">
-                  <button
-                    onClick={() => toggleChapter(chapter.id)}
-                    className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 text-left transition-colors"
+          <Card>
+            <CardHeader className="border-b">
+              <CardTitle>Curriculum</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {course.chapters.map((chapter) => {
+                const isOpen = openChapters.has(chapter.id);
+                return (
+                  <div
+                    key={chapter.id}
+                    className="border-b border-gray-50 dark:border-gray-800"
                   >
-                    <p className="text-xs font-bold text-gray-900 dark:text-white leading-snug pr-2">
-                      {chapter.title}
-                    </p>
-                    {isOpen ? (
-                      <IconChevronUp size={14} className="text-muted-foreground shrink-0" />
-                    ) : (
-                      <IconChevronDown size={14} className="text-muted-foreground shrink-0" />
-                    )}
-                  </button>
+                    <Button
+                      variant={"secondary"}
+                      onClick={() => toggleChapter(chapter.id)}
+                      className="w-full justify-start"
+                    >
+                      <div className="flex w-full items-center justify-between">
+                        {chapter.title}
+                        {isOpen ? (
+                          <IconChevronUp
+                            size={14}
+                            className="text-muted-foreground shrink-0"
+                          />
+                        ) : (
+                          <IconChevronDown
+                            size={14}
+                            className="text-muted-foreground shrink-0"
+                          />
+                        )}
+                      </div>
+                    </Button>
 
-                  {isOpen && chapter.lessons.map((lesson) => {
-                    const isActive = activeLesson?.id === lesson.id;
-                    return (
-                      <button
-                        key={lesson.id}
-                        onClick={() => selectLesson(lesson)}
-                        className={cn(
-                          "w-full flex items-center gap-2.5 px-4 py-2.5 text-left transition-colors",
-                          isActive
-                            ? "bg-blue-50 dark:bg-blue-950/30 border-r-2 border-blue-600"
-                            : "hover:bg-gray-50 dark:hover:bg-gray-800"
-                        )}
-                      >
-                        <div className="shrink-0">
-                          {completedSet.has(lesson.id) ? (
-                            <IconCheck size={14} className="text-green-500" />
-                          ) : isActive ? (
-                            <IconPlayerPlay size={14} className="text-blue-600" />
-                          ) : lesson.videoUrl ? (
-                            <IconPlayerPlay size={14} className="text-gray-400" />
-                          ) : (
-                            <IconBook size={14} className="text-gray-400" />
-                          )}
-                        </div>
-                        <p
-                          className={cn(
-                            "text-xs leading-snug flex-1 text-left",
-                            isActive
-                              ? "font-bold text-blue-600"
-                              : "text-gray-700 dark:text-gray-300"
-                          )}
-                        >
-                          {lesson.title}
-                        </p>
-                        {formatDuration(lesson.duration) && (
-                          <span className="text-xs text-muted-foreground shrink-0">
-                            {formatDuration(lesson.duration)}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+                    {isOpen &&
+                      chapter.lessons.map((lesson) => {
+                        const isActive = activeLesson?.id === lesson.id;
+                        return (
+                          <button
+                            key={lesson.id}
+                            onClick={() => selectLesson(lesson)}
+                            className={cn(
+                              "w-full flex items-center gap-2.5 px-4 py-2.5 text-left transition-colors",
+                              isActive
+                                ? "bg-blue-50 dark:bg-blue-950/30 border-r-2 border-blue-600"
+                                : "hover:bg-gray-50 dark:hover:bg-gray-800",
+                            )}
+                          >
+                            <div className="shrink-0">
+                              {completedSet.has(lesson.id) ? (
+                                <IconCheck
+                                  size={14}
+                                  className="text-green-500"
+                                />
+                              ) : isActive ? (
+                                <IconPlayerPlay
+                                  size={14}
+                                  className="text-blue-600"
+                                />
+                              ) : lesson.videoUrl ? (
+                                <IconPlayerPlay
+                                  size={14}
+                                  className="text-gray-400"
+                                />
+                              ) : (
+                                <IconBook size={14} className="text-gray-400" />
+                              )}
+                            </div>
+                            <p
+                              className={cn(
+                                "text-xs leading-snug flex-1 text-left",
+                                isActive
+                                  ? "font-bold text-blue-600"
+                                  : "text-gray-700 dark:text-gray-300",
+                              )}
+                            >
+                              {lesson.title}
+                            </p>
+                            {formatDuration(lesson.duration) && (
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                {formatDuration(lesson.duration)}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
         </aside>
       </div>
     </div>

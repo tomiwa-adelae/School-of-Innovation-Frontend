@@ -22,6 +22,14 @@ import {
   IconPlayerPlay,
   IconLoader2,
 } from "@tabler/icons-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 // ── Student Dashboard ─────────────────────────────────────────────────────────
 
@@ -58,35 +66,31 @@ function StudentDashboard({ firstName }: { firstName: string }) {
 
   const totalHours = enrollments.reduce(
     (sum, e) => sum + (e.course.duration ?? 0),
-    0
+    0,
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Welcome banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-blue-700 p-8 text-white">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
-        <div className="relative z-10">
-          <p className="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-2">
-            Student Dashboard
-          </p>
-          <h1 className="text-3xl font-black mb-3">
-            Welcome back, {firstName}! 👋
-          </h1>
-          <p className="text-blue-100 max-w-md leading-relaxed">
-            Continue your learning journey and unlock new skills every day.
-          </p>
-          <Link
-            href="/courses"
-            className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-2xl font-black text-sm hover:bg-blue-50 transition-colors"
-          >
-            Browse Courses <IconArrowRight size={16} />
-          </Link>
-        </div>
-      </div>
+      <Card className="relative overflow-hidden3xl bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+        <CardContent>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
+          <div className="relative z-10">
+            <CardTitle className="text-2xl font-bold mb-1">
+              Welcome back, {firstName}! 👋
+            </CardTitle>
+            <CardDescription className="text-blue-100 max-w-md leading-relaxed">
+              Continue your learning journey and unlock new skills every day.
+            </CardDescription>
+            <Button variant={"white"} className="mt-6" asChild>
+              <Link href="/courses">Browse Courses</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {[
           {
             label: "Enrolled Courses",
@@ -113,104 +117,104 @@ function StudentDashboard({ firstName }: { firstName: string }) {
             color: "text-purple-500",
           },
         ].map(({ label, value, icon: Icon, color }) => (
-          <div
-            key={label}
-            className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800"
-          >
-            <Icon size={22} className={cn("mb-3", color)} />
-            <p className="text-2xl font-black text-gray-900 dark:text-white">{value}</p>
-            <p className="text-xs text-muted-foreground font-medium mt-1">{label}</p>
-          </div>
+          <Card key={label}>
+            <CardContent>
+              <Icon size={22} className={cn("mb-3", color)} />
+              <CardTitle className="text-lg">{value}</CardTitle>
+              <CardDescription className="text-xs text-muted-foreground font-medium mt-1">
+                {label}
+              </CardDescription>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* My Courses */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white">
-            My Courses
-          </h2>
-          <Link
-            href="/courses"
-            className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-          >
-            Browse more <IconArrowRight size={14} />
-          </Link>
-        </div>
-
-        {isLoading ? (
-          <div className="flex items-center justify-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
-            <IconLoader2 size={24} className="animate-spin text-muted-foreground" />
-          </div>
-        ) : enrollments.length === 0 ? (
-          <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-10 text-center">
-            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <IconBook size={28} className="text-blue-500" />
+      <Card>
+        <CardHeader className="flex items-center justify-between border-b">
+          <CardTitle>My Courses</CardTitle>
+          <Button size="sm" asChild variant={"secondary"}>
+            <Link href="/courses">Browse more</Link>
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
+              <IconLoader2
+                size={24}
+                className="animate-spin text-muted-foreground"
+              />
             </div>
-            <h3 className="font-black text-gray-900 dark:text-white text-lg mb-2">
-              No courses yet
-            </h3>
-            <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
-              Enroll in your first course to start tracking your progress here.
-            </p>
-            <Link
-              href="/courses"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-colors"
-            >
-              Explore Courses <IconArrowRight size={16} />
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {enrollments.map(({ id, course }) => (
-              <Link key={id} href={`/learn/${course.id}`}>
-                <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
-                  <div className="relative bg-gray-100 dark:bg-gray-800 overflow-hidden">
-                    {course.thumbnail ? (
-                      <Image
-                        src={course.thumbnail}
-                        alt={course.title}
-                        width={400}
-                        height={225}
-                        className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full aspect-video flex items-center justify-center">
-                        <IconBook size={28} className="text-gray-400" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
-                        <IconPlayerPlay size={18} className="text-blue-600 ml-0.5" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 flex flex-col flex-1">
-                    <h3 className="font-bold text-sm text-gray-900 dark:text-white line-clamp-2 mb-1 flex-1">
-                      {course.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      {course.instructor.firstName} {course.instructor.lastName}
-                    </p>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <IconBook size={11} />
-                        {course._count.chapters} chapters
-                      </span>
-                      {formatDuration(course.duration) && (
-                        <span className="flex items-center gap-1">
-                          <IconClock size={11} />
-                          {formatDuration(course.duration)}
-                        </span>
+          ) : enrollments.length === 0 ? (
+            <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-10 text-center">
+              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <IconBook size={28} className="text-blue-500" />
+              </div>
+              <h3 className="font-bold text-lg mb-2">No courses yet</h3>
+              <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
+                Enroll in your first course to start tracking your progress
+                here.
+              </p>
+              <Button asChild>
+                <Link href="/courses">Explore Courses</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              {enrollments.map(({ id, course }) => (
+                <Link key={id} href={`/learn/${course.id}`}>
+                  <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
+                    <div className="relative bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                      {course.thumbnail ? (
+                        <Image
+                          src={course.thumbnail}
+                          alt={course.title}
+                          width={400}
+                          height={225}
+                          className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full aspect-video flex items-center justify-center">
+                          <IconBook size={28} className="text-gray-400" />
+                        </div>
                       )}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <IconPlayerPlay
+                            size={18}
+                            className="text-blue-600 ml-0.5"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="font-bold text-sm text-gray-900 dark:text-white line-clamp-2 mb-1 flex-1">
+                        {course.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        {course.instructor.firstName}{" "}
+                        {course.instructor.lastName}
+                      </p>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <IconBook size={11} />
+                          {course._count.chapters} chapters
+                        </span>
+                        {formatDuration(course.duration) && (
+                          <span className="flex items-center gap-1">
+                            <IconClock size={11} />
+                            {formatDuration(course.duration)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -228,113 +232,140 @@ function InstructorDashboard({
   const isApproved = instructorStatus === "APPROVED";
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Status banner */}
       {isPending && (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-orange-500 p-8 text-white">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
-          <div className="relative z-10 flex items-start gap-4">
-            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center shrink-0 mt-1">
-              <IconAlertCircle size={24} />
-            </div>
-            <div>
-              <p className="text-amber-100 text-sm font-semibold uppercase tracking-widest mb-1">
-                Application Under Review
-              </p>
-              <h1 className="text-2xl font-black mb-2">
-                Hey {firstName}, you&apos;re almost in! ⏳
-              </h1>
-              <p className="text-amber-100 max-w-xl leading-relaxed text-sm">
-                Our admin team is reviewing your instructor application. This usually takes
-                up to 48 hours. We&apos;ll notify you once a decision is made.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                {[
-                  "Application Submitted ✓",
-                  "Admin Review — In Progress",
-                  "Full Access — Pending",
-                ].map((s, i) => (
-                  <span
-                    key={s}
-                    className={cn(
-                      "text-xs font-bold px-3 py-1.5 rounded-full",
-                      i === 0
-                        ? "bg-white/30 text-white"
-                        : i === 1
-                          ? "bg-white/20 text-white/90"
-                          : "bg-white/10 text-white/60"
-                    )}
-                  >
-                    {s}
-                  </span>
-                ))}
+        <Card className="relative bg-gradient-to-br from-amber-500 to-orange-500 text-white">
+          <CardContent>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
+            <div className="relative z-10 flex items-start gap-4">
+              <div className="w-12 h-12 bg-white/20 rounded-md flex items-center justify-center shrink-0 mt-1">
+                <IconAlertCircle size={24} />
+              </div>
+              <div>
+                <p className="text-amber-100 text-xs font-semibold mb-1">
+                  Application Under Review
+                </p>
+                <h1 className="text-2xl font-bold mb-2">
+                  Hey {firstName}, you&apos;re almost in! ⏳
+                </h1>
+                <p className="text-white max-w-xl leading-relaxed text-sm">
+                  Our admin team is reviewing your instructor application. This
+                  usually takes up to 48 hours. We&apos;ll notify you once a
+                  decision is made.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {[
+                    "Application Submitted ✓",
+                    "Admin Review — In Progress",
+                    "Full Access — Pending",
+                  ].map((s, i) => (
+                    <span
+                      key={s}
+                      className={cn(
+                        "text-xs font-medium px-3 py-1.5 rounded-full",
+                        i === 0
+                          ? "bg-white/30 text-white"
+                          : i === 1
+                            ? "bg-white/20 text-white/90"
+                            : "bg-white/10 text-white/60",
+                      )}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {isApproved && (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 to-purple-700 p-8 text-white">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <IconCircleCheck size={20} className="text-purple-200" />
-              <p className="text-purple-200 text-sm font-semibold uppercase tracking-widest">
-                Approved Instructor
+        <Card className="relative overflow-hidden bg-gradient-to-br from-purple-600 to-purple-700 text-white">
+          <CardContent>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-1 mb-3">
+                <IconCircleCheck size={14} className="text-purple-200" />
+                <p className="text-purple-200 text-xs font-medium">
+                  Approved Instructor
+                </p>
+              </div>
+              <h1 className="text-3xl font-bold mb-3">
+                Welcome, {firstName}! Start creating 🎉
+              </h1>
+              <p className="text-white max-w-md leading-relaxed">
+                You now have full instructor access. Create courses and reach
+                thousands of students across Africa.
               </p>
+              <Button
+                className="mt-6 text-purple-700"
+                asChild
+                variant={"white"}
+              >
+                <Link href="/dashboard/courses/create">
+                  Create First Course
+                </Link>
+              </Button>
             </div>
-            <h1 className="text-3xl font-black mb-3">
-              Welcome, {firstName}! Start creating 🎉
-            </h1>
-            <p className="text-purple-100 max-w-md leading-relaxed">
-              You now have full instructor access. Create courses and reach thousands of
-              students across Africa.
-            </p>
-            <Link
-              href="/dashboard/courses/create"
-              className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-2xl font-black text-sm hover:bg-purple-50 transition-colors"
-            >
-              Create First Course <IconArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {[
-          { label: "Total Students", value: "—", icon: IconUsers, color: "text-purple-500" },
-          { label: "Active Courses", value: "—", icon: IconBook, color: "text-blue-500" },
-          { label: "Total Earnings", value: "—", icon: IconCurrencyDollar, color: "text-green-500" },
-          { label: "Avg. Rating", value: "—", icon: IconChartHistogram, color: "text-amber-500" },
+          {
+            label: "Total Students",
+            value: "—",
+            icon: IconUsers,
+            color: "text-purple-500",
+          },
+          {
+            label: "Active Courses",
+            value: "—",
+            icon: IconBook,
+            color: "text-blue-500",
+          },
+          {
+            label: "Total Earnings",
+            value: "—",
+            icon: IconCurrencyDollar,
+            color: "text-green-500",
+          },
+          {
+            label: "Avg. Rating",
+            value: "—",
+            icon: IconChartHistogram,
+            color: "text-amber-500",
+          },
         ].map(({ label, value, icon: Icon, color }) => (
-          <div
-            key={label}
-            className={cn(
-              "bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800",
-              isPending && "opacity-50"
-            )}
-          >
-            <Icon size={22} className={cn("mb-3", color)} />
-            <p className="text-2xl font-black text-gray-900 dark:text-white">{value}</p>
-            <p className="text-xs text-muted-foreground font-medium mt-1">{label}</p>
-            {isPending && (
-              <p className="text-[10px] text-amber-500 font-bold mt-1 uppercase tracking-wide">
-                Awaiting approval
+          <Card key={label} className={cn(isPending && "opacity-50")}>
+            <CardContent>
+              <Icon size={22} className={cn("mb-3", color)} />
+              <p className="text-2xl font-bold">{value}</p>
+              <p className="text-xs text-muted-foreground font-medium mt-1">
+                {label}
               </p>
-            )}
-          </div>
+              {isPending && (
+                <p className="text-xs text-amber-500 font-medium mt-1">
+                  Awaiting approval
+                </p>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* While waiting / course creation */}
       {isPending && (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8">
-          <h2 className="font-black text-gray-900 dark:text-white text-lg mb-6">
-            While you wait…
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader className="border-b">
+            <CardTitle>While you wait</CardTitle>
+          </CardHeader>
+
+          <CardContent className="grid sm:grid-cols-2 gap-4">
             {[
               {
                 title: "Explore our course catalogue",
@@ -354,37 +385,44 @@ function InstructorDashboard({
               <Link
                 key={title}
                 href={href}
-                className="flex gap-4 p-5 rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all"
+                className="flex gap-4 p-5 rounded-md border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all"
               >
-                <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center shrink-0", color)}>
+                <div
+                  className={cn(
+                    "w-11 h-11 rounded-xl flex items-center justify-center shrink-0",
+                    color,
+                  )}
+                >
                   <Icon size={20} />
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-gray-900 dark:text-white">{title}</p>
+                  <p className="font-bold text-sm text-gray-900 dark:text-white">
+                    {title}
+                  </p>
                   <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {isApproved && (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-10 text-center">
-          <div className="w-16 h-16 bg-purple-50 dark:bg-purple-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <IconChalkboard size={28} className="text-purple-500" />
-          </div>
-          <h3 className="font-black text-gray-900 dark:text-white text-lg mb-2">No courses yet</h3>
-          <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
-            Create your first course to start reaching students and earning revenue.
-          </p>
-          <Link
-            href="/dashboard/courses/create"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-2xl font-bold text-sm hover:bg-purple-700 transition-colors"
-          >
-            Create a Course <IconArrowRight size={16} />
-          </Link>
-        </div>
+        <Card className="text-center py-10">
+          <CardContent>
+            <div className="w-16 h-16 bg-purple-50 dark:bg-purple-950/40 rounded-md flex items-center justify-center mx-auto mb-4">
+              <IconChalkboard size={28} className="text-purple-500" />
+            </div>
+            <CardTitle className="mb-2">No courses yet</CardTitle>
+            <CardDescription className="texttext-sm mb-6 max-w-sm mx-auto">
+              Create your first course to start reaching students and earning
+              revenue.
+            </CardDescription>
+            <Button asChild>
+              <Link href="/dashboard/courses/create">Create a Course</Link>
+            </Button>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

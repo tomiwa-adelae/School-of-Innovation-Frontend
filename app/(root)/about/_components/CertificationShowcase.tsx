@@ -21,7 +21,7 @@ export const CertificationShowcase = () => {
               <div className="border-[12px] border-double border-gray-200 p-6 md:p-10 text-gray-900 text-center">
                 <IconFileCertificate
                   size={60}
-                  className="mx-auto text-blue-600 mb-6"
+                  className="mx-auto text-primary mb-6"
                 />
                 <h4 className="font-serif text-3xl mb-2">
                   Certificate of Excellence
@@ -47,7 +47,7 @@ export const CertificationShowcase = () => {
                       John Ogunjide, Convener
                     </p>
                   </div>
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-[10px]">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white font-bold text-[10px]">
                     SEAL
                   </div>
                 </div>
@@ -57,12 +57,12 @@ export const CertificationShowcase = () => {
 
           {/* Right: Value Proposition */}
           <div className="lg:w-1/2">
-            <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-6 tracking-widest uppercase text-sm">
+            <div className="inline-flex items-center gap-2 text-blue-400 font-bold mb-3  uppercase text-sm">
               <IconRosette size={20} />
               Validated Excellence
             </div>
 
-            <h3 className="text-4xl md:text-5xl font-black mb-8 leading-tight">
+            <h3 className="text-3xl md:text-5xl font-bold mb-8">
               A Credential that <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
                 Opens Doors.
@@ -71,7 +71,7 @@ export const CertificationShowcase = () => {
 
             <div className="space-y-8">
               {/* Feature 1 */}
-              <div className="flex gap-6">
+              <div className="flex gap-3">
                 <div className="shrink-0 w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-blue-400">
                   <IconSearch size={24} />
                 </div>
@@ -87,7 +87,7 @@ export const CertificationShowcase = () => {
               </div>
 
               {/* Feature 2 */}
-              <div className="flex gap-6">
+              <div className="flex gap-3">
                 <div className="shrink-0 w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-orange-400">
                   <IconShare size={24} />
                 </div>

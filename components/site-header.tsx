@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/useAuth";
+import { ThemeToggle } from "./ThemeToggle";
 
 const roleTitles: Record<string, string> = {
   ADMINISTRATOR: "Admin Panel",
@@ -34,15 +35,17 @@ export function SiteHeader() {
               Pending Approval
             </Badge>
           )}
-          {user?.role === "INSTRUCTOR" && user?.instructorStatus === "APPROVED" && (
-            <Badge
-              variant="outline"
-              className="text-green-600 border-green-300 bg-green-50 dark:bg-green-950/30 dark:border-green-800 dark:text-green-400 text-xs font-semibold"
-            >
-              Approved Instructor
-            </Badge>
-          )}
+          {user?.role === "INSTRUCTOR" &&
+            user?.instructorStatus === "APPROVED" && (
+              <Badge
+                variant="outline"
+                className="text-green-600 border-green-300 bg-green-50 dark:bg-green-950/30 dark:border-green-800 dark:text-green-400 text-xs font-semibold"
+              >
+                Approved Instructor
+              </Badge>
+            )}
         </div>
+        <ThemeToggle />
       </div>
     </header>
   );

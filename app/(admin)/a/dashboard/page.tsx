@@ -17,6 +17,7 @@ import {
   IconShield,
   IconChartHistogram,
 } from "@tabler/icons-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AdminStats {
   totalUsers: number;
@@ -96,67 +97,66 @@ export default function AdminPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Header banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 p-8 text-white">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center shrink-0">
-            <IconShield size={28} />
+      <Card className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900  text-white">
+        <CardContent>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl" />
+          <div className="relative z-10 flex items-start gap-4">
+            <div className="w-12 h-12 bg-white/10 rounded-md flex items-center justify-center shrink-0">
+              <IconShield size={20} />
+            </div>
+            <div>
+              <p className="text-gray-400 text-sm font-medium mb-1">
+                Admin Panel
+              </p>
+              <h1 className="text-2xl font-bold">
+                Welcome back, {user.firstName}
+              </h1>
+              <p className="text-gray-400 text-sm mt-1">
+                Here&apos;s what&apos;s happening on the platform today.
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-gray-400 text-sm font-semibold uppercase tracking-widest mb-1">
-              Admin Panel
-            </p>
-            <h1 className="text-2xl font-black">
-              Welcome back, {user.firstName}
-            </h1>
-            <p className="text-gray-400 text-sm mt-1">
-              Here&apos;s what&apos;s happening on the platform today.
-            </p>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {statCards.map(({ label, value, icon: Icon, color, bg, alert }) => (
-          <div
+          <Card
             key={label}
-            className={cn(
-              "bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800",
-              alert && "ring-2 ring-amber-400 dark:ring-amber-600",
-            )}
+            className={cn(alert && "ring-2 ring-amber-400 dark:ring-amber-600")}
           >
-            <div
-              className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center mb-3",
-                bg,
-              )}
-            >
-              <Icon size={20} className={color} />
-            </div>
-            <p className="text-2xl font-black text-gray-900 dark:text-white">
-              {value}
-            </p>
-            <p className="text-xs text-muted-foreground font-medium mt-1">
-              {label}
-            </p>
-            {alert && (
-              <p className="text-[10px] text-amber-500 font-bold mt-1 uppercase tracking-wide">
-                Needs attention
+            <CardContent>
+              <div
+                className={cn(
+                  "w-10 h-10 rounded-md flex items-center justify-center mb-3",
+                  bg,
+                )}
+              >
+                <Icon size={20} className={color} />
+              </div>
+              <p className="text-2xl font-bold">{value}</p>
+              <p className="text-xs text-muted-foreground font-medium mt-1">
+                {label}
               </p>
-            )}
-          </div>
+              {alert && (
+                <p className="text-[10px] text-amber-500 font-bold mt-1 uppercase tracking-wide">
+                  Needs attention
+                </p>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* Quick links */}
-      <div>
-        <h2 className="text-lg font-black text-gray-900 dark:text-white mb-4">
-          Admin Actions
-        </h2>
-        <div className="grid sm:grid-cols-3 gap-4">
+      <Card>
+        <CardHeader className="border-b">
+          <CardTitle>Admin Actions</CardTitle>
+        </CardHeader>
+        <CardContent className="grid sm:grid-cols-3 gap-2">
           {[
             {
               label: "Instructor Approvals",
@@ -187,32 +187,26 @@ export default function AdminPage() {
               key={label}
               href={href}
               className={cn(
-                "group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all",
+                "group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all",
                 urgent && "ring-2 ring-amber-300 dark:ring-amber-700",
               )}
             >
               <div
                 className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0",
+                  "w-10 h-10 rounded-md flex items-center justify-center shrink-0",
                   color,
                 )}
               >
-                <Icon size={22} />
+                <Icon size={20} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-sm text-gray-900 dark:text-white">
-                  {label}
-                </p>
+                <p className="font-semibold text-sm">{label}</p>
                 <p className="text-xs text-muted-foreground">{desc}</p>
               </div>
-              <IconArrowRight
-                size={16}
-                className="text-gray-300 dark:text-gray-600 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors shrink-0"
-              />
             </Link>
           ))}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Pending instructors quick view */}
       {(pendingInstructors?.length ?? 0) > 0 && (

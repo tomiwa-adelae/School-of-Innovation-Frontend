@@ -52,8 +52,16 @@ const LEVEL_OPTIONS = [
 ];
 
 const LANGUAGE_OPTIONS = [
-  "English", "French", "Arabic", "Swahili", "Yoruba", "Hausa", "Igbo",
-  "Amharic", "Portuguese", "Spanish",
+  "English",
+  "French",
+  "Arabic",
+  "Swahili",
+  "Yoruba",
+  "Hausa",
+  "Igbo",
+  "Amharic",
+  "Portuguese",
+  "Spanish",
 ];
 
 export function CourseBasicsForm({
@@ -96,17 +104,20 @@ export function CourseBasicsForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-
         {/* ── Section 1: Core Info ── */}
         <section className="bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white">Course Info</h2>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white">
+            Course Info
+          </h2>
 
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold">Course Title <span className="text-destructive">*</span></FormLabel>
+                <FormLabel>
+                  Course Title <span className="text-destructive">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="e.g. Complete Web Development Bootcamp 2025"
@@ -125,8 +136,20 @@ export function CourseBasicsForm({
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center justify-between">
-                  <FormLabel className="font-bold">Short Description <span className="text-xs text-muted-foreground font-normal">(SEO)</span></FormLabel>
-                  <span className={cn("text-xs", charCount > 180 ? "text-amber-500" : "text-muted-foreground")}>
+                  <FormLabel>
+                    Short Description{" "}
+                    <span className="text-xs text-muted-foreground font-normal">
+                      (SEO)
+                    </span>
+                  </FormLabel>
+                  <span
+                    className={cn(
+                      "text-xs",
+                      charCount > 180
+                        ? "text-amber-500"
+                        : "text-muted-foreground",
+                    )}
+                  >
                     {charCount}/200
                   </span>
                 </div>
@@ -149,7 +172,7 @@ export function CourseBasicsForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold">Full Description</FormLabel>
+                <FormLabel>Full Description</FormLabel>
                 <FormControl>
                   <RichTextEditor field={field} />
                 </FormControl>
@@ -161,7 +184,9 @@ export function CourseBasicsForm({
 
         {/* ── Section 2: Media ── */}
         <section className="bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white">Course Media</h2>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white">
+            Course Media
+          </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
@@ -204,7 +229,9 @@ export function CourseBasicsForm({
 
         {/* ── Section 3: Details ── */}
         <section className="bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white">Course Details</h2>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white">
+            Course Details
+          </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField
@@ -213,7 +240,10 @@ export function CourseBasicsForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-bold text-sm">Category</FormLabel>
-                  <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                  <Select
+                    value={field.value ?? ""}
+                    onValueChange={field.onChange}
+                  >
                     <FormControl>
                       <SelectTrigger className="rounded-xl">
                         <SelectValue placeholder="Select category" />
@@ -271,7 +301,9 @@ export function CourseBasicsForm({
                     </FormControl>
                     <SelectContent>
                       {LANGUAGE_OPTIONS.map((l) => (
-                        <SelectItem key={l} value={l}>{l}</SelectItem>
+                        <SelectItem key={l} value={l}>
+                          {l}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -292,7 +324,9 @@ export function CourseBasicsForm({
 
         {/* ── Section 4: Learning Goals ── */}
         <section className="bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white">Learning Goals</h2>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white">
+            Learning Goals
+          </h2>
 
           <ArrayInput
             name="learningOutcomes"
@@ -320,7 +354,9 @@ export function CourseBasicsForm({
 
         {/* ── Section 5: Pricing ── */}
         <section className="bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-800 shadow-sm">
-          <h2 className="text-lg font-black text-gray-900 dark:text-white mb-6">Pricing</h2>
+          <h2 className="text-lg font-black text-gray-900 dark:text-white mb-6">
+            Pricing
+          </h2>
           <PricingSection control={form.control} />
         </section>
 
@@ -334,7 +370,9 @@ export function CourseBasicsForm({
             {isLoading ? (
               <IconLoader2 size={18} className="animate-spin" />
             ) : (
-              <>Save & Continue <IconArrowRight size={18} /></>
+              <>
+                Save & Continue <IconArrowRight size={18} />
+              </>
             )}
           </Button>
         </div>

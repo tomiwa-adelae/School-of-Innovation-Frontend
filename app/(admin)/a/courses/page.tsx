@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchData, updateData } from "@/lib/api";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, formatMoneyInput } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -31,7 +31,12 @@ import {
   IconChartBar,
   IconCurrencyDollar,
   IconExternalLink,
+  IconBuilding,
 } from "@tabler/icons-react";
+import { PageHeader } from "@/components/PageHeader";
+import { Loader } from "@/components/Loader";
+import { Card, CardContent } from "@/components/ui/card";
+import { NairaIcon } from "@/components/NairaIcon";
 
 type CourseStatus = "DRAFT" | "UNDER_REVIEW" | "PUBLISHED" | "ARCHIVED";
 type Filter = "ALL" | CourseStatus;
@@ -50,26 +55,38 @@ interface Course {
   createdAt: string;
   updatedAt: string;
   category: { id: string; name: string } | null;
-  instructor: { id: string; firstName: string; lastName: string; email: string };
+  instructor: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
   _count: { chapters: number };
 }
 
-const STATUS_CONFIG: Record<CourseStatus, { label: string; className: string }> = {
+const STATUS_CONFIG: Record<
+  CourseStatus,
+  { label: string; className: string }
+> = {
   DRAFT: {
     label: "Draft",
-    className: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700",
+    className:
+      "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700",
   },
   UNDER_REVIEW: {
     label: "Under Review",
-    className: "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800",
+    className:
+      "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800",
   },
   PUBLISHED: {
     label: "Published",
-    className: "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800",
+    className:
+      "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800",
   },
   ARCHIVED: {
     label: "Archived",
-    className: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800",
+    className:
+      "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800",
   },
 };
 
@@ -119,7 +136,7 @@ export default function AdminCoursesPage() {
     queryKey,
     queryFn: () =>
       fetchData(
-        filter === "ALL" ? "/admin/courses" : `/admin/courses?status=${filter}`
+        filter === "ALL" ? "/admin/courses" : `/admin/courses?status=${filter}`,
       ),
   });
 
@@ -153,73 +170,54 @@ export default function AdminCoursesPage() {
     setConfirmAction(null);
   }
 
-  const underReviewCount = courses.filter((c) => c.status === "UNDER_REVIEW").length;
+  const underReviewCount = courses.filter(
+    (c) => c.status === "UNDER_REVIEW",
+  ).length;
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-black text-gray-900 dark:text-white">
-            Course Reviews
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Review and approve instructor-submitted courses
-          </p>
-        </div>
-        {filter === "UNDER_REVIEW" && underReviewCount > 0 && (
-          <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800">
-            <span className="text-amber-600 dark:text-amber-400 font-black text-lg">
-              {underReviewCount}
-            </span>
-            <span className="text-amber-600 dark:text-amber-500 text-sm font-semibold">
-              awaiting review
-            </span>
-          </div>
-        )}
-      </div>
+      <PageHeader
+        back
+        title="Course Reviews"
+        description={"Review and approve instructor-submitted courses"}
+      />
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <IconFilter size={16} className="text-muted-foreground" />
+      <div className="flex items-center gap-1 flex-wrap">
         {FILTERS.map(({ label, value }) => (
-          <button
+          <Button
+            size="sm"
             key={value}
             onClick={() => setFilter(value)}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-bold transition-all",
-              filter === value
-                ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                : "bg-gray-100 dark:bg-gray-800 text-muted-foreground hover:text-foreground"
-            )}
+            variant={filter === value ? "default" : "outline"}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* Loading */}
       {isLoading && (
         <div className="flex items-center justify-center py-20">
-          <IconLoader2 size={28} className="animate-spin text-muted-foreground" />
+          <Loader />
         </div>
       )}
 
       {/* Empty state */}
       {!isLoading && courses.length === 0 && (
-        <div className="text-center py-20 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
-          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <IconBook size={28} className="text-muted-foreground" />
-          </div>
-          <p className="font-black text-gray-900 dark:text-white text-lg mb-1">
-            No courses found
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {filter === "UNDER_REVIEW"
-              ? "No courses are pending review right now."
-              : "No courses match this filter."}
-          </p>
-        </div>
+        <Card className="text-center py-20">
+          <CardContent>
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center mx-auto mb-4">
+              <IconBook size={20} className="text-muted-foreground" />
+            </div>
+            <p className="font-bold text-lg mb-1">No courses found</p>
+            <p className="text-sm text-muted-foreground">
+              {filter === "UNDER_REVIEW"
+                ? "No courses are pending review right now."
+                : "No courses match this filter."}
+            </p>
+          </CardContent>
+        </Card>
       )}
 
       {/* Course list */}
@@ -228,151 +226,161 @@ export default function AdminCoursesPage() {
           {courses.map((course) => {
             const statusCfg = STATUS_CONFIG[course.status];
             return (
-              <div
-                key={course.id}
-                className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 flex flex-col sm:flex-row gap-4"
-              >
-                {/* Thumbnail */}
-                <div className="shrink-0">
-                  {course.thumbnail ? (
-                    <img
-                      src={course.thumbnail}
-                      alt={course.title}
-                      className="w-full sm:w-32 h-20 object-cover rounded-2xl"
-                    />
-                  ) : (
-                    <div className="w-full sm:w-32 h-20 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center">
-                      <IconBook size={24} className="text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-3 flex-wrap">
-                    <div>
-                      <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <h3 className="font-black text-gray-900 dark:text-white text-base leading-tight">
-                          {course.title}
-                        </h3>
-                        <Badge
-                          variant="outline"
-                          className={cn("text-xs font-bold", statusCfg.className)}
-                        >
-                          {statusCfg.label}
-                        </Badge>
+              <Card key={course.id} className="overflow-hidden px-0 py-4">
+                <CardContent className="flex flex-col sm:flex-row gap-4 px-4">
+                  {/* Left Side: Thumbnail - Fixed aspect/size on desktop */}
+                  <div className="w-full sm:w-64 shrink-0 rounded-md overflow-hidden">
+                    {course.thumbnail ? (
+                      <img
+                        src={course.thumbnail}
+                        alt={course.title}
+                        className="w-full h-full aspect-video sm:aspect-square object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full aspect-video sm:aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                        <IconBook
+                          size={32}
+                          className="text-muted-foreground/40"
+                        />
                       </div>
-                      {course.shortDescription && (
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                          {course.shortDescription}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Meta */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1">
-                      <IconUser size={12} />
-                      {course.instructor.firstName} {course.instructor.lastName}
-                      <span className="text-muted-foreground/60">
-                        ({course.instructor.email})
-                      </span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <IconBook size={12} />
-                      {course._count.chapters} chapter{course._count.chapters !== 1 ? "s" : ""}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <IconClock size={12} />
-                      {formatDuration(course.duration)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <IconChartBar size={12} />
-                      {LEVEL_LABELS[course.level] ?? course.level}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <IconCurrencyDollar size={12} />
-                      {course.pricingType === "FREE"
-                        ? "Free"
-                        : course.pricingType === "PAID"
-                        ? `$${course.price}`
-                        : "Subscription"}
-                    </span>
-                    {course.category && (
-                      <span className="font-medium text-foreground">
-                        {course.category.name}
-                      </span>
                     )}
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Link
-                      href={`/a/courses/${course.id}`}
-                      className="inline-flex items-center gap-1.5 h-8 px-4 rounded-xl text-xs font-bold border border-gray-200 dark:border-gray-700 text-muted-foreground hover:text-foreground hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
-                    >
-                      <IconExternalLink size={13} />
-                      View Details
-                    </Link>
-                  </div>
+                  {/* Right Side: Content */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Link
+                              href={`/a/courses/${course.id}`}
+                              className="font-bold hover:underline hover:text-primary text-lg"
+                            >
+                              {course.title}
+                            </Link>
+                            <Badge
+                              variant="outline"
+                              className={cn(statusCfg.className)}
+                            >
+                              {statusCfg.label}
+                            </Badge>
+                          </div>
+                          {course.shortDescription && (
+                            <p className="text-sm text-muted-foreground line-clamp-1">
+                              {course.shortDescription}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
-                  {course.status === "UNDER_REVIEW" && (
-                    <div className="flex gap-2 mt-2">
+                      {/* Meta Grid - Organized Info */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 mb-4">
+                        <MetaItem
+                          icon={<IconUser size={14} />}
+                          label={`${course.instructor.firstName} ${course.instructor.lastName}`}
+                        />
+                        <MetaItem
+                          icon={<IconBook size={14} />}
+                          label={`${course._count.chapters} Chapters`}
+                        />
+                        <MetaItem
+                          icon={<IconClock size={14} />}
+                          label={formatDuration(course.duration)}
+                        />
+                        <MetaItem
+                          icon={<IconChartBar size={14} />}
+                          label={LEVEL_LABELS[course.level] ?? course.level}
+                        />
+                        <MetaItem
+                          icon={<NairaIcon />}
+                          label={
+                            course.pricingType === "FREE"
+                              ? "Free"
+                              : course.pricingType === "PAID"
+                                ? `${formatMoneyInput(course.price!)}`
+                                : "Subscription"
+                          }
+                        />
+                        {course.category && (
+                          <MetaItem
+                            icon={<IconBuilding size="14" />}
+                            label={course.category.name}
+                          />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Bottom Actions */}
+                    <div className="flex items-center justify-between gap-2 pt-4 border-t border-gray-50 dark:border-gray-800">
+                      <div className="flex items-center gap-2">
+                        {course.status === "UNDER_REVIEW" && (
+                          <>
+                            <Button
+                              size="sm"
+                              disabled={isMutating}
+                              onClick={() =>
+                                setConfirmAction({
+                                  courseId: course.id,
+                                  type: "approve",
+                                  courseTitle: course.title,
+                                })
+                              }
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
+                              <IconCheck size={14} />
+                              Approve
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={isMutating}
+                              onClick={() =>
+                                setConfirmAction({
+                                  courseId: course.id,
+                                  type: "reject",
+                                  courseTitle: course.title,
+                                })
+                              }
+                              className="text-destructive border-destructive/20 hover:bg-destructive/5"
+                            >
+                              <IconX size={14} />
+                              Reject
+                            </Button>
+                          </>
+                        )}
+
+                        {course.status === "PUBLISHED" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={isMutating}
+                            onClick={() =>
+                              setConfirmAction({
+                                courseId: course.id,
+                                type: "reject",
+                                courseTitle: course.title,
+                              })
+                            }
+                            className="text-destructive border-destructive/20 hover:bg-destructive/5"
+                          >
+                            <IconX size={14} />
+                            Unpublish
+                          </Button>
+                        )}
+                      </div>
+
                       <Button
+                        variant="ghost"
                         size="sm"
-                        disabled={isMutating}
-                        onClick={() =>
-                          setConfirmAction({
-                            courseId: course.id,
-                            type: "approve",
-                            courseTitle: course.title,
-                          })
-                        }
-                        className="h-8 px-4 rounded-xl font-bold bg-green-600 hover:bg-green-700 text-white gap-1.5"
+                        asChild
+                        className="text-muted-foreground"
                       >
-                        <IconCheck size={14} />
-                        Approve & Publish
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        disabled={isMutating}
-                        onClick={() =>
-                          setConfirmAction({
-                            courseId: course.id,
-                            type: "reject",
-                            courseTitle: course.title,
-                          })
-                        }
-                        className="h-8 px-4 rounded-xl font-bold text-destructive border-destructive/30 hover:bg-destructive/5 gap-1.5"
-                      >
-                        <IconX size={14} />
-                        Reject
+                        <Link href={`/a/courses/${course.id}`}>Details</Link>
                       </Button>
                     </div>
-                  )}
-
-                  {course.status === "PUBLISHED" && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={isMutating}
-                      onClick={() =>
-                        setConfirmAction({
-                          courseId: course.id,
-                          type: "reject",
-                          courseTitle: course.title,
-                        })
-                      }
-                      className="h-8 px-4 rounded-xl font-bold text-destructive border-destructive/30 hover:bg-destructive/5 gap-1.5"
-                    >
-                      <IconX size={14} />
-                      Unpublish
-                    </Button>
-                  )}
-                </div>
-              </div>
+                  </div>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
@@ -412,14 +420,25 @@ export default function AdminCoursesPage() {
               className={cn(
                 confirmAction?.type === "approve"
                   ? "bg-green-600 hover:bg-green-700"
-                  : "bg-destructive hover:bg-destructive/90"
+                  : "bg-destructive hover:bg-destructive/90",
               )}
             >
-              {confirmAction?.type === "approve" ? "Approve & Publish" : "Reject"}
+              {confirmAction?.type === "approve"
+                ? "Approve & Publish"
+                : "Reject"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  );
+}
+
+function MetaItem({ icon, label }: any) {
+  return (
+    <div className="flex items-center text-muted-foreground gap-1 text-sm min-w-0">
+      <span className="shrink-0 text-muted-foreground/70">{icon}</span>
+      <span className="truncate">{label}</span>
     </div>
   );
 }

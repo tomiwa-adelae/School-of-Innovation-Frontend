@@ -37,7 +37,13 @@ interface Lesson {
   duration: number;
   isFree: boolean;
   isDownloadable: boolean;
-  resources?: { id: string; name: string; url: string; type: string; size?: number }[];
+  resources?: {
+    id: string;
+    name: string;
+    url: string;
+    type: string;
+    size?: number;
+  }[];
 }
 
 interface LessonEditorProps {
@@ -139,7 +145,10 @@ export function LessonEditor({
             {duration > 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-gray-50 dark:bg-gray-800 rounded-xl px-3 py-2 w-fit">
                 <IconClock size={14} />
-                Duration: <span className="font-semibold text-foreground">{formatDuration(duration)}</span>
+                Duration:{" "}
+                <span className="font-semibold text-foreground">
+                  {formatDuration(duration)}
+                </span>
               </div>
             )}
 
@@ -149,7 +158,9 @@ export function LessonEditor({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">Lesson Title <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>
+                    Lesson Title <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="e.g. What is JavaScript?"
@@ -168,9 +179,11 @@ export function LessonEditor({
               name="shortDescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">
+                  <FormLabel>
                     Short Description{" "}
-                    <span className="text-xs text-muted-foreground font-normal">(SEO)</span>
+                    <span className="text-xs text-muted-foreground font-normal">
+                      (SEO)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <textarea
@@ -212,9 +225,11 @@ export function LessonEditor({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">
+                  <FormLabel>
                     Notes / Transcript{" "}
-                    <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+                    <span className="text-xs text-muted-foreground font-normal">
+                      (optional)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <RichTextEditor field={field} />
@@ -232,7 +247,7 @@ export function LessonEditor({
                 render={({ field }) => (
                   <FormItem className="flex items-center justify-between rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
                     <div>
-                      <FormLabel className="font-bold">Free Preview</FormLabel>
+                      <FormLabel>Free Preview</FormLabel>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Allow non-enrolled students to watch this lesson
                       </p>
@@ -253,7 +268,7 @@ export function LessonEditor({
                 render={({ field }) => (
                   <FormItem className="flex items-center justify-between rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
                     <div>
-                      <FormLabel className="font-bold">Downloadable</FormLabel>
+                      <FormLabel>Downloadable</FormLabel>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Allow enrolled students to download the video
                       </p>

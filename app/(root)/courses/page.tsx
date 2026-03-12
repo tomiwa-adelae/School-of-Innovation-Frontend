@@ -17,7 +17,13 @@ import {
   IconFilter,
   IconX,
 } from "@tabler/icons-react";
-import { cn } from "@/lib/utils";
+import { cn, formatMoneyInput } from "@/lib/utils";
+import { NairaIcon } from "@/components/NairaIcon";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 interface PublicCourse {
   id: string;
@@ -74,7 +80,7 @@ function formatPrice(course: PublicCourse) {
 function CourseCard({ course }: { course: PublicCourse }) {
   return (
     <Link href={`/courses/${course.slug}`}>
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
+      <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
         <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
           {course.thumbnail ? (
             <Image
@@ -101,7 +107,7 @@ function CourseCard({ course }: { course: PublicCourse }) {
           )}
         </div>
         <div className="p-4 flex flex-col flex-1">
-          <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug line-clamp-2 mb-1 group-hover:text-blue-600 transition-colors flex-1">
+          <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug line-clamp-2 mb-1 group-hover:text-primary transition-colors flex-1">
             {course.title}
           </h3>
           {course.shortDescription && (
@@ -128,7 +134,8 @@ function CourseCard({ course }: { course: PublicCourse }) {
           </div>
           <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50 dark:border-gray-800">
             <span className="font-black text-gray-900 dark:text-white text-sm">
-              {formatPrice(course)}
+              <NairaIcon />
+              {formatMoneyInput(course?.price!)}
             </span>
             <span className="text-xs text-muted-foreground font-medium">
               {course.level.replace("_", " ")}
@@ -215,16 +222,12 @@ export default function CoursesPage() {
 
           {/* Search bar */}
           <div className="relative mt-5 max-w-xl">
-            <IconSearch
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
-            />
-            <Input
-              placeholder="Search courses..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-11 rounded-2xl"
-            />
+            <InputGroup>
+              <InputGroupInput placeholder="Search..." />
+              <InputGroupAddon>
+                <IconSearch />
+              </InputGroupAddon>
+            </InputGroup>
             {search && (
               <button
                 onClick={() => setSearch("")}
@@ -240,53 +243,49 @@ export default function CoursesPage() {
       <div className="container py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar filters */}
-          <aside className="lg:w-56 shrink-0">
+          <aside className="lg:w-56 shrink-0 hidden md:block">
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-5 sticky top-4">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-black text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
+                <h2 className="font-semibold text-sm flex items-center gap-1.5">
                   <IconFilter size={15} /> Filters
                 </h2>
                 {hasFilters && (
-                  <button
+                  <Button
+                    size={"sm"}
+                    variant={"secondary"}
                     onClick={clearFilters}
-                    className="text-xs text-blue-600 font-bold hover:underline"
+                    className="hover:underline text-xs"
                   >
                     Clear all
-                  </button>
+                  </Button>
                 )}
               </div>
 
               {/* Category */}
               {categories.length > 0 && (
                 <div className="mb-5">
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
                     Category
                   </p>
                   <div className="space-y-1">
-                    <button
+                    <Button
+                      size={"sm"}
+                      variant={!selectedCategory ? "default" : "secondary"}
                       onClick={() => setSelectedCategory("")}
-                      className={cn(
-                        "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
-                        !selectedCategory
-                          ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
-                      )}
+                      className={"justify-start w-full"}
                     >
                       All Categories
-                    </button>
+                    </Button>
                     {categories.map((cat) => (
-                      <button
+                      <Button
+                        size={"sm"}
+                        variant={selectedCategory ? "default" : "secondary"}
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.slug)}
-                        className={cn(
-                          "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
-                          selectedCategory === cat.slug
-                            ? "bg-blue-600 text-white font-bold"
-                            : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
-                        )}
+                        className={"w-full justify-start text-xs"}
                       >
                         {cat.name}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -294,46 +293,44 @@ export default function CoursesPage() {
 
               {/* Level */}
               <div className="mb-5">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                <p className="text-xs font-medium text-muted-foreground mb-2">
                   Level
                 </p>
                 <div className="space-y-1">
                   {LEVELS.map(({ value, label }) => (
-                    <button
+                    <Button
+                      size={"sm"}
                       key={value}
+                      variant={
+                        selectedLevel === value ? "default" : "secondary"
+                      }
                       onClick={() => setSelectedLevel(value)}
-                      className={cn(
-                        "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
-                        selectedLevel === value
-                          ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
-                      )}
+                      className={"w-full justify-start text-xs"}
                     >
                       {label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
 
               {/* Price */}
               <div>
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                <p className="text-xs font-medium text-muted-foreground mb-2">
                   Price
                 </p>
                 <div className="space-y-1">
                   {PRICING.map(({ value, label }) => (
-                    <button
+                    <Button
+                      size={"sm"}
                       key={value}
                       onClick={() => setSelectedPricing(value)}
-                      className={cn(
-                        "w-full text-left text-sm px-2 py-1.5 rounded-lg transition-colors",
-                        selectedPricing === value
-                          ? "bg-blue-600 text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-gray-50 dark:hover:bg-gray-800",
-                      )}
+                      className={"w-full justify-start text-xs"}
+                      variant={
+                        selectedPricing === value ? "default" : "secondary"
+                      }
                     >
                       {label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>

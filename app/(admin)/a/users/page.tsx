@@ -5,9 +5,27 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { IconUsers, IconSearch, IconLoader2 } from "@tabler/icons-react";
+import { PageHeader } from "@/components/PageHeader";
+import { Button } from "@/components/ui/button";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Loader } from "@/components/Loader";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface User {
   id: string;
@@ -44,8 +62,7 @@ export default function AdminUsersPage() {
   const { data: users = [], isLoading } = useQuery<User[]>({
     queryKey: ["admin-users", roleFilter],
     queryFn: () => {
-      const url =
-        roleFilter === "ALL" ? "/users" : `/users?role=${roleFilter}`;
+      const url = roleFilter === "ALL" ? "/users" : `/users?role=${roleFilter}`;
       return fetchData<User[]>(url);
     },
     enabled: user?.role === "ADMINISTRATOR",
@@ -68,25 +85,26 @@ export default function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-gray-900 dark:text-white">All Users</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Manage every account on the School of Innovation platform.
-        </p>
-      </div>
+      <PageHeader
+        back
+        title="All Users"
+        description={`Manager every account on the School of Innovation Platform`}
+      />
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+        <div className="flex items-center justify-center gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-md">
           {roleTabs.map((r) => (
-            <button
+            <Button
+              variant={"secondary"}
+              size={"sm"}
               key={r}
               onClick={() => setRoleFilter(r)}
               className={cn(
-                "px-4 py-1.5 rounded-lg text-xs font-bold transition-all",
+                "flex-1",
                 roleFilter === r
                   ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                  : "text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300"
+                  : "text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300",
               )}
             >
               {r === "ALL"
@@ -96,108 +114,155 @@ export default function AdminUsersPage() {
                   : r === "INSTRUCTOR"
                     ? "Instructors"
                     : "Admins"}
-            </button>
+            </Button>
           ))}
         </div>
 
         <div className="relative flex-1">
-          <IconSearch
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            size={16}
-          />
-          <input
-            type="text"
-            placeholder="Search by name, email or username…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-input bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
+          <InputGroup>
+            <InputGroupInput placeholder="Search..." />
+            <InputGroupAddon>
+              <IconSearch />
+            </InputGroupAddon>
+          </InputGroup>
         </div>
       </div>
 
       {/* Table */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <IconLoader2 size={24} className="animate-spin text-muted-foreground" />
+          <Loader />
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
-          <IconUsers size={40} className="text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-          <p className="font-bold text-gray-900 dark:text-white">No users found</p>
+          <IconUsers
+            size={40}
+            className="text-gray-300 dark:text-gray-600 mx-auto mb-4"
+          />
+          <p className="font-bold">No users found</p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-          <div className="hidden sm:grid grid-cols-[1fr_1.5fr_1fr_1fr] gap-4 px-6 py-3 border-b border-gray-50 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">User</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Email</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Role</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Joined</p>
-          </div>
-
-          <div className="divide-y divide-gray-50 dark:divide-gray-800">
+        <>
+          <Card className="p-0 hidden sm:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead className="text-right">Joined</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9 rounded-lg">
+                          <AvatarFallback className="bg-gradient-to-br from-blue-700 to-primary text-white text-xs font-black">
+                            {u.firstName[0]}
+                            {u.lastName[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="truncate">
+                            {u.firstName} {u.lastName}
+                          </span>
+                          <span className="text-xs">@{u.username}</span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{u.email}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant="outline"
+                          className={cn(roleBadge[u.role])}
+                        >
+                          {u.role === "USER"
+                            ? "Student"
+                            : u.role === "INSTRUCTOR"
+                              ? "Instructor"
+                              : "Admin"}
+                        </Badge>
+                        {u.role === "INSTRUCTOR" && u.instructorStatus && (
+                          <Badge
+                            className={cn(
+                              "text-[10px] border-none",
+                              u.instructorStatus === "PENDING"
+                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40"
+                                : u.instructorStatus === "APPROVED"
+                                  ? "bg-green-100 text-green-700 dark:bg-green-950/40"
+                                  : "bg-red-100 text-red-700 dark:bg-red-950/40",
+                            )}
+                          >
+                            {u.instructorStatus}
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right text-xs">
+                      {formatDate(u.createdAt)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Card>
+          <div className="grid grid-cols-1 gap-2 sm:hidden">
             {filtered.map((u) => (
-              <div
-                key={u.id}
-                className="grid grid-cols-1 sm:grid-cols-[1fr_1.5fr_1fr_1fr] gap-4 px-6 py-4 items-center"
-              >
-                {/* Avatar + name */}
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-black text-xs shrink-0">
-                    {u.firstName[0]}{u.lastName[0]}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-sm text-gray-900 dark:text-white truncate">
-                      {u.firstName} {u.lastName}
+              <Card key={u.id} className="overflow-hidden p-0">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10 rounded-lg">
+                        <AvatarFallback className="bg-primary text-white font-black">
+                          {u.firstName[0]}
+                          {u.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-bold text-sm">
+                          {u.firstName} {u.lastName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          @{u.username}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground uppercase font-medium">
+                      {formatDate(u.createdAt)}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate">@{u.username}</p>
                   </div>
-                </div>
 
-                {/* Email */}
-                <p className="text-sm text-muted-foreground truncate">{u.email}</p>
-
-                {/* Role */}
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border",
-                      roleBadge[u.role] ?? roleBadge["USER"]
-                    )}
-                  >
-                    {u.role === "USER"
-                      ? "Student"
-                      : u.role === "INSTRUCTOR"
-                        ? "Instructor"
-                        : "Admin"}
-                  </span>
-                  {u.role === "INSTRUCTOR" && u.instructorStatus && (
-                    <span
-                      className={cn(
-                        "text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full",
-                        u.instructorStatus === "PENDING"
-                          ? "bg-amber-100 dark:bg-amber-950/40 text-amber-600"
-                          : u.instructorStatus === "APPROVED"
-                            ? "bg-green-100 dark:bg-green-950/40 text-green-600"
-                            : "bg-red-100 dark:bg-red-950/40 text-red-600"
-                      )}
-                    >
-                      {u.instructorStatus.toLowerCase()}
-                    </span>
-                  )}
-                </div>
-
-                {/* Joined date */}
-                <p className="text-xs text-muted-foreground">
-                  {new Date(u.createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
-              </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-muted-foreground">
+                        Email
+                      </span>
+                      <span className="text-xs font-medium">{u.email}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-muted-foreground">
+                        Role
+                      </span>
+                      <div className="flex gap-1">
+                        <Badge variant="outline" className="text-[10px]">
+                          {u.role}
+                        </Badge>
+                        {u.instructorStatus && (
+                          <Badge className="text-[10px]">
+                            {u.instructorStatus}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );

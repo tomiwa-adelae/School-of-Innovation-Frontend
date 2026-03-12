@@ -14,6 +14,7 @@ import {
   IconArrowRight,
   IconBook,
 } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -47,7 +48,7 @@ export default function CertificatesPage() {
         responseType: "blob",
       });
       const url = URL.createObjectURL(
-        new Blob([res.data], { type: "application/pdf" })
+        new Blob([res.data], { type: "application/pdf" }),
       );
       const a = document.createElement("a");
       a.href = url;
@@ -75,19 +76,14 @@ export default function CertificatesPage() {
         <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <IconFileCertificate size={28} className="text-blue-500" />
         </div>
-        <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
-          No certificates yet
-        </h2>
+        <h2 className="text-2xl font-bold mb-2">No certificates yet</h2>
         <p className="text-muted-foreground text-sm mb-6 max-w-sm mx-auto">
           Complete all lessons in a course to earn your certificate of
           completion.
         </p>
-        <Link
-          href="/courses"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-colors"
-        >
-          Browse Courses <IconArrowRight size={16} />
-        </Link>
+        <Button asChild>
+          <Link href="/courses">Browse Courses</Link>
+        </Button>
       </div>
     );
   }
@@ -96,9 +92,7 @@ export default function CertificatesPage() {
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black text-gray-900 dark:text-white">
-          My Certificates
-        </h1>
+        <h1 className="text-3xl font-black">My Certificates</h1>
         <p className="text-muted-foreground mt-1">
           {certificates.length} certificate
           {certificates.length !== 1 ? "s" : ""} earned
@@ -132,7 +126,7 @@ export default function CertificatesPage() {
 
             {/* Info */}
             <div className="p-5 flex flex-col flex-1">
-              <h3 className="font-black text-gray-900 dark:text-white line-clamp-2 mb-1">
+              <h3 className="font-black line-clamp-2 mb-1">
                 {cert.course.title}
               </h3>
               <p className="text-xs text-muted-foreground mb-1">

@@ -19,6 +19,22 @@ import {
   IconSearch,
   IconMailForward,
 } from "@tabler/icons-react";
+import { PageHeader } from "@/components/PageHeader";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Instructor {
   id: string;
@@ -33,10 +49,7 @@ interface Instructor {
 
 type Filter = "ALL" | "PENDING" | "APPROVED" | "REJECTED";
 
-const statusBadge: Record<
-  string,
-  { label: string; className: string }
-> = {
+const statusBadge: Record<string, { label: string; className: string }> = {
   PENDING: {
     label: "Pending",
     className:
@@ -116,61 +129,63 @@ export default function AdminInstructorsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-black text-gray-900 dark:text-white">
-          Instructor Approvals
-        </h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Review and manage instructor applications from the community.
-        </p>
-      </div>
+      <PageHeader
+        back
+        title={"Instructor Approvals"}
+        description={
+          "Review and manage instructor applications from the community."
+        }
+      />
 
       {/* Filters + Search */}
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Filter tabs */}
-        <div className="flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+        <div className="flex items-center  gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-md">
           {filterTabs.map((f) => (
-            <button
+            <Button
+              variant={"secondary"}
+              size={"sm"}
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                "px-4 py-1.5 rounded-lg text-xs font-bold transition-all capitalize",
                 filter === f
                   ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                  : "text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300"
+                  : "text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300",
               )}
             >
               {f === "ALL" ? "All" : f.charAt(0) + f.slice(1).toLowerCase()}
-            </button>
+            </Button>
           ))}
         </div>
 
         {/* Search */}
         <div className="relative flex-1">
-          <IconSearch
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            size={16}
-          />
-          <input
-            type="text"
-            placeholder="Search by name or email…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-input bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
+          <InputGroup>
+            <InputGroupInput placeholder="Search by name or email..." />
+            <InputGroupAddon>
+              <IconSearch />
+            </InputGroupAddon>
+          </InputGroup>
         </div>
       </div>
 
       {/* Table */}
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <IconLoader2 size={24} className="animate-spin text-muted-foreground" />
+          <IconLoader2
+            size={24}
+            className="animate-spin text-muted-foreground"
+          />
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
-          <IconUserCheck size={40} className="text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-          <p className="font-bold text-gray-900 dark:text-white">No instructors found</p>
+          <IconUserCheck
+            size={40}
+            className="text-gray-300 dark:text-gray-600 mx-auto mb-4"
+          />
+          <p className="font-bold text-gray-900 dark:text-white">
+            No instructors found
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
             {filter === "PENDING"
               ? "No pending applications right now."
@@ -178,147 +193,245 @@ export default function AdminInstructorsPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-          {/* Table header */}
-          <div className="hidden sm:grid grid-cols-[1fr_1.5fr_1fr_auto] gap-4 px-6 py-3 border-b border-gray-50 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Name</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Expertise</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Status</p>
-            <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Actions</p>
-          </div>
+        <>
+          <Card className="p-0 hidden sm:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Expertise</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((instructor) => {
+                  const isActing =
+                    approveMutation.isPending || rejectMutation.isPending;
 
-          <div className="divide-y divide-gray-50 dark:divide-gray-800">
-            {filtered.map((instructor) => {
-              const isActing =
-                approveMutation.isPending || rejectMutation.isPending;
+                  return (
+                    <TableRow key={instructor.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-10 w-10 rounded-md">
+                            <AvatarFallback className="bg-gradient-to-br from-purple-500 to-purple-600 text-white font-black text-sm">
+                              {instructor.firstName[0]}
+                              {instructor.lastName[0]}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col min-w-0">
+                            <span className="truncate">
+                              {instructor.firstName} {instructor.lastName}
+                            </span>
+                            <span className="text-xs text-muted-foreground truncate">
+                              {instructor.email}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
 
-              return (
-                <div
-                  key={instructor.id}
-                  className="grid grid-cols-1 sm:grid-cols-[1fr_1.5fr_1fr_auto] gap-4 px-6 py-5 items-center"
-                >
-                  {/* Name + email */}
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">
-                      {instructor.firstName[0]}
-                      {instructor.lastName[0]}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-bold text-sm text-gray-900 dark:text-white truncate">
-                        {instructor.firstName} {instructor.lastName}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {instructor.email}
-                      </p>
-                    </div>
-                  </div>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1.5">
+                          {instructor.interests.length > 0 ? (
+                            <>
+                              {instructor.interests.slice(0, 2).map((s) => (
+                                <Badge
+                                  key={s}
+                                  variant="secondary"
+                                  className="text-[10px] px-2 py-0"
+                                >
+                                  {s}
+                                </Badge>
+                              ))}
+                              {instructor.interests.length > 2 && (
+                                <Badge
+                                  variant="outline"
+                                  className="text-[10px] px-2 py-0"
+                                >
+                                  +{instructor.interests.length - 2}
+                                </Badge>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-xs text-muted-foreground italic">
+                              Not specified
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
 
-                  {/* Expertise */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {instructor.interests.length > 0 ? (
-                      instructor.interests.slice(0, 3).map((s) => (
-                        <Badge key={s} variant="secondary" className="text-xs">
-                          {s}
+                      <TableCell className="px-6">
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "font-medium text-[10px] uppercase tracking-wide",
+                            statusBadge[instructor.instructorStatus]?.className,
+                          )}
+                        >
+                          {statusBadge[instructor.instructorStatus]?.label}
                         </Badge>
-                      ))
-                    ) : (
-                      <span className="text-xs text-muted-foreground italic">
-                        Not specified
-                      </span>
-                    )}
-                    {instructor.interests.length > 3 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{instructor.interests.length - 3}
-                      </Badge>
-                    )}
-                  </div>
+                      </TableCell>
 
-                  {/* Status badge */}
-                  <div>
-                    <span
+                      <TableCell className="px-6 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <ActionButtons
+                            instructor={instructor}
+                            isActing={isActing}
+                            approveMutation={approveMutation}
+                            rejectMutation={rejectMutation}
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Card>
+          <div className="grid grid-cols-1 gap-4 sm:hidden">
+            {filtered.map((instructor) => (
+              <Card key={instructor.id}>
+                <CardContent>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10 rounded-xl">
+                        <AvatarFallback className="bg-gradient-to-br from-purple-500 to-purple-600 text-white font-black text-sm">
+                          {instructor.firstName[0]}
+                          {instructor.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-bold text-sm">
+                          {instructor.firstName} {instructor.lastName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {instructor.email}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge
+                      variant="outline"
                       className={cn(
-                        "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border",
-                        statusBadge[instructor.instructorStatus]?.className
+                        "text-[10px]",
+                        statusBadge[instructor.instructorStatus]?.className,
                       )}
                     >
                       {statusBadge[instructor.instructorStatus]?.label}
-                    </span>
+                    </Badge>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    {instructor.instructorStatus === "PENDING" && (
-                      <>
-                        <Button
-                          size="sm"
-                          onClick={() => approveMutation.mutate(instructor.id)}
-                          disabled={isActing}
-                          className="h-8 gap-1.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold"
-                        >
-                          {approveMutation.isPending ? (
-                            <IconLoader2 size={13} className="animate-spin" />
-                          ) : (
-                            <IconCheck size={13} />
-                          )}
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => rejectMutation.mutate(instructor.id)}
-                          disabled={isActing}
-                          className="h-8 gap-1.5 text-red-600 border-red-200 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl text-xs font-bold"
-                        >
-                          {rejectMutation.isPending ? (
-                            <IconLoader2 size={13} className="animate-spin" />
-                          ) : (
-                            <IconX size={13} />
-                          )}
-                          Reject
-                        </Button>
-                      </>
-                    )}
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground mb-2">
+                        Expertise
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {instructor.interests.map((s) => (
+                          <Badge
+                            key={s}
+                            variant="secondary"
+                            className="text-[10px]"
+                          >
+                            {s}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
 
-                    {instructor.instructorStatus === "APPROVED" && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => rejectMutation.mutate(instructor.id)}
-                        disabled={isActing}
-                        className="h-8 gap-1.5 text-red-600 border-red-200 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl text-xs font-bold"
-                      >
-                        <IconX size={13} /> Revoke
-                      </Button>
-                    )}
-
-                    {instructor.instructorStatus === "REJECTED" && (
-                      <Button
-                        size="sm"
-                        onClick={() => approveMutation.mutate(instructor.id)}
-                        disabled={isActing}
-                        className="h-8 gap-1.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold"
-                      >
-                        <IconCheck size={13} /> Approve
-                      </Button>
-                    )}
-
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      asChild
-                      className="h-8 gap-1 text-muted-foreground rounded-xl text-xs"
-                    >
-                      <a href={`mailto:${instructor.email}`}>
-                        <IconMailForward size={13} />
-                      </a>
-                    </Button>
+                    <div className="flex items-center gap-2 border-t border-gray-50 dark:border-gray-800">
+                      <ActionButtons
+                        instructor={instructor}
+                        isActing={
+                          approveMutation.isPending || rejectMutation.isPending
+                        }
+                        approveMutation={approveMutation}
+                        rejectMutation={rejectMutation}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </div>
+        </>
       )}
     </div>
+  );
+}
+
+function ActionButtons({
+  instructor,
+  isActing,
+  approveMutation,
+  rejectMutation,
+}: any) {
+  return (
+    <>
+      {instructor.instructorStatus === "PENDING" && (
+        <>
+          <Button
+            size="sm"
+            onClick={() => approveMutation.mutate(instructor.id)}
+            disabled={isActing}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            {approveMutation.isPending ? (
+              <IconLoader2 className="animate-spin" />
+            ) : (
+              <IconCheck />
+            )}
+            Approve
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => rejectMutation.mutate(instructor.id)}
+            disabled={isActing}
+            className="text-red-600 border-red-200 hover:bg-red-50"
+          >
+            {rejectMutation.isPending ? (
+              <IconLoader2 className="animate-spin" />
+            ) : (
+              <IconX />
+            )}
+            Reject
+          </Button>
+        </>
+      )}
+
+      {instructor.instructorStatus === "APPROVED" && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => rejectMutation.mutate(instructor.id)}
+          disabled={isActing}
+          className="text-red-600 border-red-200 hover:bg-red-50"
+        >
+          <IconX /> Revoke
+        </Button>
+      )}
+
+      {instructor.instructorStatus === "REJECTED" && (
+        <Button
+          size="sm"
+          onClick={() => approveMutation.mutate(instructor.id)}
+          disabled={isActing}
+          className="bg-green-600 hover:bg-green-700 text-white"
+        >
+          <IconCheck /> Approve
+        </Button>
+      )}
+
+      <Button
+        size="icon"
+        variant="ghost"
+        asChild
+        className="text-muted-foreground"
+      >
+        <a href={`mailto:${instructor.email}`}>
+          <IconMailForward size={14} />
+        </a>
+      </Button>
+    </>
   );
 }

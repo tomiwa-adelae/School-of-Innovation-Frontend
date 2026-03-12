@@ -13,7 +13,8 @@ export const InstructorSpotlight = () => {
       specialty: "Full-Stack Development",
       credential: "Lead Dev @ Innovation 4.0",
       students: "1,200+",
-      image: "https://via.placeholder.com/400x400",
+      image:
+        "https://innovationconference.com.ng/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdh0rc6p1c%2Fimage%2Fupload%2Fv1744311465%2Finnovation%2Forganizer%2Ftomiwa-adelae_khh1k4.jpg&w=2048&q=75",
       rating: "4.9",
     },
     {
@@ -21,7 +22,8 @@ export const InstructorSpotlight = () => {
       specialty: "Project-Based Learning",
       credential: "Coordinator, School of Innovation",
       students: "850+",
-      image: "https://via.placeholder.com/400x400",
+      image:
+        "https://innovationconference.com.ng/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdh0rc6p1c%2Fimage%2Fupload%2Fv1744311935%2Finnovation%2Forganizer%2FWhatsApp_Image_2025-04-10_at_20.04.42_2d7d0f47_fig9tg.jpg&w=2048&q=75",
       rating: "5.0",
     },
     {
@@ -29,7 +31,8 @@ export const InstructorSpotlight = () => {
       specialty: "Creative Direction & UX",
       credential: "Lead Creative @ Cornerstone",
       students: "2,100+",
-      image: "https://via.placeholder.com/400x400",
+      image:
+        "https://innovationconference.com.ng/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdh0rc6p1c%2Fimage%2Fupload%2Fv1744738802%2Finnovation%2Forganizer%2FDSC_0531_xwdjsb.jpg&w=2048&q=75",
       rating: "4.8",
     },
   ];
@@ -38,11 +41,11 @@ export const InstructorSpotlight = () => {
     <section className="py-16 md:py-24 bg-white">
       <div className="container">
         {/* Header */}
-        <div className="max-w-3xl mb-16">
-          <h2 className="text-blue-600 font-bold tracking-widest uppercase text-sm mb-4">
+        <div className="max-w-3xl mb-10">
+          <h2 className="text-primary font-semibold uppercase text-sm mb-2">
             World-Class Mentorship
           </h2>
-          <h3 className="text-4xl font-black text-gray-900 mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
             Learn from those who{" "}
             <span className="text-gray-400">actually build.</span>
           </h3>
@@ -58,7 +61,7 @@ export const InstructorSpotlight = () => {
           {instructors.map((mentor, index) => (
             <div
               key={index}
-              className="group relative bg-gray-50 rounded-[2.5rem] p-8 hover:bg-blue-600 transition-all duration-500 overflow-hidden"
+              className="group relative bg-gray-50 rounded-md p-8 hover:bg-primary transition-all duration-500 overflow-hidden"
             >
               {/* Background Glow Effect */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl group-hover:bg-white/20 transition-colors" />
@@ -95,7 +98,7 @@ export const InstructorSpotlight = () => {
                       className="text-blue-500 group-hover:text-blue-200"
                     />
                   </div>
-                  <p className="text-blue-600 group-hover:text-blue-100 font-bold text-sm tracking-tight">
+                  <p className="text-primary group-hover:text-blue-100 font-bold text-sm tracking-tight">
                     {mentor.specialty}
                   </p>
                   <p className="text-gray-500 group-hover:text-blue-200 text-xs mt-2 italic">
@@ -124,7 +127,7 @@ export const InstructorSpotlight = () => {
         </div>
 
         {/* Mentorship Note */}
-        <div className="mt-16 bg-blue-50 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-blue-100">
+        <div className="mt-10 bg-blue-50 rounded-md p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-blue-100">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-sm font-black">
               ?

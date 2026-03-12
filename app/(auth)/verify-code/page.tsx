@@ -29,6 +29,15 @@ import {
 } from "@/components/ui/input-otp";
 import { VerifyCodeSchema } from "@/lib/zodSchemas";
 import { postData } from "@/lib/api";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Logo } from "@/components/Logo";
+import { Loader } from "@/components/Loader";
 
 type VerifyCodeInput = {
   email: string;
@@ -86,7 +95,7 @@ const VerifyCodePage = () => {
       await postData("/auth/verify-code", values);
       toast.success("Identity verified!");
       router.push(
-        `/set-new-password?email=${encodeURIComponent(values.email)}&otp=${encodeURIComponent(values.otp)}`
+        `/set-new-password?email=${encodeURIComponent(values.email)}&otp=${encodeURIComponent(values.otp)}`,
       );
     } catch (err: any) {
       const message =
@@ -105,100 +114,99 @@ const VerifyCodePage = () => {
   const { isSubmitting } = form.formState;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center py-10 container">
       <div className="max-w-md w-full">
-        {/* Back link */}
-        <div className="text-center mb-10">
-          <Link
-            href="/forgot-password"
-            className="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-blue-600 transition-colors"
-          >
-            <IconArrowLeft size={18} />
-            Back to Forgot Password
-          </Link>
+        <div className="flex items-center justify-center">
+          <Logo />
         </div>
 
         {/* Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] p-10 md:p-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-gray-100 dark:border-gray-800 text-center">
-          <div className="w-20 h-20 bg-blue-50 dark:bg-blue-950 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8">
-            <IconShieldLock size={40} />
-          </div>
-
-          <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4">
-            Verify Identity
-          </h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-10 leading-relaxed">
-            We&apos;ve sent a 6-digit code to{" "}
-            <span className="text-gray-900 dark:text-white font-bold">{maskEmail(email)}</span>.
-            Enter it below to reset your password.
-          </p>
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="otp"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
-                    <FormControl>
-                      <InputOTP
-                        maxLength={6}
-                        value={field.value}
-                        onChange={field.onChange}
-                      >
-                        <InputOTPGroup className="gap-3">
-                          {[0, 1, 2, 3, 4, 5].map((i) => (
-                            <InputOTPSlot
-                              key={i}
-                              index={i}
-                              className="w-12 h-14 md:w-14 md:h-16 text-xl font-black rounded-2xl border-2 first:rounded-2xl last:rounded-2xl first:border-l-2"
-                            />
-                          ))}
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full h-12 bg-gray-900 hover:bg-blue-600 dark:bg-white dark:text-gray-900 dark:hover:bg-blue-600 dark:hover:text-white text-white rounded-2xl font-black text-base shadow-xl transition-all gap-2"
+        <Card className="mt-10">
+          <CardHeader className="text-center border-b">
+            <CardTitle>Verify Identity</CardTitle>
+            <CardDescription>
+              We&apos;ve sent a 6-digit code to{" "}
+              <span className="text-gray-900 dark:text-white font-bold">
+                {maskEmail(email)}
+              </span>
+              . Enter it below to reset your password.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
               >
-                {isSubmitting ? (
-                  <IconLoader2 size={20} className="animate-spin" />
+                <FormField
+                  control={form.control}
+                  name="otp"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col items-center">
+                      <FormControl>
+                        <InputOTP
+                          maxLength={6}
+                          value={field.value}
+                          onChange={field.onChange}
+                        >
+                          <InputOTPGroup className="gap-3">
+                            {[0, 1, 2, 3, 4, 5].map((i) => (
+                              <InputOTPSlot
+                                key={i}
+                                index={i}
+                                className="w-12 h-14 md:w-14 md:h-16 text-xl rounded-2xl border-2 first:rounded-2xl last:rounded-2xl first:border-l-2"
+                              />
+                            ))}
+                          </InputOTPGroup>
+                        </InputOTP>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {isSubmitting ? (
+                    <Loader text="Verifying..." />
+                  ) : (
+                    "Verify & Proceed"
+                  )}
+                </Button>
+              </form>
+            </Form>
+
+            {/* Resend */}
+            <div className="mt-6 pt-8 border-t border-gray-100 flex items-center justify-start gap-1 dark:border-gray-800">
+              <p className="text-gray-400 text-sm">Didn&apos;t get the code?</p>
+              <Button
+                variant="link"
+                type="button"
+                onClick={handleResend}
+                disabled={!canResend || isResending}
+              >
+                {isResending ? (
+                  <Loader text="Resending..." />
                 ) : (
-                  "Verify & Proceed"
+                  <>
+                    <IconRefresh />{" "}
+                    {canResend
+                      ? "Resend Code"
+                      : `Resend Code (${formatTime(countdown)})`}
+                  </>
                 )}
               </Button>
-            </form>
-          </Form>
-
-          {/* Resend */}
-          <div className="mt-10 pt-8 border-t border-gray-100 dark:border-gray-800">
-            <p className="text-gray-400 text-sm mb-4">Didn&apos;t get the code?</p>
-            <button
-              type="button"
-              onClick={handleResend}
-              disabled={!canResend || isResending}
-              className="flex items-center gap-2 mx-auto font-black transition-colors disabled:text-gray-300 dark:disabled:text-gray-600 text-blue-600 hover:text-blue-700 disabled:cursor-not-allowed"
-            >
-              {isResending ? (
-                <IconLoader2 size={18} className="animate-spin" />
-              ) : (
-                <IconRefresh size={18} />
-              )}
-              {canResend ? "Resend Code" : `Resend Code (${formatTime(countdown)})`}
-            </button>
-          </div>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Footer */}
-        <div className="mt-8 flex items-center justify-center gap-2 text-gray-400">
-          <IconDeviceMobileCheck size={20} />
-          <span className="text-xs font-bold uppercase tracking-widest">
+        <div className="mt-8 flex items-center justify-center gap-2 text-muted-foreground">
+          <IconDeviceMobileCheck size={16} />
+          <span className="text-xs font-medium">
             Secure Verification by Innovation 4.0
           </span>
         </div>

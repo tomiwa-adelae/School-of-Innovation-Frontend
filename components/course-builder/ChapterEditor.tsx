@@ -97,7 +97,9 @@ export function ChapterEditor({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">Chapter Title <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>
+                    Chapter Title <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="e.g. Introduction to JavaScript"
@@ -115,9 +117,11 @@ export function ChapterEditor({
               name="shortDescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">
+                  <FormLabel>
                     Short Description{" "}
-                    <span className="text-xs text-muted-foreground font-normal">(SEO)</span>
+                    <span className="text-xs text-muted-foreground font-normal">
+                      (SEO)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <textarea
@@ -138,9 +142,11 @@ export function ChapterEditor({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold">
+                  <FormLabel>
                     Chapter Overview{" "}
-                    <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+                    <span className="text-xs text-muted-foreground font-normal">
+                      (optional)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <RichTextEditor field={field} />
@@ -156,7 +162,7 @@ export function ChapterEditor({
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
                   <div>
-                    <FormLabel className="font-bold">Free Preview</FormLabel>
+                    <FormLabel>Free Preview</FormLabel>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       Allow non-enrolled students to preview this chapter
                     </p>

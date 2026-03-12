@@ -15,10 +15,10 @@ export const JoinEcosystem = () => {
 
       <div className="container relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-4">
+          <h2 className="text-blue-500 font-semibold uppercase text-sm mb-4">
             The Next Chapter
           </h2>
-          <h3 className="text-4xl md:text-5xl font-black text-white mb-6">
+          <h3 className="text-3xl md:text-5xl font-bold text-white mb-6">
             Ready to shape the <br />{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
               future of Africa?
@@ -31,9 +31,9 @@ export const JoinEcosystem = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-4">
           {/* Option 1: Partner */}
-          <div className="bg-white/5 border border-white/10 p-10 rounded-[2.5rem] hover:bg-white/10 transition-all group">
+          <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
             <div className="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Handshake size={32} />
             </div>
@@ -50,7 +50,7 @@ export const JoinEcosystem = () => {
           </div>
 
           {/* Option 2: Volunteer */}
-          <div className="bg-white/5 border border-white/10 p-10 rounded-[2.5rem] hover:bg-white/10 transition-all group">
+          <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
             <div className="w-16 h-16 bg-orange-600/20 text-orange-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <IconHeartHandshake size={32} />
             </div>
@@ -67,7 +67,7 @@ export const JoinEcosystem = () => {
           </div>
 
           {/* Option 3: Student */}
-          <div className="bg-white/5 border border-white/10 p-10 rounded-[2.5rem] hover:bg-white/10 transition-all group">
+          <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
             <div className="w-16 h-16 bg-green-600/20 text-green-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <IconSchool size={32} />
             </div>
@@ -85,7 +85,7 @@ export const JoinEcosystem = () => {
         </div>
 
         {/* Foundation Credit */}
-        <div className="mt-20 pt-10 border-t border-white/5 text-center">
+        <div className="mt-10 pt-10 border-t border-white/5 text-center">
           <p className="text-gray-500 text-sm max-w-xl mx-auto italic">
             "We are committed to equipping young Africans with the mindset,
             mentorship, and resources needed to build sustainable, high-impact
