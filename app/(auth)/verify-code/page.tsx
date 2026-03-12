@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -46,7 +46,7 @@ type VerifyCodeInput = {
 
 const RESEND_SECONDS = 60;
 
-const VerifyCodePage = () => {
+const VerifyCodeContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "";
@@ -214,5 +214,11 @@ const VerifyCodePage = () => {
     </div>
   );
 };
+
+const VerifyCodePage = () => (
+  <Suspense>
+    <VerifyCodeContent />
+  </Suspense>
+);
 
 export default VerifyCodePage;

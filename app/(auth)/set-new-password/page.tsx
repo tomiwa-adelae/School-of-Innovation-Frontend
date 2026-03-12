@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -57,7 +57,7 @@ const requirements = [
   },
 ];
 
-const SetNewPasswordPage = () => {
+const SetNewPasswordContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "";
@@ -347,5 +347,11 @@ const SetNewPasswordPage = () => {
     </div>
   );
 };
+
+const SetNewPasswordPage = () => (
+  <Suspense>
+    <SetNewPasswordContent />
+  </Suspense>
+);
 
 export default SetNewPasswordPage;
