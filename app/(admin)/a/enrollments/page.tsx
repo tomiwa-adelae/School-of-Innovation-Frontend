@@ -622,7 +622,7 @@ export default function AdminEnrollmentsPage() {
                         </p>
                         <p className="text-xs font-black">
                           <NairaIcon />
-                          {formatMoneyInput(enrollment.amountPaid)}
+                          {formatMoneyInput(enrollment.amountPaid!)}
                         </p>
                       </div>
                     </div>
