@@ -139,15 +139,15 @@ function StudentDashboard({ firstName }: { firstName: string }) {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="flex items-center justify-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-center py-16 bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800">
               <IconLoader2
                 size={24}
                 className="animate-spin text-muted-foreground"
               />
             </div>
           ) : enrollments.length === 0 ? (
-            <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-10 text-center">
-              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 p-10 text-center">
+              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-md flex items-center justify-center mx-auto mb-4">
                 <IconBook size={28} className="text-blue-500" />
               </div>
               <h3 className="font-bold text-lg mb-2">No courses yet</h3>
@@ -163,7 +163,7 @@ function StudentDashboard({ firstName }: { firstName: string }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {enrollments.map(({ id, course }) => (
                 <Link key={id} href={`/learn/${course.id}`}>
-                  <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
+                  <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 transition-all h-full flex flex-col">
                     <div className="relative bg-gray-100 dark:bg-gray-800 overflow-hidden">
                       {course.thumbnail ? (
                         <Image

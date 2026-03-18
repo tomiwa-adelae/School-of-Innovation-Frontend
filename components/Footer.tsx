@@ -29,19 +29,19 @@ export const Footer = () => {
             <div className="flex gap-4">
               <a
                 href="#"
-                className="p-2 bg-white/5 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
+                className="p-2 bg-white/5 rounded-md hover:bg-blue-600 hover:text-white transition-all"
               >
                 <IconBrandLinkedin size={20} />
               </a>
               <a
                 href="#"
-                className="p-2 bg-white/5 rounded-lg hover:bg-blue-400 hover:text-white transition-all"
+                className="p-2 bg-white/5 rounded-md hover:bg-blue-400 hover:text-white transition-all"
               >
                 <IconBrandTwitter size={20} />
               </a>
               <a
                 href="#"
-                className="p-2 bg-white/5 rounded-lg hover:bg-pink-600 hover:text-white transition-all"
+                className="p-2 bg-white/5 rounded-md hover:bg-pink-600 hover:text-white transition-all"
               >
                 <IconBrandInstagram size={20} />
               </a>

@@ -115,7 +115,7 @@ export function SectionCards() {
     {
       label: "Ecosystem Discovery",
       value: "12,482",
-      description: "Views from NuvyLux Feed",
+      description: "Views from School of Innovation Feed",
       trend: "+12.5%",
       trendUp: true,
     },

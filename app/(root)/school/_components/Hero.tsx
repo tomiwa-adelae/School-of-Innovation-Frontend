@@ -6,6 +6,8 @@ import {
   IconUsers,
   IconCircleCheck,
 } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -17,32 +19,32 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Side: The Hook */}
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-700 text-sm font-bold mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-700 text-xs font-semibold mb-6">
               <IconRocket size={18} />
               <span>AFRICA'S PREMIER TECH ACADEMY</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-[1.05] mb-8">
-              Don't just watch the future. <br />
+            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+              Don't just watch the future. <br className="hidden lg:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">
                 Build it.
               </span>
             </h1>
 
-            <p className="text-xl text-gray-600 leading-relaxed mb-10 max-w-xl">
+            <p className="text-lg text-gray-600 leading-relaxed mb-6 max-w-xl">
               The School of Innovation is a project-based learning ecosystem
               designed to turn curiosity into high-income tech skills. Master
               coding, design, and hardware with industry experts.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2">
-                Explore All Courses
-              </button>
-              <button className="bg-white text-gray-900 border-2 border-gray-100 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-10">
+              <Button asChild>
+                <Link href="/courses">Explore All Courses</Link>
+              </Button>
+              <Button variant={"secondary"}>
                 <IconPlayerPlay size={20} fill="currentColor" />
                 Watch How it Works
-              </button>
+              </Button>
             </div>
 
             {/* Social Proof */}
@@ -76,23 +78,23 @@ export const Hero = () => {
           {/* Right Side: Featured Course Card Mockup */}
           <div className="relative">
             {/* Main Card */}
-            <div className="bg-white rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
+            <div className="bg-white rounded-md shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
               <div className="relative h-64 bg-gray-200">
                 <img
                   src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80"
                   alt="Web Development"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold text-blue-600">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-md text-xs font-medium text-primary">
                   FEATURED TRACK
                 </div>
               </div>
               <div className="p-8">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-2xl font-bold text-gray-900">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900">
                     Full-Stack Web Dev
                   </h3>
-                  <p className="text-blue-600 font-black text-2xl">
+                  <p className="text-primary font-black text-2xl">
                     ₦0.00{" "}
                     <span className="text-sm text-gray-400 line-through font-normal">
                       ₦50k
@@ -109,20 +111,18 @@ export const Hero = () => {
                     Live Mentorship Sessions
                   </div>
                 </div>
-                <button className="w-full py-4 bg-gray-900 text-white rounded-xl font-bold hover:bg-black transition-colors">
-                  Start Learning Now
-                </button>
+                <Button className="w-full">Start Learning Now</Button>
               </div>
             </div>
 
             {/* Floating Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-50 flex items-center gap-4 animate-bounce-slow">
+            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-md shadow-xl border border-gray-50 flex items-center gap-4 animate-bounce-slow">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
                 <IconUsers size={24} />
               </div>
               <div>
-                <p className="text-2xl font-black text-gray-900">98%</p>
-                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">
+                <p className="text-2xl font-bold text-gray-900">98%</p>
+                <p className="text-xs text-gray-500 font-bold uppercase">
                   Job Placement
                 </p>
               </div>

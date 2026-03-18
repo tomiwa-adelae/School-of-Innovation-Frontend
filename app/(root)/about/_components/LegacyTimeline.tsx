@@ -52,14 +52,14 @@ export const LegacyTimeline = () => {
           {years.map((item, index) => (
             <div
               key={index}
-              className={`relative p-8 rounded-3xl border-2 ${item.color} bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group`}
+              className={`relative p-8 rounded-md border-2 ${item.color} bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group`}
             >
               {/* Year Badge */}
               <div className="flex items-center justify-between mb-6">
                 <span className="text-4xl font-black text-gray-100 group-hover:text-gray-200 transition-colors">
                   {item.year}
                 </span>
-                <div className="p-3 bg-gray-50 rounded-2xl group-hover:scale-110 transition-transform">
+                <div className="p-3 bg-gray-50 rounded-md group-hover:scale-110 transition-transform">
                   {item.icon}
                 </div>
               </div>
@@ -86,7 +86,7 @@ export const LegacyTimeline = () => {
         </div>
 
         {/* The "Future" Placeholder */}
-        <div className="mt-12 p-8 rounded-3xl bg-gray-900 text-center relative overflow-hidden group">
+        <div className="mt-12 p-8 rounded-md bg-gray-900 text-center relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
           <h4 className="relative z-10 text-white font-bold text-xl italic">
             2026: Innovation 5.0 — The Next Chapter is Loading...

@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { IconPaperclip, IconTrash, IconLoader2, IconFile } from "@tabler/icons-react";
+import {
+  IconPaperclip,
+  IconTrash,
+  IconLoader2,
+  IconFile,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { postData } from "@/lib/api";
@@ -89,7 +94,7 @@ export function ResourceUploader({
               key={r.id}
               className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
             >
-              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-950/40 rounded-lg flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-950/40 rounded-md flex items-center justify-center shrink-0">
                 <IconFile size={16} className="text-blue-600" />
               </div>
               <div className="flex-1 min-w-0">

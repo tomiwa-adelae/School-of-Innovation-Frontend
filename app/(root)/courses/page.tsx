@@ -244,7 +244,7 @@ export default function CoursesPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar filters */}
           <aside className="lg:w-56 shrink-0 hidden md:block">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-5 sticky top-4">
+            <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 p-5 sticky top-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-sm flex items-center gap-1.5">
                   <IconFilter size={15} /> Filters
@@ -347,8 +347,8 @@ export default function CoursesPage() {
                 />
               </div>
             ) : courses.length === 0 ? (
-              <div className="text-center py-16 md:py-24 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-16 md:py-24 rounded-md border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center mx-auto mb-4">
                   <IconBook size={28} className="text-muted-foreground" />
                 </div>
                 <p className="font-black text-gray-900 dark:text-white text-lg mb-1">

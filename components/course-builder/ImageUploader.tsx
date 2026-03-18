@@ -45,10 +45,17 @@ export function ImageUploader({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{label}</p>
+      <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
+        {label}
+      </p>
 
       {value ? (
-        <div className={cn("relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800", aspectRatio)}>
+        <div
+          className={cn(
+            "relative rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800",
+            aspectRatio,
+          )}
+        >
           <img
             src={value}
             alt="Uploaded"
@@ -73,16 +80,19 @@ export function ImageUploader({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           disabled={isUploading}
           className={cn(
-            "w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all cursor-pointer",
+            "w-full rounded-md border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all cursor-pointer",
             aspectRatio,
             dragOver
               ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
-              : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/10"
+              : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/10",
           )}
         >
           {isUploading ? (
@@ -92,7 +102,7 @@ export function ImageUploader({
             </div>
           ) : (
             <>
-              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
                 <IconPhoto size={24} className="text-gray-400" />
               </div>
               <div className="text-center">

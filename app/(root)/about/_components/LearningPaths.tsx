@@ -59,7 +59,7 @@ export const LearningPaths = () => {
               <span className="text-gray-400">the World Demands.</span>
             </h3>
           </div>
-          <div className="flex items-center gap-3 px-6 py-3 bg-blue-50 text-primary rounded-2xl font-semibold text-sm border border-blue-100">
+          <div className="flex items-center gap-3 px-6 py-3 bg-blue-50 text-primary rounded-md font-semibold text-sm border border-blue-100">
             <IconAward size={24} />
             <span>Industry-Recognized Certificates</span>
           </div>

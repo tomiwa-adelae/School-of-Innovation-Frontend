@@ -38,7 +38,7 @@ export const CourseFinder = () => {
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-32 -mt-32" />
 
       <div className="container relative z-10">
-        <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl">
+        <div className="bg-white rounded-md p-10 md:p-16 shadow-2xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left side: Text */}
             <div>
@@ -54,7 +54,7 @@ export const CourseFinder = () => {
                 Answer a few questions about your goals, and we'll suggest the
                 curriculum that fits your schedule and ambition.
               </p>
-              <button className="bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600 transition-all flex items-center gap-2">
+              <button className="bg-gray-900 text-white px-8 py-4 rounded-md font-bold hover:bg-blue-600 transition-all flex items-center gap-2">
                 Take the Path Finder Quiz <IconChevronRight size={18} />
               </button>
             </div>
@@ -64,7 +64,7 @@ export const CourseFinder = () => {
               {personas.map((persona, i) => (
                 <div
                   key={i}
-                  className="group flex items-center gap-6 p-6 rounded-2xl border border-gray-100 hover:border-blue-100 hover:bg-blue-50/50 transition-all cursor-pointer"
+                  className="group flex items-center gap-6 p-6 rounded-md border border-gray-100 hover:border-blue-100 hover:bg-blue-50/50 transition-all cursor-pointer"
                 >
                   <div
                     className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 

@@ -70,7 +70,7 @@ export const ClarityHub = () => {
           </div>
 
           {/* Newsletter / Community Capture */}
-          <div className="bg-primary rounded-3xl p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden">
+          <div className="bg-primary rounded-md p-8 md:p-12 text-white flex flex-col justify-center relative overflow-hidden">
             {/* Decorative Icon */}
             <IconMessageCircle
               size={120}
@@ -87,7 +87,7 @@ export const ClarityHub = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full bg-white/10 border border-white/20 rounded-2xl py-4 px-6 text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                className="w-full bg-white/10 border border-white/20 rounded-md py-4 px-6 text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
               />
               <button className="absolute right-2 top-2 bottom-2 bg-white text-blue-600 px-6 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-50 transition">
                 <span className="hidden sm:inline">Subscribe</span>

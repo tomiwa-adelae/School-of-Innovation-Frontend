@@ -178,7 +178,7 @@ export default function AdminInstructorsPage() {
           />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
+        <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800">
           <IconUserCheck
             size={40}
             className="text-gray-300 dark:text-gray-600 mx-auto mb-4"

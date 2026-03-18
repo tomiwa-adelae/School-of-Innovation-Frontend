@@ -62,7 +62,10 @@ export const FeaturedCourses = () => {
     return (
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="container flex items-center justify-center py-20">
-          <IconLoader2 size={28} className="animate-spin text-muted-foreground" />
+          <IconLoader2
+            size={28}
+            className="animate-spin text-muted-foreground"
+          />
         </div>
       </section>
     );
@@ -145,7 +148,7 @@ export const FeaturedCourses = () => {
                       <span className="font-bold text-sm text-gray-900">
                         {formatPrice(course)}
                       </span>
-                      <Button size="sm" className="h-7 text-xs rounded-lg px-3">
+                      <Button size="sm" className="h-7 text-xs rounded-md px-3">
                         Enroll
                       </Button>
                     </div>

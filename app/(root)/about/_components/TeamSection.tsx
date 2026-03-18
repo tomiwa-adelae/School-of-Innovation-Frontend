@@ -82,10 +82,10 @@ export const TeamSection = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent md:opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                   <div className="flex gap-3">
-                    <button className="p-2 bg-white/20 backdrop-blur-md rounded-lg text-white hover:bg-white hover:text-blue-600 transition">
+                    <button className="p-2 bg-white/20 backdrop-blur-md rounded-md text-white hover:bg-white hover:text-blue-600 transition">
                       <IconBrandLinkedin size={20} />
                     </button>
-                    <button className="p-2 bg-white/20 backdrop-blur-md rounded-lg text-white hover:bg-white hover:text-blue-400 transition">
+                    <button className="p-2 bg-white/20 backdrop-blur-md rounded-md text-white hover:bg-white hover:text-blue-400 transition">
                       <IconBrandTwitter size={20} />
                     </button>
                   </div>

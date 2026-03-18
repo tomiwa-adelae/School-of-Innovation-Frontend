@@ -450,13 +450,13 @@
 //                 <Button
 //                   variant="outline"
 //                   onClick={() => setStep(0)}
-//                   className="h-12 px-8 rounded-2xl font-bold gap-2"
+//                   className="h-12 px-8 rounded-md font-bold gap-2"
 //                 >
 //                   <IconArrowLeft size={18} /> Back
 //                 </Button>
 //                 <Button
 //                   onClick={() => setStep(2)}
-//                   className="h-12 px-10 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black gap-2"
+//                   className="h-12 px-10 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-black gap-2"
 //                 >
 //                   Continue <IconArrowRight size={18} />
 //                 </Button>
@@ -469,7 +469,7 @@
 //             <div className="text-center">
 //               <div
 //                 className={cn(
-//                   "w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6",
+//                   "w-20 h-20 rounded-md flex items-center justify-center mx-auto mb-6",
 //                   data.role === "INSTRUCTOR"
 //                     ? "bg-purple-100 dark:bg-purple-950/40 text-purple-600"
 //                     : "bg-blue-100 dark:bg-blue-950/40 text-blue-600",
@@ -494,7 +494,7 @@
 //               </p>
 
 //               {/* Summary card */}
-//               <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 text-left space-y-4 mb-8 shadow-sm">
+//               <div className="bg-white dark:bg-gray-900 rounded-md p-6 border border-gray-100 dark:border-gray-800 text-left space-y-4 mb-8 shadow-sm">
 //                 <div className="flex items-center gap-3">
 //                   <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
 //                     {data.role === "INSTRUCTOR" ? (
@@ -541,7 +541,7 @@
 //               </div>
 
 //               {data.role === "INSTRUCTOR" && (
-//                 <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl p-4 mb-8 text-left">
+//                 <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-md p-4 mb-8 text-left">
 //                   <p className="text-sm text-amber-700 dark:text-amber-400 font-semibold">
 //                     ⏳ What happens next?
 //                   </p>
@@ -558,7 +558,7 @@
 //                   variant="outline"
 //                   onClick={() => setStep(1)}
 //                   disabled={isSubmitting}
-//                   className="h-12 px-8 rounded-2xl font-bold gap-2"
+//                   className="h-12 px-8 rounded-md font-bold gap-2"
 //                 >
 //                   <IconArrowLeft size={18} /> Back
 //                 </Button>
@@ -566,7 +566,7 @@
 //                   onClick={handleFinish}
 //                   disabled={isSubmitting}
 //                   className={cn(
-//                     "h-12 px-10 text-white rounded-2xl font-black gap-2",
+//                     "h-12 px-10 text-white rounded-md font-black gap-2",
 //                     data.role === "INSTRUCTOR"
 //                       ? "bg-purple-600 hover:bg-purple-700"
 //                       : "bg-blue-600 hover:bg-blue-700",

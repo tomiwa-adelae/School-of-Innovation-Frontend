@@ -35,8 +35,8 @@ export const AlumniSuccess = () => {
     <section className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="container">
         {/* Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-4">
+        <div className="text-center mb-10">
+          <h2 className="text-primary font-semibold uppercase text-xs mb-4">
             The Result of Innovation
           </h2>
           <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
@@ -49,11 +49,11 @@ export const AlumniSuccess = () => {
         </div>
 
         {/* Stories Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-2">
           {stories.map((story, index) => (
             <div
               key={index}
-              className="relative p-10 rounded-[3rem] bg-gray-50 border border-gray-100 hover:bg-blue-50 transition-all duration-500 group"
+              className="relative p-10 rounded-md bg-gray-50 border border-gray-100 hover:bg-blue-50 transition-all duration-500 group"
             >
               <IconQuote
                 size={48}
@@ -66,7 +66,7 @@ export const AlumniSuccess = () => {
                 </p>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white shadow-md">
+                  <div className="w-14 h-14 rounded-md overflow-hidden border-2 border-white shadow-md">
                     <img
                       src={story.image}
                       alt={story.name}
@@ -75,7 +75,7 @@ export const AlumniSuccess = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">{story.name}</h4>
-                    <div className="flex items-center gap-1 text-blue-600 text-xs font-bold uppercase tracking-tighter">
+                    <div className="flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-tighter">
                       <IconBriefcase size={14} />
                       {story.outcome}
                     </div>
@@ -83,12 +83,12 @@ export const AlumniSuccess = () => {
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between items-center">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-semibold text-gray-400 uppercase">
                     {story.edition}
                   </span>
                   <a
                     href="#"
-                    className="text-gray-400 hover:text-blue-600 transition-colors"
+                    className="text-gray-400 hover:text-primary transition-colors"
                   >
                     <IconBrandLinkedin size={20} />
                   </a>
@@ -99,36 +99,36 @@ export const AlumniSuccess = () => {
         </div>
 
         {/* Impact Stats */}
-        <div className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 bg-gray-900 rounded-[3rem] text-center px-10">
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 bg-gray-900 rounded-md text-center px-10">
           <div>
-            <p className="text-3xl md:text-5xl font-black text-white mb-2">
+            <p className="text-3xl md:text-4xl font-bold text-white mb-2">
               2k+
             </p>
-            <p className="text-blue-400 text-xs font-bold uppercase tracking-widest">
+            <p className="text-blue-400 text-xs font-semibold uppercase">
               Students Trained
             </p>
           </div>
           <div>
-            <p className="text-3xl md:text-5xl font-black text-white mb-2">
+            <p className="text-3xl md:text-4xl font-bold text-white mb-2">
               85%
             </p>
-            <p className="text-blue-400 text-xs font-bold uppercase tracking-widest">
+            <p className="text-blue-400 text-xs font-semibold uppercase">
               Job Placement
             </p>
           </div>
           <div>
-            <p className="text-3xl md:text-5xl font-black text-white mb-2">
+            <p className="text-3xl md:text-4xl font-bold text-white mb-2">
               500+
             </p>
-            <p className="text-blue-400 text-xs font-bold uppercase tracking-widest">
+            <p className="text-blue-400 text-xs font-semibold uppercase">
               Startups Born
             </p>
           </div>
           <div>
-            <p className="text-3xl md:text-5xl font-black text-white mb-2">
+            <p className="text-3xl md:text-4xl font-bold text-white mb-2">
               ₦0.00
             </p>
-            <p className="text-blue-400 text-xs font-bold uppercase tracking-widest">
+            <p className="text-blue-400 text-xs font-semibold uppercase">
               Free Tracks Available
             </p>
           </div>

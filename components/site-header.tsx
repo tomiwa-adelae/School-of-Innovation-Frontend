@@ -23,7 +23,7 @@ export function SiteHeader() {
       <div className="flex w-full items-center gap-2 px-4 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mx-2 h-4" />
-        <h1 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+        <h1 className="text-sm font-semibold text-muted-foreground uppercase">
           {title}
         </h1>
         <div className="ml-auto flex items-center gap-3">

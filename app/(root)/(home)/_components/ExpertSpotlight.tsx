@@ -60,7 +60,7 @@ export const ExpertSpotlight = () => {
           {experts.map((expert, index) => (
             <div key={index} className="group relative">
               {/* Image Container */}
-              <div className="relative h-[400px] w-full rounded-2xl overflow-hidden mb-6">
+              <div className="relative h-[400px] w-full rounded-md overflow-hidden mb-6">
                 <img
                   src={expert.image}
                   alt={expert.name}

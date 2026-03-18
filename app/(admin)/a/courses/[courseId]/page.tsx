@@ -883,8 +883,8 @@ function LessonPreviewSheet({
                   </video>
                 </div>
               ) : (
-                <div className="rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mb-3">
+                <div className="rounded-md border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center py-12 text-center">
+                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center mb-3">
                     <IconVideo size={22} className="text-muted-foreground" />
                   </div>
                   <p className="font-semibold text-muted-foreground text-sm">
@@ -949,7 +949,7 @@ function LessonPreviewSheet({
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-md bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center shrink-0">
                           <IconFileDownload
                             size={15}
                             className="text-primary"
@@ -1056,7 +1056,7 @@ function ChapterRow({
                   </span>
                   <div
                     className={cn(
-                      "w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors",
+                      "w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-colors",
                       lesson.videoUrl
                         ? "bg-blue-50 dark:bg-blue-950/40 text-primary group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50"
                         : "bg-gray-100 dark:bg-gray-800 text-muted-foreground",
@@ -1553,7 +1553,7 @@ export default function AdminCourseDetailPage() {
                 {course.status === "ARCHIVED" && (
                   <Button
                     variant="outline"
-                    className="w-full h-11 rounded-2xl font-bold gap-2"
+                    className="w-full h-11 rounded-md font-bold gap-2"
                     disabled={isMutating}
                     onClick={() => setConfirmAction("reject")}
                   >

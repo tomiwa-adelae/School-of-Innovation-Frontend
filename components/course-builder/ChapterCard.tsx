@@ -87,7 +87,9 @@ export function ChapterCard({
     transition,
   };
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+  );
 
   function handleLessonDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -119,8 +121,8 @@ export function ChapterCard({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 overflow-hidden",
-        isDragging && "opacity-50 shadow-2xl ring-2 ring-blue-500 z-50"
+        "rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 overflow-hidden",
+        isDragging && "opacity-50 shadow-2xl ring-2 ring-blue-500 z-50",
       )}
     >
       {/* Chapter header */}
@@ -145,7 +147,7 @@ export function ChapterCard({
             size={16}
             className={cn(
               "text-muted-foreground transition-transform shrink-0",
-              expanded ? "rotate-0" : "-rotate-90"
+              expanded ? "rotate-0" : "-rotate-90",
             )}
           />
           <div className="min-w-0">
@@ -153,7 +155,8 @@ export function ChapterCard({
               {chapter.title}
             </p>
             <p className="text-xs text-muted-foreground">
-              {chapter.lessons.length} lesson{chapter.lessons.length !== 1 ? "s" : ""}
+              {chapter.lessons.length} lesson
+              {chapter.lessons.length !== 1 ? "s" : ""}
               {chapter.isFree && (
                 <span className="ml-2 text-green-600 dark:text-green-400 font-semibold inline-flex items-center gap-0.5">
                   <IconEye size={10} /> Free
@@ -215,7 +218,7 @@ export function ChapterCard({
             size="sm"
             onClick={handleAddLesson}
             disabled={mutations.createLesson.isPending}
-            className="w-full gap-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-blue-600 border border-dashed border-gray-200 dark:border-gray-700 mt-1"
+            className="w-full gap-2 rounded-md text-xs font-semibold text-muted-foreground hover:text-blue-600 border border-dashed border-gray-200 dark:border-gray-700 mt-1"
           >
             <IconPlus size={14} />
             Add Lesson

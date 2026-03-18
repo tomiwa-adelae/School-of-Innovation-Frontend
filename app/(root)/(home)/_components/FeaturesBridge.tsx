@@ -24,8 +24,8 @@ export const FeaturesBridge = () => {
 
         <div className="grid md:grid-cols-2 gap-4">
           {/* Path 1: The Event */}
-          <div className="group p-6 md:p-8 rounded-3xl border border-gray-100 bg-gray-50 hover:bg-blue-600 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2">
-            <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-white/20 group-hover:text-white transition-colors">
+          <div className="group p-6 md:p-8 rounded-md border border-gray-100 bg-gray-50 hover:bg-blue-600 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2">
+            <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-md flex items-center justify-center mb-4 group-hover:bg-white/20 group-hover:text-white transition-colors">
               <IconCalendarEvent size={32} />
             </div>
             <h3 className="text-2xl font-bold mb-2 text-black group-hover:text-white">
@@ -57,8 +57,8 @@ export const FeaturesBridge = () => {
           </div>
 
           {/* Path 2: The School (LMS) */}
-          <div className="group p-6 md:p-8 rounded-3xl border border-gray-100 bg-gray-50 hover:bg-orange-500 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2">
-            <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-white/20 group-hover:text-white transition-colors">
+          <div className="group p-6 md:p-8 rounded-md border border-gray-100 bg-gray-50 hover:bg-orange-500 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2">
+            <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-md flex items-center justify-center mb-4 group-hover:bg-white/20 group-hover:text-white transition-colors">
               <IconDeviceLaptop size={32} />
             </div>
             <h3 className="text-2xl font-bold mb-2 text-black group-hover:text-white">

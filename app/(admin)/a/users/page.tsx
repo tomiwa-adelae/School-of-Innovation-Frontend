@@ -134,7 +134,7 @@ export default function AdminUsersPage() {
           <Loader />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
+        <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800">
           <IconUsers
             size={40}
             className="text-gray-300 dark:text-gray-600 mx-auto mb-4"
@@ -158,7 +158,7 @@ export default function AdminUsersPage() {
                   <TableRow key={u.id}>
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9 rounded-lg">
+                        <Avatar className="h-9 w-9 rounded-md">
                           <AvatarFallback className="bg-gradient-to-br from-blue-700 to-primary text-white text-xs font-black">
                             {u.firstName[0]}
                             {u.lastName[0]}
@@ -215,7 +215,7 @@ export default function AdminUsersPage() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 rounded-lg">
+                      <Avatar className="h-10 w-10 rounded-md">
                         <AvatarFallback className="bg-primary text-white font-black">
                           {u.firstName[0]}
                           {u.lastName[0]}

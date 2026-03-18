@@ -41,9 +41,9 @@ export const Hero = () => {
         <img
           src="https://res.cloudinary.com/dh0rc6p1c/image/upload/v1744308706/innovation/DSC_1397-Joe_Photography_zvroub.jpg"
           alt="Collaboration"
-          className="rounded-3xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 border-8 border-white"
+          className="rounded-md shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 border-8 border-white"
         />
-        <div className="bg-white p-6 rounded-2xl shadow-xl -translate-x-12 border border-gray-100">
+        <div className="bg-white p-6 rounded-md shadow-xl -translate-x-12 border border-gray-100">
           <p className="text-gray-900 font-bold">
             "We don't just talk about the future, we build it."
           </p>

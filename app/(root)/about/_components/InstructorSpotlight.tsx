@@ -69,7 +69,7 @@ export const InstructorSpotlight = () => {
               <div className="relative z-10">
                 {/* Image & Stats */}
                 <div className="flex items-start justify-between mb-8">
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white shadow-lg">
+                  <div className="w-24 h-24 rounded-md overflow-hidden border-4 border-white shadow-lg">
                     <img
                       src={mentor.image}
                       alt={mentor.name}

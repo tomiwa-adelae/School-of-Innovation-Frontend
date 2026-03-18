@@ -26,6 +26,7 @@ import { RichTextEditor } from "@/components/text-editor/Editor";
 import { VideoUploader } from "./VideoUploader";
 import { ImageUploader } from "./ImageUploader";
 import { IconLoader2, IconClock } from "@tabler/icons-react";
+import { Textarea } from "../ui/textarea";
 
 interface Lesson {
   id: string;
@@ -110,203 +111,198 @@ export function LessonEditor({
         side="right"
         className="w-full sm:max-w-2xl overflow-y-auto"
       >
-        <SheetHeader className="mb-6">
-          <SheetTitle className="font-black text-xl">Edit Lesson</SheetTitle>
+        <SheetHeader className="mb-6 border-b">
+          <SheetTitle>Edit Lesson</SheetTitle>
           <SheetDescription>
             Upload your video and fill in lesson details.
           </SheetDescription>
         </SheetHeader>
+        <div className="container pb-10">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              {/* Video */}
+              <FormField
+                control={form.control}
+                name="videoUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <VideoUploader
+                        value={field.value}
+                        onChange={field.onChange}
+                        onDurationChange={(s) => form.setValue("duration", s)}
+                        label="Lesson Video"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
-          >
-            {/* Video */}
-            <FormField
-              control={form.control}
-              name="videoUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <VideoUploader
-                      value={field.value}
-                      onChange={field.onChange}
-                      onDurationChange={(s) => form.setValue("duration", s)}
-                      label="Lesson Video"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              {/* Duration badge */}
+              {duration > 0 && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground bg-gray-50 dark:bg-gray-800 rounded-xl px-3 py-2 w-fit">
+                  <IconClock size={14} />
+                  Duration:{" "}
+                  <span className="font-semibold text-foreground">
+                    {formatDuration(duration)}
+                  </span>
+                </div>
               )}
-            />
 
-            {/* Duration badge */}
-            {duration > 0 && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-gray-50 dark:bg-gray-800 rounded-xl px-3 py-2 w-fit">
-                <IconClock size={14} />
-                Duration:{" "}
-                <span className="font-semibold text-foreground">
-                  {formatDuration(duration)}
-                </span>
+              {/* Title */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Lesson Title <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g. What is JavaScript?"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Short Description */}
+              <FormField
+                control={form.control}
+                name="shortDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Short Description{" "}
+                      <span className="text-xs text-muted-foreground font-normal">
+                        (SEO)
+                      </span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Brief description of this lesson..."
+                        rows={2}
+                        maxLength={200}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Lesson Thumbnail */}
+              <FormField
+                control={form.control}
+                name="thumbnailUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ImageUploader
+                        value={field.value}
+                        onChange={field.onChange}
+                        folder="thumbnails"
+                        label="Lesson Thumbnail (optional)"
+                        aspectRatio="aspect-video"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Notes / Transcript */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Notes / Transcript{" "}
+                      <span className="text-xs text-muted-foreground font-normal">
+                        (optional)
+                      </span>
+                    </FormLabel>
+                    <FormControl>
+                      <RichTextEditor field={field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Toggles */}
+              <div className="space-y-3">
+                <FormField
+                  control={form.control}
+                  name="isFree"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-md border border-gray-100 dark:border-gray-800 p-4">
+                      <div>
+                        <FormLabel>Free Preview</FormLabel>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Allow non-enrolled students to watch this lesson
+                        </p>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="isDownloadable"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-md border border-gray-100 dark:border-gray-800 p-4">
+                      <div>
+                        <FormLabel>Downloadable</FormLabel>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Allow enrolled students to download the video
+                        </p>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
-            )}
 
-            {/* Title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Lesson Title <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g. What is JavaScript?"
-                      className="rounded-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Short Description */}
-            <FormField
-              control={form.control}
-              name="shortDescription"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Short Description{" "}
-                    <span className="text-xs text-muted-foreground font-normal">
-                      (SEO)
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <textarea
-                      placeholder="Brief description of this lesson..."
-                      rows={2}
-                      maxLength={200}
-                      className="w-full px-3 py-3 rounded-xl border border-input bg-background text-sm resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring placeholder:text-muted-foreground"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Lesson Thumbnail */}
-            <FormField
-              control={form.control}
-              name="thumbnailUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <ImageUploader
-                      value={field.value}
-                      onChange={field.onChange}
-                      folder="thumbnails"
-                      label="Lesson Thumbnail (optional)"
-                      aspectRatio="aspect-video"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Notes / Transcript */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Notes / Transcript{" "}
-                    <span className="text-xs text-muted-foreground font-normal">
-                      (optional)
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <RichTextEditor field={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Toggles */}
-            <div className="space-y-3">
-              <FormField
-                control={form.control}
-                name="isFree"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
-                    <div>
-                      <FormLabel>Free Preview</FormLabel>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Allow non-enrolled students to watch this lesson
-                      </p>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isDownloadable"
-                render={({ field }) => (
-                  <FormItem className="flex items-center justify-between rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
-                    <div>
-                      <FormLabel>Downloadable</FormLabel>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Allow enrolled students to download the video
-                      </p>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex gap-3 pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                className="flex-1 rounded-2xl font-bold"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="flex-1 rounded-2xl font-black bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                {isSaving ? (
-                  <IconLoader2 size={16} className="animate-spin" />
-                ) : (
-                  "Save Lesson"
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onClose}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSaving} className="flex-1">
+                  {isSaving ? (
+                    <IconLoader2 size={16} className="animate-spin" />
+                  ) : (
+                    "Save Lesson"
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
       </SheetContent>
     </Sheet>
   );

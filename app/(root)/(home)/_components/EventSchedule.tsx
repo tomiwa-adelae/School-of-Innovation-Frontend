@@ -55,7 +55,7 @@ export const EventSchedule = () => {
               high-octane performances.
             </p>
           </div>
-          <div className="bg-white/5 border hidden md:flex border-white/10 p-4 rounded-2xl items-center gap-4">
+          <div className="bg-white/5 border hidden md:flex border-white/10 p-4 rounded-md items-center gap-4">
             <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
               <IconMapPin size={24} />
             </div>
@@ -74,7 +74,7 @@ export const EventSchedule = () => {
                 className={`absolute -left-[13px] top-0 w-6 h-6 rounded-full border-4 border-gray-900 ${item.color} group-hover:scale-125 transition-transform`}
               />
 
-              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-3xl hover:bg-white/[0.08] transition-colors">
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-md hover:bg-white/[0.08] transition-colors">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                   <div className="flex items-center gap-3">
                     <span className={`p-2 rounded-xl text-white ${item.color}`}>

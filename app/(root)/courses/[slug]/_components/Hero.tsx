@@ -91,7 +91,7 @@ export const Hero = () => {
             </div>
 
             {/* Instructor Preview */}
-            <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 w-fit">
+            <div className="flex items-center gap-4 p-4 bg-white/5 rounded-md border border-white/10 w-fit">
               <img
                 src="https://i.pravatar.cc/150?u=instructor"
                 className="w-12 h-12 rounded-xl object-cover"
@@ -110,8 +110,8 @@ export const Hero = () => {
 
           {/* Right: Enrollment Card (Sticky-ready) */}
           <div className="lg:w-1/3 w-full lg:sticky lg:top-32">
-            <div className="bg-white rounded-[2.5rem] p-8 text-gray-900 shadow-2xl">
-              <div className="relative rounded-2xl overflow-hidden mb-8 aspect-video group cursor-pointer">
+            <div className="bg-white rounded-md p-8 text-gray-900 shadow-2xl">
+              <div className="relative rounded-md overflow-hidden mb-8 aspect-video group cursor-pointer">
                 <img
                   src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80"
                   alt="Video Preview"
@@ -132,12 +132,12 @@ export const Hero = () => {
                 <span className="text-lg text-gray-400 line-through mb-1">
                   ₦45,000
                 </span>
-                <span className="ml-auto bg-green-100 text-green-700 px-3 py-1 rounded-lg text-xs font-black italic">
+                <span className="ml-auto bg-green-100 text-green-700 px-3 py-1 rounded-md text-xs font-black italic">
                   SCHOLARSHIP TRACK
                 </span>
               </div>
 
-              <button className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 mb-6">
+              <button className="w-full py-5 bg-blue-600 text-white rounded-md font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 mb-6">
                 Enroll Now
               </button>
 

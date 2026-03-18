@@ -51,7 +51,7 @@ export function NavUser() {
                   alt={`${user?.firstName}'s picture` || ""}
                   className="object-cover size-full"
                 />
-                <AvatarFallback>Nuvylux</AvatarFallback>
+                <AvatarFallback>School of Innovation</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
@@ -65,7 +65,7 @@ export function NavUser() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-md"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -78,7 +78,7 @@ export function NavUser() {
                     alt={`${user?.firstName}'s picture` || ""}
                     className="object-cover size-full"
                   />
-                  <AvatarFallback>Nuvylux</AvatarFallback>
+                  <AvatarFallback>School of Innovation</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.firstName}</span>

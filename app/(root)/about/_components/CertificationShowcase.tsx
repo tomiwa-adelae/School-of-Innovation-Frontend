@@ -16,7 +16,7 @@ export const CertificationShowcase = () => {
             {/* Glow effect behind certificate */}
             <div className="absolute inset-0 bg-blue-600/30 blur-[100px] rounded-full group-hover:bg-blue-500/40 transition-all" />
 
-            <div className="relative bg-white p-4 md:p-8 rounded-lg shadow-2xl transform -rotate-2 group-hover:rotate-0 transition-transform duration-700">
+            <div className="relative bg-white p-4 md:p-8 rounded-md shadow-2xl transform -rotate-2 group-hover:rotate-0 transition-transform duration-700">
               {/* This is a CSS representation of the certificate */}
               <div className="border-[12px] border-double border-gray-200 p-6 md:p-10 text-gray-900 text-center">
                 <IconFileCertificate
@@ -103,7 +103,7 @@ export const CertificationShowcase = () => {
               </div>
             </div>
 
-            <div className="mt-12 p-6 bg-blue-600/10 border border-blue-500/20 rounded-2xl">
+            <div className="mt-12 p-6 bg-blue-600/10 border border-blue-500/20 rounded-md">
               <p className="text-blue-200 text-sm italic">
                 "Our graduates have gone on to work at top tech firms in Lagos
                 and remotely for international startups."

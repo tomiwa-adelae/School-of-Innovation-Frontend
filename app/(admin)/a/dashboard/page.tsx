@@ -210,7 +210,7 @@ export default function AdminPage() {
 
       {/* Pending instructors quick view */}
       {(pendingInstructors?.length ?? 0) > 0 && (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-amber-200 dark:border-amber-800 overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-md border border-amber-200 dark:border-amber-800 overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-amber-100 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/20">
             <div className="flex items-center gap-2">
               <IconClock size={18} className="text-amber-500" />

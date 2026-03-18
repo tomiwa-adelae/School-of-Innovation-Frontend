@@ -59,7 +59,7 @@ export function LessonCard({ lesson, onEdit, onDelete }: LessonCardProps) {
       style={style}
       className={cn(
         "flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800",
-        isDragging && "opacity-50 shadow-xl ring-2 ring-purple-500 z-50"
+        isDragging && "opacity-50 shadow-xl ring-2 ring-purple-500 z-50",
       )}
     >
       {/* Drag handle */}
@@ -73,12 +73,14 @@ export function LessonCard({ lesson, onEdit, onDelete }: LessonCardProps) {
       </button>
 
       {/* Video indicator */}
-      <div className={cn(
-        "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-        lesson.videoUrl
-          ? "bg-purple-100 dark:bg-purple-950/40 text-purple-600"
-          : "bg-gray-100 dark:bg-gray-800 text-gray-400"
-      )}>
+      <div
+        className={cn(
+          "w-8 h-8 rounded-md flex items-center justify-center shrink-0",
+          lesson.videoUrl
+            ? "bg-purple-100 dark:bg-purple-950/40 text-purple-600"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-400",
+        )}
+      >
         <IconVideo size={15} />
       </div>
 

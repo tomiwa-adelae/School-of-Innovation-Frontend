@@ -36,7 +36,7 @@ export const Hero = () => {
           </p>
 
           {/* Search & Filter Bar */}
-          <div className="relative max-w-3xl mx-auto bg-white rounded-[2rem] shadow-2xl shadow-blue-900/10 p-2 border border-gray-100 flex flex-col md:flex-row items-center gap-2">
+          <div className="relative max-w-3xl mx-auto bg-white rounded-md shadow-2xl shadow-blue-900/10 p-2 border border-gray-100 flex flex-col md:flex-row items-center gap-2">
             {/* Search Input */}
             <div className="relative flex-1 w-full">
               <IconSearch

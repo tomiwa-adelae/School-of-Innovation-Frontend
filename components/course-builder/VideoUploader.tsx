@@ -68,10 +68,12 @@ export function VideoUploader({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{label}</p>
+      <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
+        {label}
+      </p>
 
       {value ? (
-        <div className="relative rounded-2xl overflow-hidden bg-gray-900 aspect-video">
+        <div className="relative rounded-md overflow-hidden bg-gray-900 aspect-video">
           <video
             src={value}
             controls
@@ -89,15 +91,18 @@ export function VideoUploader({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           disabled={isUploading}
           className={cn(
-            "w-full aspect-video rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all cursor-pointer",
+            "w-full aspect-video rounded-md border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all cursor-pointer",
             dragOver
               ? "border-purple-500 bg-purple-50 dark:bg-purple-950/20"
-              : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-purple-400"
+              : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:border-purple-400",
           )}
         >
           {isUploading ? (
@@ -115,7 +120,7 @@ export function VideoUploader({
             </div>
           ) : (
             <>
-              <div className="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center">
+              <div className="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
                 <IconVideo size={28} className="text-gray-400" />
               </div>
               <div className="text-center">

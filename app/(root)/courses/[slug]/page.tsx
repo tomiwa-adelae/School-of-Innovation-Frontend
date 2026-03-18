@@ -553,7 +553,7 @@ export default function CourseDetailPage() {
 
                 {/* Own existing review */}
                 {myReview && (
-                  <div className="bg-blue-50 dark:bg-blue-950/30 rounded-3xl border border-blue-100 dark:border-blue-900 p-5 mb-4">
+                  <div className="bg-blue-50 dark:bg-blue-950/30 rounded-md border border-blue-100 dark:border-blue-900 p-5 mb-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-xs font-semibold text-primary">
                         Your Review
@@ -615,7 +615,7 @@ export default function CourseDetailPage() {
                       .map((review) => (
                         <div
                           key={review.id}
-                          className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4"
+                          className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 p-4"
                         >
                           <div className="flex items-start gap-3">
                             <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center font-black text-blue-600 dark:text-blue-300 text-sm shrink-0">

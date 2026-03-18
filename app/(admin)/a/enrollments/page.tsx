@@ -441,7 +441,7 @@ export default function AdminEnrollmentsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <IconLoader2
@@ -451,7 +451,7 @@ export default function AdminEnrollmentsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
-            <div className="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center mx-auto mb-4">
               <IconUsers size={24} className="text-muted-foreground" />
             </div>
             <p className="font-bold ">No enrollments found</p>

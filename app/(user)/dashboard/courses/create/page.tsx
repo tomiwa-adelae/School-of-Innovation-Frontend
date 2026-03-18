@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { CourseWizard } from "@/components/course-builder/CourseWizard";
 import { IconLoader2 } from "@tabler/icons-react";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function CreateCoursePage() {
   const { user, _hasHydrated } = useAuth();
@@ -38,15 +39,14 @@ export default function CreateCoursePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div className="border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-4">
-        <h1 className="text-lg font-black text-gray-900 dark:text-white">
-          Create New Course
-        </h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Fill in the details, build your curriculum, then publish for review.
-        </p>
-      </div>
+    <div className="min-h-screen">
+      <PageHeader
+        back
+        title="Create New Course"
+        description={
+          "Fill in the details, build your curriculum, then publish for review"
+        }
+      />
       <CourseWizard mode="create" />
     </div>
   );

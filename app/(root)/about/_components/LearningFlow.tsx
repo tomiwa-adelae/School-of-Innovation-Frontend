@@ -65,7 +65,7 @@ export const LearningFlow = () => {
               {/* Card */}
               <div className="bg-white p-10 rounded-md border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                 <div
-                  className={`w-16 h-16 ${step.lightColor} rounded-2xl flex items-center justify-center mb-6`}
+                  className={`w-16 h-16 ${step.lightColor} rounded-md flex items-center justify-center mb-6`}
                 >
                   <div className={step.color.replace("bg-", "text-")}>
                     {step.icon}

@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 interface CourseReviewProps {
   courseId: string;
@@ -60,7 +61,9 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
     setIsPublishing(true);
     try {
       await updateData(`/courses/${courseId}/publish`, {});
-      toast.success("Course submitted for review! Our team will approve it shortly.");
+      toast.success(
+        "Course submitted for review! Our team will approve it shortly.",
+      );
       router.push("/dashboard/courses");
     } catch (err: any) {
       toast.error(err?.response?.data?.message ?? "Failed to submit course");
@@ -84,23 +87,25 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
 
   if (!course) return null;
 
-  const totalLessons = course.chapters?.reduce(
-    (s: number, c: any) => s + c.lessons.length,
-    0
-  ) ?? 0;
+  const totalLessons =
+    course.chapters?.reduce((s: number, c: any) => s + c.lessons.length, 0) ??
+    0;
 
   // Compute total duration from lesson data as a reliable fallback
-  const totalDuration = course.duration ||
+  const totalDuration =
+    course.duration ||
     (course.chapters?.reduce(
       (total: number, c: any) =>
-        total + c.lessons.reduce((s: number, l: any) => s + (l.duration ?? 0), 0),
-      0
-    ) ?? 0);
+        total +
+        c.lessons.reduce((s: number, l: any) => s + (l.duration ?? 0), 0),
+      0,
+    ) ??
+      0);
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 text-white">
+      <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-md p-8 text-white">
         <div className="flex items-start gap-4">
           {course.thumbnail && (
             <img
@@ -110,10 +115,10 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
             />
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-1">
+            <p className="text-blue-200 text-xs font-semibold uppercase mb-1">
               Review Your Course
             </p>
-            <h1 className="text-2xl font-black leading-tight">{course.title}</h1>
+            <h1 className="text-2xl font-bold">{course.title}</h1>
             {course.shortDescription && (
               <p className="text-blue-100 text-sm mt-2 leading-relaxed line-clamp-2">
                 {course.shortDescription}
@@ -124,84 +129,111 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
       </div>
 
       {/* Stats strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {[
-          { icon: IconBook, label: "Chapters", value: course.chapters?.length ?? 0 },
+          {
+            icon: IconBook,
+            label: "Chapters",
+            value: course.chapters?.length ?? 0,
+          },
           { icon: IconVideo, label: "Lessons", value: totalLessons },
-          { icon: IconClock, label: "Duration", value: formatDuration(totalDuration) },
-          { icon: IconChartBar, label: "Level", value: LEVEL_LABELS[course.level] ?? course.level },
+          {
+            icon: IconClock,
+            label: "Duration",
+            value: formatDuration(totalDuration),
+          },
+          {
+            icon: IconChartBar,
+            label: "Level",
+            value: LEVEL_LABELS[course.level] ?? course.level,
+          },
         ].map(({ icon: Icon, label, value }) => (
           <div
             key={label}
-            className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 text-center"
+            className="bg-white dark:bg-gray-900 rounded-md p-4 border border-gray-100 dark:border-gray-800 text-center"
           >
             <Icon size={20} className="text-blue-600 mx-auto mb-2" />
-            <p className="text-xl font-black text-gray-900 dark:text-white">{value}</p>
+            <p className="text-xl font-bold text-gray-900 dark:text-white">
+              {value}
+            </p>
             <p className="text-xs text-muted-foreground">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Course details */}
-      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 space-y-4">
-        <h3 className="font-black text-gray-900 dark:text-white">Course Details</h3>
-
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <IconCurrencyDollar size={15} />
-            <span>Pricing:</span>
-            <span className="font-semibold text-foreground">
-              {PRICING_LABELS[course.pricingType] ?? course.pricingType}
-              {course.price > 0 && ` — $${course.price}`}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <IconWorld size={15} />
-            <span>Language:</span>
-            <span className="font-semibold text-foreground">{course.language}</span>
-          </div>
-          {course.category && (
+      <Card>
+        <CardHeader className="border-b">
+          <CardTitle>Course Details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="flex items-center gap-2 text-muted-foreground">
-              <IconTag size={15} />
-              <span>Category:</span>
-              <span className="font-semibold text-foreground">{course.category.name}</span>
+              <IconCurrencyDollar size={15} />
+              <span>Pricing:</span>
+              <span className="font-semibold text-foreground">
+                {PRICING_LABELS[course.pricingType] ?? course.pricingType}
+                {course.price > 0 && ` — $${course.price}`}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <IconWorld size={15} />
+              <span>Language:</span>
+              <span className="font-semibold text-foreground">
+                {course.language}
+              </span>
+            </div>
+            {course.category && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <IconTag size={15} />
+                <span>Category:</span>
+                <span className="font-semibold text-foreground">
+                  {course.category.name}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {course.tags?.length > 0 && (
+            <div>
+              <p className="text-xs font-bold text-muted-foreground uppercase mb-2">
+                Tags
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {course.tags.map((tag: string) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
             </div>
           )}
-        </div>
 
-        {course.tags?.length > 0 && (
-          <div>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Tags</p>
-            <div className="flex flex-wrap gap-2">
-              {course.tags.map((tag: string) => (
-                <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
-              ))}
+          {course.learningOutcomes?.length > 0 && (
+            <div>
+              <p className="text-xs font-bold text-muted-foreground uppercase mb-2">
+                What Students Will Learn
+              </p>
+              <ul className="space-y-1">
+                {course.learningOutcomes.map((o: string, i: number) => (
+                  <li key={i} className="text-sm flex items-start gap-2">
+                    <span className="text-green-500 mt-0.5">✓</span>
+                    {o}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-        )}
-
-        {course.learningOutcomes?.length > 0 && (
-          <div>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
-              What Students Will Learn
-            </p>
-            <ul className="space-y-1">
-              {course.learningOutcomes.map((o: string, i: number) => (
-                <li key={i} className="text-sm flex items-start gap-2">
-                  <span className="text-green-500 mt-0.5">✓</span>
-                  {o}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Curriculum summary */}
       {course.chapters?.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800">
-          <h3 className="font-black text-gray-900 dark:text-white mb-4">Curriculum</h3>
-          <div className="space-y-2">
+        <Card>
+          <CardHeader className="border-b">
+            <CardTitle>Curriculum</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
             {course.chapters.map((chapter: any, i: number) => (
               <div
                 key={chapter.id}
@@ -214,41 +246,37 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
                   <span className="text-sm font-semibold">{chapter.title}</span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  {chapter.lessons.length} lesson{chapter.lessons.length !== 1 ? "s" : ""}
+                  {chapter.lessons.length} lesson
+                  {chapter.lessons.length !== 1 ? "s" : ""}
                 </span>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Submission notice */}
-      <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl p-4">
+      <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-md p-4">
         <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">
           📋 What happens after publishing?
         </p>
         <p className="text-sm text-amber-600 dark:text-amber-500 mt-1">
-          Your course will be submitted for admin review. Once approved, it will be
-          listed on the platform and students can enrol.
+          Your course will be submitted for admin review. Once approved, it will
+          be listed on the platform and students can enrol.
         </p>
       </div>
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="h-12 px-8 rounded-2xl font-bold gap-2"
-        >
-          <IconArrowLeft size={18} /> Back to Curriculum
+        <Button type="button" variant="outline" onClick={onBack}>
+          Back to Curriculum
         </Button>
 
         <Button
           type="button"
           variant="outline"
           onClick={handleSaveDraft}
-          className="h-12 px-8 rounded-2xl font-bold sm:ml-auto"
+          className="sm:ml-auto"
         >
           Save as Draft
         </Button>
@@ -257,7 +285,6 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
           type="button"
           onClick={handlePublish}
           disabled={isPublishing || totalLessons === 0}
-          className="h-12 px-10 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black gap-2"
         >
           {isPublishing ? (
             <IconLoader2 size={18} className="animate-spin" />

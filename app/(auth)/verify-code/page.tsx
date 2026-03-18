@@ -154,7 +154,7 @@ const VerifyCodeContent = () => {
                               <InputOTPSlot
                                 key={i}
                                 index={i}
-                                className="w-12 h-14 md:w-14 md:h-16 text-xl rounded-2xl border-2 first:rounded-2xl last:rounded-2xl first:border-l-2"
+                                className="w-12 h-14 md:w-14 md:h-16 text-xl rounded-md border-2 first:rounded-md last:rounded-md first:border-l-2"
                               />
                             ))}
                           </InputOTPGroup>

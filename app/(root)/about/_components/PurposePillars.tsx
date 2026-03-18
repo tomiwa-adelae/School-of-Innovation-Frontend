@@ -27,7 +27,7 @@ export const PurposePillars = () => {
               meeting; we are cultivating the foundation for African solutions
               to shape the global narrative.
             </p>
-            <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <div className="p-6 bg-white rounded-md border border-gray-100 shadow-sm">
               <p className="text-sm italic text-gray-500">
                 "We envision a continent where startups born out of curiosity
                 redefine industries and create jobs."
@@ -38,7 +38,7 @@ export const PurposePillars = () => {
           {/* Right: The Pillars Grid */}
           <div className="lg:w-2/3 grid md:grid-cols-2 gap-4">
             {/* Mission Card */}
-            <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-blue-100">
+            <div className="bg-white p-6 md:p-10 rounded-md shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-blue-100">
               <div className="size-10 bg-blue-50 text-blue-600 rounded-md flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <IconTargetArrow size={24} />
               </div>
@@ -54,7 +54,7 @@ export const PurposePillars = () => {
             </div>
 
             {/* Vision Card */}
-            <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-orange-100">
+            <div className="bg-white p-6 md:p-10 rounded-md shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-orange-100">
               <div className="size-10 bg-orange-50 text-orange-600 rounded-md flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-colors">
                 <IconEye size={24} />
               </div>
@@ -70,7 +70,7 @@ export const PurposePillars = () => {
             </div>
 
             {/* The Extra Pillar: Community */}
-            <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-purple-100 md:col-span-2">
+            <div className="bg-white p-6 md:p-10 rounded-md shadow-sm hover:shadow-xl transition-all group border border-transparent hover:border-purple-100 md:col-span-2">
               <div className="flex flex-col md:flex-row gap-4 items-start">
                 <div className="size-10 bg-purple-50 text-purple-600 rounded-md flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                   <IconGrowth size={24} />

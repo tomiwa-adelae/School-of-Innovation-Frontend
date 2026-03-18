@@ -106,7 +106,7 @@ export const CourseSyllabus = () => {
             {syllabus.map((section, idx) => (
               <div
                 key={idx}
-                className="border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm"
+                className="border border-gray-100 rounded-md overflow-hidden shadow-sm"
               >
                 {/* Section Header */}
                 <div className="bg-gray-50 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -164,8 +164,8 @@ export const CourseSyllabus = () => {
             ))}
           </div>
 
-          <div className="mt-12 p-8 bg-blue-600/5 rounded-3xl border border-blue-600/10 flex items-center gap-6">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center shrink-0">
+          <div className="mt-12 p-8 bg-blue-600/5 rounded-md border border-blue-600/10 flex items-center gap-6">
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-md flex items-center justify-center shrink-0">
               <IconCode size={32} />
             </div>
             <div>

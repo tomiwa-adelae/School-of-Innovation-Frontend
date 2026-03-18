@@ -25,7 +25,7 @@ export const Pricing = () => {
         <div className="grid relative md:grid-cols-3 gap-8 mb-20">
           <ComingSoon />
           {/* Tier 1: Digital Learner */}
-          <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
+          <div className="bg-white p-8 rounded-md border border-gray-100 shadow-sm flex flex-col">
             <div className="mb-6">
               <span className="text-blue-600 font-bold text-sm uppercase tracking-widest">
                 School Access
@@ -67,7 +67,7 @@ export const Pricing = () => {
           </div>
 
           {/* Tier 2: The Delegate (Most Popular) */}
-          <div className="bg-blue-600 p-8 rounded-3xl shadow-xl shadow-blue-200 flex flex-col transform md:scale-110 z-10 text-white">
+          <div className="bg-blue-600 p-8 rounded-md shadow-xl shadow-blue-200 flex flex-col transform md:scale-110 z-10 text-white">
             <div className="mb-6">
               <span className="bg-white/20 px-3 py-1 rounded-full font-bold text-xs uppercase tracking-widest">
                 Most Popular
@@ -103,7 +103,7 @@ export const Pricing = () => {
           </div>
 
           {/* Tier 3: Founder / VIP */}
-          <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
+          <div className="bg-white p-8 rounded-md border border-gray-100 shadow-sm flex flex-col">
             <div className="mb-6">
               <span className="text-orange-600 font-bold text-sm uppercase tracking-widest">
                 Premium Impact

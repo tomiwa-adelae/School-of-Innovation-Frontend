@@ -56,12 +56,12 @@ export const PlatformAdvantage = () => {
 
       <div className="container relative z-10">
         {/* Header */}
-        <div className="max-w-3xl mb-20">
-          <h2 className="text-blue-400 font-bold uppercase tracking-widest text-sm mb-4">
+        <div className="max-w-3xl mb-10">
+          <h2 className="text-blue-400 font-semibold uppercase text-xs mb-4">
             Why Innovation 4.0?
           </h2>
-          <h3 className="text-4xl md:text-5xl font-black mb-8 leading-tight">
-            Built for the <br />
+          <h3 className="text-4xl md:text-5xl font-bold mb-4">
+            Built for the <br className="hidden lg:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
               African Tech Context.
             </span>
@@ -74,14 +74,14 @@ export const PlatformAdvantage = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {features.map((f, i) => (
             <div
               key={i}
-              className="group p-8 rounded-[2.5rem] bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
+              className="group p-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
             >
               <div
-                className={`w-14 h-14 ${f.color} rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform`}
+                className={`w-14 h-14 ${f.color} rounded-md flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform`}
               >
                 {f.icon}
               </div>
@@ -92,12 +92,10 @@ export const PlatformAdvantage = () => {
         </div>
 
         {/* Trust Bar */}
-        <div className="mt-20 py-10 border-t border-white/10 flex flex-wrap justify-between items-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all">
-          <p className="text-sm font-bold uppercase tracking-widest">
-            In Partnership With
-          </p>
+        <div className="mt-10 py-5 border-t border-white/10 flex flex-wrap justify-between items-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all">
+          <p className="text-xs font-semibold uppercase">In Partnership With</p>
           {/* Add your partner logos here */}
-          <div className="flex gap-12 items-center italic font-serif text-xl">
+          <div className="flex gap-8 items-center italic font-serif text-base">
             <span>Cornerstone Intl.</span>
             <span>School of Innovation</span>
             <span>TechAfrica Alliance</span>

@@ -39,15 +39,22 @@ function mapCourseToForm(course: any): Partial<CourseBasicsInput> {
     thumbnail: course.thumbnail ?? "",
     previewVideo: course.previewVideo ?? "",
     tags: course.tags ?? [],
-    learningOutcomes: course.learningOutcomes?.length ? course.learningOutcomes : [""],
+    learningOutcomes: course.learningOutcomes?.length
+      ? course.learningOutcomes
+      : [""],
     requirements: course.requirements ?? [],
     targetAudience: course.targetAudience ?? [],
   };
 }
 
-export function CourseWizard({ mode, courseId: propCourseId, initialData }: CourseWizardProps) {
+export function CourseWizard({
+  mode,
+  courseId: propCourseId,
+  initialData,
+}: CourseWizardProps) {
   const router = useRouter();
-  const { currentStep, courseId, setStep, setCourseId, reset } = useCourseWizard();
+  const { currentStep, courseId, setStep, setCourseId, reset } =
+    useCourseWizard();
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -74,14 +81,16 @@ export function CourseWizard({ mode, courseId: propCourseId, initialData }: Cour
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message;
-      toast.error(Array.isArray(msg) ? msg[0] : msg ?? "Failed to save course");
+      toast.error(
+        Array.isArray(msg) ? msg[0] : (msg ?? "Failed to save course"),
+      );
     } finally {
       setIsSaving(false);
     }
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="py-8 space-y-8">
       {/* Step progress */}
       <div className="flex items-center justify-center gap-2">
         {STEPS.map((step, i) => (
@@ -92,8 +101,8 @@ export function CourseWizard({ mode, courseId: propCourseId, initialData }: Cour
                 currentStep > step.number
                   ? "bg-blue-600 text-white"
                   : currentStep === step.number
-                  ? "bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 ring-2 ring-blue-600"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-400"
+                    ? "bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 ring-2 ring-blue-600"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-400",
               )}
             >
               {currentStep > step.number ? (
@@ -130,10 +139,7 @@ export function CourseWizard({ mode, courseId: propCourseId, initialData }: Cour
       )}
 
       {currentStep === 3 && courseId && (
-        <CourseReview
-          courseId={courseId}
-          onBack={() => setStep(2)}
-        />
+        <CourseReview courseId={courseId} onBack={() => setStep(2)} />
       )}
     </div>
   );

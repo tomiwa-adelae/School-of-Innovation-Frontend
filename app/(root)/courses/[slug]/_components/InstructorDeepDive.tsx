@@ -12,7 +12,7 @@ export const InstructorDeepDive = () => {
   return (
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
-        <div className="bg-white rounded-[3rem] p-8 md:p-16 shadow-xl border border-gray-100 overflow-hidden relative">
+        <div className="bg-white rounded-md p-8 md:p-16 shadow-xl border border-gray-100 overflow-hidden relative">
           {/* Background Decoration */}
           <div className="absolute top-0 right-0 p-12 opacity-[0.03] text-gray-900 hidden lg:block">
             <IconBrandGithub size={300} />
@@ -22,11 +22,11 @@ export const InstructorDeepDive = () => {
             {/* Left: Professional Photo & Links */}
             <div className="lg:w-1/3 text-center">
               <div className="relative inline-block mb-8">
-                <div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-6" />
+                <div className="absolute inset-0 bg-blue-600 rounded-md rotate-6" />
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"
                   alt="Tomiwa Adelae"
-                  className="relative w-64 h-80 object-cover rounded-[2.5rem] shadow-2xl"
+                  className="relative w-64 h-80 object-cover rounded-md shadow-2xl"
                 />
               </div>
 
@@ -71,7 +71,7 @@ export const InstructorDeepDive = () => {
                 ].map((tag, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-black uppercase rounded-lg border border-blue-100"
+                    className="px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-black uppercase rounded-md border border-blue-100"
                   >
                     {tag}
                   </span>
@@ -94,7 +94,7 @@ export const InstructorDeepDive = () => {
               </div>
 
               {/* Quote/Philosophy */}
-              <div className="p-8 bg-gray-50 rounded-3xl border-l-4 border-blue-600 relative mb-10 italic text-gray-700">
+              <div className="p-8 bg-gray-50 rounded-md border-l-4 border-blue-600 relative mb-10 italic text-gray-700">
                 <IconQuote
                   className="absolute top-4 right-4 text-blue-200"
                   size={32}

@@ -45,7 +45,7 @@ export const CourseFinale = () => {
             {courseFaqs.map((faq, i) => (
               <div
                 key={i}
-                className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group cursor-pointer"
+                className="bg-white p-6 rounded-md border border-gray-100 shadow-sm hover:shadow-md transition-shadow group cursor-pointer"
               >
                 <div className="flex justify-between items-center">
                   <h4 className="font-bold text-gray-900">{faq.q}</h4>
@@ -63,7 +63,7 @@ export const CourseFinale = () => {
         </div>
 
         {/* The "Closing" Banner */}
-        <div className="relative bg-blue-600 rounded-[3rem] p-10 md:p-20 text-white overflow-hidden shadow-2xl shadow-blue-900/40">
+        <div className="relative bg-blue-600 rounded-md p-10 md:p-20 text-white overflow-hidden shadow-2xl shadow-blue-900/40">
           {/* Decorative Elements */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-48 -mt-48" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/20 rounded-full blur-[80px] -ml-32 -mb-32" />
@@ -80,16 +80,16 @@ export const CourseFinale = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-white text-blue-600 px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
+                <button className="bg-white text-blue-600 px-10 py-5 rounded-md font-black text-lg hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
                   Enroll for Free Now <IconArrowRight size={20} />
                 </button>
-                <button className="bg-blue-700 text-white border border-blue-500 px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-2">
+                <button className="bg-blue-700 text-white border border-blue-500 px-10 py-5 rounded-md font-black text-lg hover:bg-blue-800 transition-all flex items-center justify-center gap-2">
                   <IconMessageDots size={20} /> Chat with a Mentor
                 </button>
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md rounded-[2.5rem] p-8 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-md rounded-md p-8 border border-white/20">
               <h4 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <IconShieldCheck size={24} className="text-blue-300" />
                 The Innovation Guarantee

@@ -48,7 +48,7 @@ export const CourseProject = () => {
               {tools.map((tool, i) => (
                 <div
                   key={i}
-                  className="p-6 rounded-3xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all group"
+                  className="p-6 rounded-md border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all group"
                 >
                   <div className="text-gray-400 group-hover:text-blue-600 mb-4 transition-colors">
                     {tool.icon}
@@ -62,7 +62,7 @@ export const CourseProject = () => {
 
           {/* Right: Capstone Project Showcase */}
           <div className="lg:w-3/5">
-            <div className="relative bg-gray-900 rounded-[3rem] p-8 md:p-12 text-white overflow-hidden">
+            <div className="relative bg-gray-900 rounded-md p-8 md:p-12 text-white overflow-hidden">
               {/* Decorative Circle */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -mr-32 -mt-32" />
 
@@ -130,7 +130,7 @@ export const CourseProject = () => {
                   </div>
                 </div>
 
-                <div className="p-1 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 inline-block">
+                <div className="p-1 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 inline-block">
                   <button className="bg-gray-900 px-8 py-4 rounded-[calc(1rem-1px)] font-bold flex items-center gap-2 hover:bg-transparent transition-all">
                     View Project Brief <IconArrowRight size={18} />
                   </button>

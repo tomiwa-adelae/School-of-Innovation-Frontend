@@ -14,7 +14,7 @@ export const ContactChannels = () => {
       email: "partnership@innovationconference.com.ng",
       desc: "For brands looking to align with the Innovation 4.0 movement.",
       icon: <IconTargetArrow size={24} />,
-      color: "text-blue-600",
+      color: "text-primary",
     },
     {
       name: "School of Innovation",
@@ -35,11 +35,11 @@ export const ContactChannels = () => {
   return (
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="container">
-        <div className="grid lg:grid-cols-3 gap-12 mb-20">
+        <div className="grid lg:grid-cols-3 gap-2 mb-10">
           {departments.map((dept, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+              className="bg-white p-8 rounded-md shadow-sm hover:shadow-md transition-shadow border border-gray-100"
             >
               <div className={`mb-6 ${dept.color}`}>{dept.icon}</div>
               <h4 className="text-xl font-bold text-gray-900 mb-2">
@@ -50,7 +50,7 @@ export const ContactChannels = () => {
               </p>
               <a
                 href={`mailto:${dept.email}`}
-                className="text-blue-600 font-bold text-sm flex items-center gap-2 hover:underline"
+                className="text-primary font-bold text-sm flex items-center gap-2 hover:underline"
               >
                 {dept.email} <IconExternalLink size={14} />
               </a>
@@ -59,9 +59,9 @@ export const ContactChannels = () => {
         </div>
 
         {/* Location / Map Section */}
-        <div className="bg-white rounded-[3rem] overflow-hidden shadow-sm border border-gray-100 flex flex-col md:flex-row">
+        <div className="bg-white rounded-md overflow-hidden shadow-sm border border-gray-100 flex flex-col md:flex-row">
           <div className="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
-            <div className="flex items-center gap-2 text-blue-600 font-bold mb-4 uppercase tracking-widest text-xs">
+            <div className="flex items-center gap-2 text-primary font-bold mb-4 uppercase tracking-widest text-xs">
               <IconMap2 size={18} />
               Physical Presence
             </div>
@@ -91,7 +91,7 @@ export const ContactChannels = () => {
 
           {/* Placeholder for Map - In a real app, use Google Maps iframe or Mapbox */}
           <div className="md:w-1/2 h-[400px] md:h-auto bg-gray-200 relative group">
-            <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors z-10" />
+            <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
             <img
               src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80"
               alt="Lagos Map View"

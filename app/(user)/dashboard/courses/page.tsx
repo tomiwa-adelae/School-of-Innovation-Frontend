@@ -371,8 +371,8 @@ function InstructorMyCourses() {
 
       {/* Empty state */}
       {!isLoading && courses.length === 0 && (
-        <div className="text-center py-20 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
-          <div className="w-16 h-16 bg-purple-50 dark:bg-purple-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="text-center py-20 rounded-md border-2 border-dashed border-gray-200 dark:border-gray-700">
+          <div className="w-16 h-16 bg-purple-50 dark:bg-purple-950/40 rounded-md flex items-center justify-center mx-auto mb-4">
             <IconBook size={28} className="text-purple-500" />
           </div>
           <h3 className="font-black text-gray-900 dark:text-white text-lg mb-2">
@@ -383,7 +383,7 @@ function InstructorMyCourses() {
           </p>
           <Button
             asChild
-            className="bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-bold gap-2"
+            className="bg-purple-600 hover:bg-purple-700 text-white rounded-md font-bold gap-2"
           >
             <Link href="/dashboard/courses/create">
               <IconPlus size={16} /> Create a Course
@@ -532,7 +532,7 @@ export default function CoursesPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-      <div className="w-16 h-16rounded-2xl flex items-center justify-center mx-auto mb-4">
+      <div className="w-16 h-16rounded-md flex items-center justify-center mx-auto mb-4">
         <IconLock size={28} className="text-gray-400" />
       </div>
       <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
@@ -543,7 +543,7 @@ export default function CoursesPage() {
           ? "Only instructors can create courses."
           : "Your instructor application is pending admin approval. You'll be able to create courses once approved."}
       </p>
-      <Button asChild variant="outline" className="rounded-2xl font-bold">
+      <Button asChild variant="outline" className="rounded-md font-bold">
         <Link href="/dashboard">Back to Dashboard</Link>
       </Button>
     </div>

@@ -39,6 +39,7 @@ import {
 } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { LessonInput, ChapterInput } from "@/lib/zodSchemas";
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 interface Lesson {
   id: string;
@@ -180,18 +181,16 @@ export function CurriculumBuilder({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm">
-        <div className="flex items-center justify-between">
+      <Card>
+        <CardHeader className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-black text-gray-900 dark:text-white">
-              Curriculum Builder
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            <CardTitle>Curriculum Builder</CardTitle>
+            <CardDescription>
               Add chapters and lessons. Drag to reorder — changes save
               automatically.
-            </p>
+            </CardDescription>
           </div>
           <div className="text-right text-sm text-muted-foreground">
             <p className="font-semibold">{localChapters.length} chapters</p>
@@ -199,8 +198,8 @@ export function CurriculumBuilder({
               {localChapters.reduce((s, c) => s + c.lessons.length, 0)} lessons
             </p>
           </div>
-        </div>
-      </div>
+        </CardHeader>
+      </Card>
 
       {/* Chapter list */}
       <DndContext
@@ -232,7 +231,7 @@ export function CurriculumBuilder({
 
       {/* Empty state */}
       {localChapters.length === 0 && (
-        <div className="text-center py-16 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+        <div className="text-center py-16 rounded-md border-2 border-dashed border-gray-200 dark:border-gray-700">
           <p className="text-muted-foreground font-semibold mb-2">
             No chapters yet
           </p>
@@ -248,7 +247,7 @@ export function CurriculumBuilder({
         variant="outline"
         onClick={handleAddChapter}
         disabled={mutations.createChapter.isPending}
-        className="w-full h-12 rounded-2xl font-bold gap-2 border-dashed border-2"
+        className="w-full h-12 rounded-md font-bold gap-2 border-dashed border-2"
       >
         {mutations.createChapter.isPending ? (
           <IconLoader2 size={16} className="animate-spin" />
@@ -260,21 +259,15 @@ export function CurriculumBuilder({
 
       {/* Navigation */}
       <div className="flex gap-4 justify-between pt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="h-12 px-8 rounded-2xl font-bold gap-2"
-        >
-          <IconArrowLeft size={18} /> Back
+        <Button type="button" variant="outline" onClick={onBack}>
+          Back
         </Button>
         <Button
           type="button"
           onClick={onContinue}
           disabled={localChapters.length === 0}
-          className="h-12 px-10 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black gap-2"
         >
-          Continue to Review <IconArrowRight size={18} />
+          Continue to Review
         </Button>
       </div>
 

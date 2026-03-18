@@ -78,7 +78,7 @@ export const CourseExplorer = () => {
               </div>
             </div>
 
-            <div className="p-6 bg-gray-50 rounded-[2rem] border border-gray-100">
+            <div className="p-6 bg-gray-50 rounded-md border border-gray-100">
               <h4 className="font-bold text-gray-900 text-sm mb-4">
                 Price Range
               </h4>
@@ -119,7 +119,7 @@ export const CourseExplorer = () => {
               {courses.map((course, index) => (
                 <div
                   key={index}
-                  className="group bg-white rounded-[2rem] border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-500"
+                  className="group bg-white rounded-md border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-500"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -127,7 +127,7 @@ export const CourseExplorer = () => {
                       alt={course.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[10px] font-black text-blue-600 uppercase">
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-md text-[10px] font-black text-blue-600 uppercase">
                       {course.category}
                     </div>
                   </div>

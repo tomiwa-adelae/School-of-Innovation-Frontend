@@ -34,7 +34,7 @@ export const JoinEcosystem = () => {
         <div className="grid md:grid-cols-3 gap-4">
           {/* Option 1: Partner */}
           <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
-            <div className="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Handshake size={32} />
             </div>
             <h4 className="text-2xl font-bold text-white mb-4">
@@ -51,7 +51,7 @@ export const JoinEcosystem = () => {
 
           {/* Option 2: Volunteer */}
           <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
-            <div className="w-16 h-16 bg-orange-600/20 text-orange-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-orange-600/20 text-orange-400 rounded-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <IconHeartHandshake size={32} />
             </div>
             <h4 className="text-2xl font-bold text-white mb-4">
@@ -68,7 +68,7 @@ export const JoinEcosystem = () => {
 
           {/* Option 3: Student */}
           <div className="bg-white/5 border border-white/10 p-10 rounded-md hover:bg-white/10 transition-all group">
-            <div className="w-16 h-16 bg-green-600/20 text-green-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-green-600/20 text-green-400 rounded-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <IconSchool size={32} />
             </div>
             <h4 className="text-2xl font-bold text-white mb-4">

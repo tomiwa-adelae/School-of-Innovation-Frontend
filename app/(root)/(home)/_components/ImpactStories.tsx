@@ -18,9 +18,9 @@ export const ImpactStories = () => {
                 <img
                   src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80"
                   alt="Innovation Lab"
-                  className="rounded-3xl h-64 w-full object-cover"
+                  className="rounded-md h-64 w-full object-cover"
                 />
-                <div className="bg-orange-500 p-6 md:p-8 rounded-3xl text-white">
+                <div className="bg-orange-500 p-6 md:p-8 rounded-md text-white">
                   <IconUsersGroup size={40} className="mb-4 opacity-50" />
                   <p className="text-4xl font-black mb-1">5,000+</p>
                   <p className="font-medium opacity-90">
@@ -29,7 +29,7 @@ export const ImpactStories = () => {
                 </div>
               </div>
               <div className="pt-12 space-y-2">
-                <div className="bg-blue-600 p-6 md:p-8 rounded-3xl text-white">
+                <div className="bg-blue-600 p-6 md:p-8 rounded-md text-white">
                   <h4 className="text-xl font-bold mb-2">90%</h4>
                   <p className="text-sm opacity-80 leading-snug">
                     Of attendees report gaining a new career-ready skill.
@@ -38,7 +38,7 @@ export const ImpactStories = () => {
                 <img
                   src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80"
                   alt="Networking"
-                  className="rounded-3xl h-64 w-full object-cover"
+                  className="rounded-md h-64 w-full object-cover"
                 />
               </div>
             </div>

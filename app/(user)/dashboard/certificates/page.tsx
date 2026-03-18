@@ -73,7 +73,7 @@ export default function CertificatesPage() {
   if (!certificates || certificates.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-950/40 rounded-md flex items-center justify-center mx-auto mb-4">
           <IconFileCertificate size={28} className="text-blue-500" />
         </div>
         <h2 className="text-2xl font-bold mb-2">No certificates yet</h2>
@@ -104,7 +104,7 @@ export default function CertificatesPage() {
         {certificates.map((cert) => (
           <div
             key={cert.id}
-            className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col"
+            className="bg-white dark:bg-gray-900 rounded-md border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col"
           >
             {/* Thumbnail */}
             <div className="w-full h-36 bg-gradient-to-br from-blue-500 to-blue-700 relative overflow-hidden">
@@ -118,7 +118,7 @@ export default function CertificatesPage() {
               ) : null}
               {/* Certificate icon overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-md flex items-center justify-center">
                   <IconFileCertificate size={28} className="text-white" />
                 </div>
               </div>

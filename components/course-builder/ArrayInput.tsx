@@ -25,7 +25,9 @@ export function ArrayInput({
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{label}</p>
+        <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
+          {label}
+        </p>
         {description && (
           <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
         )}
@@ -37,7 +39,7 @@ export function ArrayInput({
             <Input
               {...control.register(`${name}.${index}`)}
               placeholder={placeholder}
-              className="rounded-xl flex-1"
+              className="flex-1"
             />
             <Button
               type="button"
@@ -57,7 +59,7 @@ export function ArrayInput({
         variant="outline"
         size="sm"
         onClick={() => append("")}
-        className="gap-2 rounded-xl text-xs font-semibold"
+        className="gap-2 text-xs font-semibold"
       >
         <IconPlus size={14} />
         Add {label}
