@@ -62,34 +62,26 @@ export function FlutterwavePayButton({
   const handleFlutterPayment = useFlutterwave(config);
 
   async function handleCallback(response: FlutterWaveResponse) {
-    console.log("first");
     closePaymentModal();
-
-    console.log("second");
 
     if (response.status !== "successful") {
       toast.error("Payment was not completed. Please try again.");
       return;
     }
 
-    console.log("third");
-
     if (verifying.current) return;
     verifying.current = true;
 
     const loadingToast = toast.loading("Confirming your payment…");
     try {
-      console.log("fourth");
       await postData(`/enrollments/${courseId}/verify-payment`, {
         transactionId: String(response.transaction_id),
         txRef: response.tx_ref,
       });
-      console.log("fifth");
       toast.dismiss(loadingToast);
       toast.success("Payment confirmed! You are now enrolled. 🎉");
       onSuccess();
     } catch (err: any) {
-      console.log("sixth");
       toast.dismiss(loadingToast);
       const msg = err?.response?.data?.message;
       if (msg === "Already enrolled") {

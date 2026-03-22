@@ -25,7 +25,7 @@ export const JoinEcosystem = () => {
             </span>
           </h3>
           <p className="text-gray-400 text-lg">
-            Innovation 4.0 isn’t just an event you watch—it’s an ecosystem you
+            Innovation 5.0 isn’t just an event you watch—it’s an ecosystem you
             build. Whether you are a brand, a leader, or a student, there is a
             place for you.
           </p>

@@ -17,7 +17,7 @@ export const ExpertSpotlight = () => {
     },
     {
       name: "John Ogunjide",
-      role: "Convener, Innovation 4.0",
+      role: "Convener, Innovation 5.0",
       expertise: "Personal Transformation & Tech",
       image:
         "https://res.cloudinary.com/dh0rc6p1c/image/upload/v1744308382/innovation/DSC_1065_pp4qio.jpg", // Placeholder for new professional shots

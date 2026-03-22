@@ -11,7 +11,7 @@ export const InstructorSpotlight = () => {
     {
       name: "Tomiwa Adelae",
       specialty: "Full-Stack Development",
-      credential: "Lead Dev @ Innovation 4.0",
+      credential: "Lead Dev @ Innovation 5.0",
       students: "1,200+",
       image:
         "https://innovationconference.com.ng/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdh0rc6p1c%2Fimage%2Fupload%2Fv1744311465%2Finnovation%2Forganizer%2Ftomiwa-adelae_khh1k4.jpg&w=2048&q=75",

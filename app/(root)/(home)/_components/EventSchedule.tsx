@@ -21,7 +21,7 @@ export const EventSchedule = () => {
     {
       time: "12:00 PM",
       title: "The Grand Opening",
-      desc: "Welcome address, spoken word performances, and the Innovation 4.0 vision cast.",
+      desc: "Welcome address, spoken word performances, and the Innovation 5.0 vision cast.",
       icon: <IconMicrophone size={24} />,
       color: "bg-blue-500",
     },

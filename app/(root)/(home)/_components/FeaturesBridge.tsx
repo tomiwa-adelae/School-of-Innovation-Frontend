@@ -16,7 +16,7 @@ export const FeaturesBridge = () => {
             Beyond the Conference
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Innovation 4.0 is a moment; the School of Innovation is a movement.
+            Innovation 5.0 is a moment; the School of Innovation is a movement.
             Whether you're here for the live energy or the deep-dive skills,
             we’ve got you covered.
           </p>

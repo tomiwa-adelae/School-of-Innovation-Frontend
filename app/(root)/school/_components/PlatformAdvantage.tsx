@@ -58,7 +58,7 @@ export const PlatformAdvantage = () => {
         {/* Header */}
         <div className="max-w-3xl mb-10">
           <h2 className="text-blue-400 font-semibold uppercase text-xs mb-4">
-            Why Innovation 4.0?
+            Why Innovation 5.0?
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold mb-4">
             Built for the <br className="hidden lg:block" />

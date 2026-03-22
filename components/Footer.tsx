@@ -20,7 +20,7 @@ export const Footer = () => {
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="text-2xl font-bold text-white">
-              INNOVATION <span className="text-blue-500">4.0</span>
+              INNOVATION <span className="text-blue-500">5.0</span>
             </div>
             <p className="text-sm leading-relaxed">
               Empowering Africa's next generation of founders, creators, and
@@ -142,7 +142,7 @@ export const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase font-medium">
-          <p>© {currentYear} Innovation 4.0. Powered by Cornerstone Intl.</p>
+          <p>© {currentYear} Innovation 5.0. Powered by Cornerstone Intl.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white transition">
               Privacy Policy

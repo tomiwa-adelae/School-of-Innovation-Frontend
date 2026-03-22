@@ -10,7 +10,7 @@ export const LegacyTimeline = () => {
   const years = [
     {
       year: "2025",
-      version: "Innovation 4.0",
+      version: "Innovation 5.0",
       theme: "The Power of You",
       desc: "The focus shifted from innovation to action. We challenged founders to stop dreaming and start doing.",
       icon: <IconBolt className="text-primary" />,

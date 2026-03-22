@@ -12,7 +12,7 @@ export const ClarityHub = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const faqs = [
     {
-      q: "Is Innovation 4.0 free to attend?",
+      q: "Is Innovation 5.0 free to attend?",
       a: "We offer both Free and Paid tiers. The Digital Pass is free for online workshops, while the Physical Delegate and Founder passes have a fee to cover venue, logistics, and exclusive resources.",
     },
     {

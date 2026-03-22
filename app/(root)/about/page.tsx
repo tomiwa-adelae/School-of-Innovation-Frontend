@@ -1,47 +1,35 @@
-// import React from "react";
-// import { Hero } from "./_components/Hero";
-// import { PurposePillars } from "./_components/PurposePillars";
-// import { LegacyTimeline } from "./_components/LegacyTimeline";
-// import { TeamSection } from "./_components/TeamSection";
-// import { JoinEcosystem } from "./_components/JoinEcosystem";
-// import { LearningPaths } from "./_components/LearningPaths";
-// import { LearningFlow } from "./_components/LearningFlow";
-// import { InstructorSpotlight } from "./_components/InstructorSpotlight";
-// import { CertificationShowcase } from "./_components/CertificationShowcase";
-
-// const page = () => {
-//   return (
-//     <div>
-//       <Hero />
-//       <PurposePillars />
-//       <LegacyTimeline />
-//       <TeamSection />
-//       <JoinEcosystem />
-//       <LearningPaths />
-//       <LearningFlow />
-//       <InstructorSpotlight />
-//       <CertificationShowcase />
-//     </div>
-//   );
-// };
-
-// export default page;
-
+import type { Metadata } from "next";
 import React from "react";
 import { Hero } from "./_components/Hero";
 import { PurposePillars } from "./_components/PurposePillars";
 import { LegacyTimeline } from "./_components/LegacyTimeline";
-// 1. Move LearningPaths & LearningFlow here to show the "Evolution"
 import { LearningPaths } from "./_components/LearningPaths";
 import { LearningFlow } from "./_components/LearningFlow";
-// 2. Introduce the people who make it happen
 import { TeamSection } from "./_components/TeamSection";
 import { InstructorSpotlight } from "./_components/InstructorSpotlight";
-// 3. The proof of value
 import { CertificationShowcase } from "./_components/CertificationShowcase";
-// 4. The final invitation
 import { JoinEcosystem } from "./_components/JoinEcosystem";
 import { Sponsors } from "@/components/Sponsors";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about School of Innovation — our mission, story, team, and the movement we are building to empower the next generation of African innovators through world-class education.",
+  keywords: [
+    "about School of Innovation",
+    "Nigerian edtech company",
+    "our mission",
+    "innovation education Nigeria",
+    "edtech Africa",
+  ],
+  openGraph: {
+    title: "About Us | School of Innovation",
+    description:
+      "Meet the team behind Nigeria's leading online learning platform. We are building the next generation of African innovators.",
+    url: "https://innovationconference.com.ng/about",
+  },
+  alternates: { canonical: "https://innovationconference.com.ng/about" },
+};
 
 const page = () => {
   return (

@@ -95,7 +95,7 @@ export const SocialEcosystem = () => {
         {/* Closing Tagline */}
         <div className="mt-16 text-center">
           <p className="text-gray-400 font-medium flex items-center justify-center gap-2">
-            Innovation 4.0 is powered by the people.{" "}
+            Innovation 5.0 is powered by the people.{" "}
             <IconArrowUpRight size={16} />
           </p>
         </div>

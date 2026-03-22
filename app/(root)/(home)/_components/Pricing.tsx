@@ -74,7 +74,7 @@ export const Pricing = () => {
               </span>
               <h3 className="text-3xl font-black mt-4">Physical Delegate</h3>
               <p className="text-blue-100 mt-4 text-sm">
-                The full 4.0 Experience. Networking, Live Sessions, and Awards.
+                The full 5.0 Experience. Networking, Live Sessions, and Awards.
               </p>
             </div>
             <div className="text-4xl font-black mb-8">

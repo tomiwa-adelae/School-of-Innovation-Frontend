@@ -31,7 +31,7 @@ export const Hero = () => {
           {/* Manifesto Paragraph */}
           <p className="text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl">
             We are the launchpad for Africa’s next wave of founders. Innovation
-            4.0 is where creativity meets capital, and ambition meets execution.
+            5.0 is where creativity meets capital, and ambition meets execution.
           </p>
         </div>
       </div>

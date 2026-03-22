@@ -81,7 +81,7 @@ export const LearningFlow = () => {
 
                 {/* Subtle Detail */}
                 <div className="flex items-center gap-2 text-xs font-bold text-gray-300 uppercase tracking-widest">
-                  <span>Innovation 4.0 Standard</span>
+                  <span>Innovation 5.0 Standard</span>
                 </div>
               </div>
             </div>

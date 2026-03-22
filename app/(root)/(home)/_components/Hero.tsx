@@ -34,7 +34,7 @@ export const Hero = () => {
 
         <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-10 leading-relaxed">
           The ultimate launchpad for Africa’s next generation of founders. Join
-          2,000+ visionaries for Innovation 4.0.
+          2,000+ visionaries for Innovation 5.0.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
