@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { IconLoader2, IconCurrencyDollar } from "@tabler/icons-react";
 import { env } from "@/lib/env";
+import { NairaIcon } from "./NairaIcon";
 
 interface Props {
   courseId: string;
@@ -110,7 +111,7 @@ export function FlutterwavePayButton({
         })
       }
     >
-      <IconCurrencyDollar size={18} />
+      <NairaIcon />
       Buy Now — {currency || "NGN"} {price?.toLocaleString()}
     </Button>
   );

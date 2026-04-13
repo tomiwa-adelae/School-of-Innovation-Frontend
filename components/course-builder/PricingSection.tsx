@@ -104,7 +104,7 @@ export function PricingSection({ control }: PricingSectionProps) {
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-bold">Price (USD)</FormLabel>
+                <FormLabel className="text-xs font-bold">Price</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">

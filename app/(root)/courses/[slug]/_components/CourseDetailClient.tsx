@@ -744,7 +744,7 @@ export default function CourseDetailPage() {
                     className="w-full gap-2"
                     onClick={() => router.push("/login")}
                   >
-                    <IconCurrencyDollar /> Buy Now
+                    <NairaIcon /> Buy Now
                   </Button>
                 )}
 
