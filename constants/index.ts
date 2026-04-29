@@ -131,6 +131,5 @@ export const adminNavLinks: NavLinkProps[] = [
     label: "Admin Team",
     slug: "/a/team",
     icon: IconShield,
-    comingSoon: true,
   },
 ];

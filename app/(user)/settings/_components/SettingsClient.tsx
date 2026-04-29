@@ -14,6 +14,10 @@ import {
   IconEye,
   IconX,
   IconCamera,
+  IconChalkboard,
+  IconClockHour4,
+  IconCircleCheck,
+  IconCircleX,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +29,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -59,6 +65,7 @@ const profileSchema = z.object({
   state: z.string().optional(),
   country: z.string().optional(),
   address: z.string().optional(),
+  bio: z.string().max(500, "Bio must be 500 characters or less").optional(),
   image: z.string().optional(),
 });
 
@@ -111,6 +118,7 @@ function ProfileTab() {
       state: user?.state ?? "",
       country: user?.country ?? "",
       address: user?.address ?? "",
+      bio: user?.bio ?? "",
       image: user?.image || "",
     },
   });
@@ -129,6 +137,7 @@ function ProfileTab() {
         state: user.state ?? "",
         country: user.country ?? "",
         address: user.address ?? "",
+        bio: user.bio ?? "",
         image: user.image || "",
       });
     }
@@ -409,6 +418,39 @@ function ProfileTab() {
                 )}
               />
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Bio */}
+        <Card>
+          <CardHeader>
+            <CardTitle>About You</CardTitle>
+            <CardDescription>
+              A short bio that others see on your profile.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bio</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tell us a bit about yourself..."
+                      rows={4}
+                      maxLength={500}
+                      {...field}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground text-right">
+                    {(field.value ?? "").length}/500
+                  </p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -836,9 +878,118 @@ function NotificationsTab() {
   );
 }
 
+// ─── Instructor Profile Tab ───────────────────────────────────────────────────
+
+function InstructorProfileTab() {
+  const { user } = useAuth();
+
+  const statusConfig = {
+    PENDING: {
+      icon: IconClockHour4,
+      label: "Pending Approval",
+      className: "text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 dark:text-amber-400",
+      description: "Your instructor application is under review by our admin team. You'll be notified once a decision is made.",
+    },
+    APPROVED: {
+      icon: IconCircleCheck,
+      label: "Approved Instructor",
+      className: "text-green-600 border-green-300 bg-green-50 dark:bg-green-950/30 dark:border-green-800 dark:text-green-400",
+      description: "Your instructor account is active. You can create and publish courses.",
+    },
+    REJECTED: {
+      icon: IconCircleX,
+      label: "Application Rejected",
+      className: "text-red-600 border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-800 dark:text-red-400",
+      description: "Your instructor application was not approved. Please contact support if you believe this is an error.",
+    },
+  };
+
+  const status = user?.instructorStatus as keyof typeof statusConfig | null;
+  const config = status ? statusConfig[status] : null;
+
+  return (
+    <div className="space-y-4">
+      {/* Approval Status */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Instructor Status</CardTitle>
+          <CardDescription>Your current approval status on the platform.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {config ? (
+            <div className="flex items-start gap-4">
+              <div className={`rounded-full p-2 border ${config.className}`}>
+                <config.icon size={20} />
+              </div>
+              <div className="flex-1">
+                <Badge variant="outline" className={`mb-2 ${config.className}`}>
+                  {config.label}
+                </Badge>
+                <p className="text-sm text-muted-foreground">{config.description}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No instructor status found.</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Public Profile Info */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Public Instructor Profile</CardTitle>
+          <CardDescription>
+            This information is visible to students on your course pages. Update your bio from the Profile tab.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex justify-between items-start text-sm">
+            <span className="text-muted-foreground w-32 shrink-0">Display Name</span>
+            <span className="font-medium text-right">{user?.firstName} {user?.lastName}</span>
+          </div>
+          <Separator />
+          <div className="flex justify-between items-start text-sm">
+            <span className="text-muted-foreground w-32 shrink-0">Username</span>
+            <span className="font-medium text-right">@{user?.username}</span>
+          </div>
+          <Separator />
+          <div className="flex justify-between items-start text-sm">
+            <span className="text-muted-foreground w-32 shrink-0">Bio</span>
+            <span className="text-right max-w-xs">
+              {user?.bio ? (
+                <span>{user.bio}</span>
+              ) : (
+                <span className="text-muted-foreground italic">No bio set — add one in the Profile tab.</span>
+              )}
+            </span>
+          </div>
+          <Separator />
+          <div className="flex justify-between items-start text-sm">
+            <span className="text-muted-foreground w-32 shrink-0">Interests</span>
+            <div className="flex flex-wrap gap-1 justify-end max-w-xs">
+              {user?.interests?.length ? (
+                user.interests.map((interest) => (
+                  <Badge key={interest} variant="secondary" className="text-xs">
+                    {interest}
+                  </Badge>
+                ))
+              ) : (
+                <span className="text-muted-foreground italic text-xs">None set</span>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SettingsPage() {
+  const { user } = useAuth();
+  const isInstructor = user?.role === "INSTRUCTOR";
+
   return (
     <main>
       <PageHeader
@@ -853,6 +1004,12 @@ export default function SettingsPage() {
             <IconUser size={15} />
             Profile
           </TabsTrigger>
+          {isInstructor && (
+            <TabsTrigger value="instructor" className="flex items-center gap-2">
+              <IconChalkboard size={15} />
+              Instructor
+            </TabsTrigger>
+          )}
           <TabsTrigger value="security" className="flex items-center gap-2">
             <IconLock size={15} />
             Security
@@ -869,6 +1026,12 @@ export default function SettingsPage() {
         <TabsContent value="profile">
           <ProfileTab />
         </TabsContent>
+
+        {isInstructor && (
+          <TabsContent value="instructor">
+            <InstructorProfileTab />
+          </TabsContent>
+        )}
 
         <TabsContent value="security">
           <SecurityTab />

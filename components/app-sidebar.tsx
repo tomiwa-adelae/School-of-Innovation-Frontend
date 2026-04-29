@@ -36,7 +36,6 @@ const sidebarData = {
       title: "Settings",
       url: "/settings",
       icon: IconSettings,
-      comingSoon: true,
     },
     { title: "Get Help", url: "/help", icon: IconHelp, comingSoon: true },
   ],

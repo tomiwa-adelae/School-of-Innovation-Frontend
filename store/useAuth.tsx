@@ -25,7 +25,11 @@ export type User = {
 
 type AuthState = {
   user: User;
+  accessToken: string | null;
+  refreshToken: string | null;
   setUser: (user: User) => void;
+  setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
   clearUser: () => void;
   _hasHydrated: boolean;
   setHasHydrated: (hasHydrated: boolean) => void;
@@ -35,8 +39,12 @@ export const useAuth = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      accessToken: null,
+      refreshToken: null,
       setUser: (user) => set({ user }),
-      clearUser: () => set({ user: null }),
+      setAccessToken: (token) => set({ accessToken: token }),
+      setRefreshToken: (token) => set({ refreshToken: token }),
+      clearUser: () => set({ user: null, accessToken: null, refreshToken: null }),
       _hasHydrated: false,
       setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
     }),

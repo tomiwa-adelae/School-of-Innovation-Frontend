@@ -4,9 +4,20 @@ import { env } from "./env";
 
 const api: AxiosInstance = axios.create({
   baseURL: env.NEXT_PUBLIC_BACKEND_URL,
-
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
+});
+
+// Attach the stored access token as a Bearer header on every request.
+// This is the fallback path for Safari, which blocks cross-site httpOnly cookies.
+// Chrome/Firefox will use cookies; Safari will use this header.
+api.interceptors.request.use((config) => {
+  const { accessToken } = useAuth.getState();
+  if (accessToken) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
 });
 
 const PUBLIC_ROUTES = [
@@ -61,15 +72,19 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Attempt to refresh the access token using the refresh token cookie
-
+        // Send the stored refresh token in the body for Safari (cookie blocked),
+        // withCredentials still covers Chrome/Firefox via cookie.
+        const { refreshToken, setAccessToken, setRefreshToken } = useAuth.getState();
         const { data } = await api.post(
           "/auth/refresh",
-          {},
+          { refreshToken },
           { withCredentials: true },
         );
 
-        // Refresh succeeded — retry queued requests
+        // Store the rotated tokens so future requests and page reloads work.
+        setAccessToken(data.access_token);
+        setRefreshToken(data.refresh_token);
+
         processQueue(null);
         isRefreshing = false;
 

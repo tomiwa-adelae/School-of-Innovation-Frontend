@@ -46,7 +46,7 @@ type LoginFormInput = {
 
 const LoginPage = () => {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setUser, setAccessToken, setRefreshToken } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -60,10 +60,18 @@ const LoginPage = () => {
 
   const onSubmit = async (values: LoginFormInput) => {
     try {
-      const data = await postData<{ user: any }>("/auth/login", values);
+      const data = await postData<{ user: any; access_token: string; refresh_token: string }>("/auth/login", values);
       setUser(data.user);
+      setAccessToken(data.access_token);
+      setRefreshToken(data.refresh_token);
       toast.success(`Welcome back, ${data.user?.firstName}!`);
-      router.push("/");
+      if (!data.user?.onboardingCompleted) {
+        router.push("/onboarding");
+      } else if (data.user?.role === "ADMINISTRATOR") {
+        router.push("/admin");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       const message =
         err?.response?.data?.message ??

@@ -55,7 +55,7 @@ type RegisterFormInput = {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setUser, setAccessToken, setRefreshToken } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -112,8 +112,10 @@ const RegisterPage = () => {
 
   const onSubmit = async (values: RegisterFormInput) => {
     try {
-      const data = await postData<{ user: any }>("/auth/register", values);
+      const data = await postData<{ user: any; access_token: string; refresh_token: string }>("/auth/register", values);
       setUser(data.user);
+      setAccessToken(data.access_token);
+      setRefreshToken(data.refresh_token);
       toast.success("Account created! Let's set up your profile.");
       router.push("/onboarding");
     } catch (err: any) {
