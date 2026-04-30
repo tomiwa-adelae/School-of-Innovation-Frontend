@@ -161,7 +161,7 @@ export default function AdminPage() {
             {
               label: "Instructor Approvals",
               desc: `${stats?.pendingInstructors ?? 0} pending`,
-              href: "/admin/instructors",
+              href: "/a/instructors",
               icon: IconUserCheck,
               color: "bg-amber-50 dark:bg-amber-950/40 text-amber-600",
               urgent: (stats?.pendingInstructors ?? 0) > 0,
@@ -169,7 +169,7 @@ export default function AdminPage() {
             {
               label: "All Users",
               desc: `${(stats?.totalUsers ?? 0) + (stats?.totalInstructors ?? 0)} total`,
-              href: "/admin/users",
+              href: "/a/users",
               icon: IconUsers,
               color: "bg-blue-50 dark:bg-blue-950/40 text-blue-600",
               urgent: false,
@@ -219,7 +219,7 @@ export default function AdminPage() {
               </h3>
             </div>
             <Link
-              href="/admin/instructors"
+              href="/a/instructors"
               className="text-xs font-bold text-amber-600 hover:underline flex items-center gap-1"
             >
               View All <IconArrowRight size={12} />

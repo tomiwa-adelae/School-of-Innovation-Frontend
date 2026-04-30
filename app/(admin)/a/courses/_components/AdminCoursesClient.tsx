@@ -136,12 +136,12 @@ export default function AdminCoursesPage() {
     queryKey,
     queryFn: () =>
       fetchData(
-        filter === "ALL" ? "/admin/courses" : `/admin/courses?status=${filter}`,
+        filter === "ALL" ? "/a/courses" : `/a/courses?status=${filter}`,
       ),
   });
 
   const approveMutation = useMutation({
-    mutationFn: (id: string) => updateData(`/admin/courses/${id}/approve`, {}),
+    mutationFn: (id: string) => updateData(`/a/courses/${id}/approve`, {}),
     onSuccess: () => {
       toast.success("Course approved and published!");
       queryClient.invalidateQueries({ queryKey: ["admin-courses"] });
@@ -150,7 +150,7 @@ export default function AdminCoursesPage() {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: (id: string) => updateData(`/admin/courses/${id}/reject`, {}),
+    mutationFn: (id: string) => updateData(`/a/courses/${id}/reject`, {}),
     onSuccess: () => {
       toast.success("Course rejected and moved back to draft");
       queryClient.invalidateQueries({ queryKey: ["admin-courses"] });

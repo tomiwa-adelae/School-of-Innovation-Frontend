@@ -112,7 +112,7 @@ function EditEnrollmentSheet({
     if (!enrollment) return;
     setSaving(true);
     try {
-      await updateData(`/enrollments/admin/${enrollment.id}`, {
+      await updateData(`/enrollments/a/${enrollment.id}`, {
         paymentVerified,
         adminNotes: adminNotes || undefined,
         flwTransactionId: flwTxId || undefined,
@@ -303,7 +303,7 @@ export default function AdminEnrollmentsPage() {
     total: number;
   }>({
     queryKey: ["admin-enrollments-all", debouncedSearch],
-    queryFn: () => fetchData(`/enrollments/admin/list?${params.toString()}`),
+    queryFn: () => fetchData(`/enrollments/a/list?${params.toString()}`),
   });
 
   function invalidate() {
@@ -319,7 +319,7 @@ export default function AdminEnrollmentsPage() {
       return;
     setRevokingId(enrollment.id);
     try {
-      await deleteData(`/enrollments/admin/${enrollment.id}`);
+      await deleteData(`/enrollments/a/${enrollment.id}`);
       toast.success("Enrollment revoked");
       invalidate();
     } catch {

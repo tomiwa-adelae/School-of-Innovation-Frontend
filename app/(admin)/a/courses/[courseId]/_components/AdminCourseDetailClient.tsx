@@ -290,7 +290,7 @@ function EditEnrollmentSheet({
     if (!enrollment) return;
     setSaving(true);
     try {
-      await updateData(`/enrollments/admin/${enrollment.id}`, {
+      await updateData(`/enrollments/a/${enrollment.id}`, {
         paymentVerified,
         adminNotes: adminNotes || undefined,
         flwTransactionId: flwTxId || undefined,
@@ -466,7 +466,7 @@ function ManualEnrollDialog({
     if (!email.trim()) return;
     setLoading(true);
     try {
-      await postData(`/enrollments/admin/manual/${courseId}`, {
+      await postData(`/enrollments/a/manual/${courseId}`, {
         userEmail: email.trim(),
         notes: notes.trim() || undefined,
       });
@@ -543,7 +543,7 @@ function ManualEnrollDialog({
 function EnrollmentSidebarCard({ courseId }: { courseId: string }) {
   const { data } = useQuery<{ enrollments: Enrollment[]; total: number }>({
     queryKey: ["admin-enrollments", courseId, ""],
-    queryFn: () => fetchData(`/enrollments/admin/list?courseId=${courseId}`),
+    queryFn: () => fetchData(`/enrollments/a/list?courseId=${courseId}`),
   });
 
   const total = data?.total ?? null;
@@ -611,7 +611,7 @@ function EnrolledStudentsSection({ courseId }: { courseId: string }) {
     total: number;
   }>({
     queryKey: ["admin-enrollments", courseId, debouncedSearch],
-    queryFn: () => fetchData(`/enrollments/admin/list?${params.toString()}`),
+    queryFn: () => fetchData(`/enrollments/a/list?${params.toString()}`),
   });
 
   function invalidate() {
@@ -629,7 +629,7 @@ function EnrolledStudentsSection({ courseId }: { courseId: string }) {
       return;
     setRevokingId(enrollment.id);
     try {
-      await deleteData(`/enrollments/admin/${enrollment.id}`);
+      await deleteData(`/enrollments/a/${enrollment.id}`);
       toast.success("Enrollment revoked");
       invalidate();
     } catch {
@@ -1132,7 +1132,7 @@ export default function AdminCourseDetailPage() {
 
   const { data: course, isLoading } = useQuery<Course>({
     queryKey: ["admin-course", courseId],
-    queryFn: () => fetchData(`/admin/courses/${courseId}`),
+    queryFn: () => fetchData(`/a/courses/${courseId}`),
   });
 
   function invalidate() {
@@ -1141,7 +1141,7 @@ export default function AdminCourseDetailPage() {
   }
 
   const approveMutation = useMutation({
-    mutationFn: () => updateData(`/admin/courses/${courseId}/approve`, {}),
+    mutationFn: () => updateData(`/a/courses/${courseId}/approve`, {}),
     onSuccess: () => {
       toast.success("Course approved and published!");
       invalidate();
@@ -1150,7 +1150,7 @@ export default function AdminCourseDetailPage() {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: () => updateData(`/admin/courses/${courseId}/reject`, {}),
+    mutationFn: () => updateData(`/a/courses/${courseId}/reject`, {}),
     onSuccess: () => {
       toast.success("Course rejected and moved back to draft");
       invalidate();
@@ -1159,7 +1159,7 @@ export default function AdminCourseDetailPage() {
   });
 
   const archiveMutation = useMutation({
-    mutationFn: () => updateData(`/admin/courses/${courseId}/archive`, {}),
+    mutationFn: () => updateData(`/a/courses/${courseId}/archive`, {}),
     onSuccess: () => {
       toast.success("Course archived");
       invalidate();
