@@ -1132,7 +1132,7 @@ export default function AdminCourseDetailPage() {
 
   const { data: course, isLoading } = useQuery<Course>({
     queryKey: ["admin-course", courseId],
-    queryFn: () => fetchData(`/a/courses/${courseId}`),
+    queryFn: () => fetchData(`/admin/courses/${courseId}`),
   });
 
   function invalidate() {
@@ -1141,7 +1141,7 @@ export default function AdminCourseDetailPage() {
   }
 
   const approveMutation = useMutation({
-    mutationFn: () => updateData(`/a/courses/${courseId}/approve`, {}),
+    mutationFn: () => updateData(`/admin/courses/${courseId}/approve`, {}),
     onSuccess: () => {
       toast.success("Course approved and published!");
       invalidate();
@@ -1150,7 +1150,7 @@ export default function AdminCourseDetailPage() {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: () => updateData(`/a/courses/${courseId}/reject`, {}),
+    mutationFn: () => updateData(`/admin/courses/${courseId}/reject`, {}),
     onSuccess: () => {
       toast.success("Course rejected and moved back to draft");
       invalidate();
@@ -1159,7 +1159,7 @@ export default function AdminCourseDetailPage() {
   });
 
   const archiveMutation = useMutation({
-    mutationFn: () => updateData(`/a/courses/${courseId}/archive`, {}),
+    mutationFn: () => updateData(`/admin/courses/${courseId}/archive`, {}),
     onSuccess: () => {
       toast.success("Course archived");
       invalidate();

@@ -19,10 +19,6 @@ export default function CreateCoursePage() {
     }
     if (user.role !== "INSTRUCTOR") {
       router.replace("/dashboard");
-      return;
-    }
-    if (user.instructorStatus !== "APPROVED") {
-      router.replace("/dashboard");
     }
   }, [user, _hasHydrated, router]);
 
@@ -34,7 +30,7 @@ export default function CreateCoursePage() {
     );
   }
 
-  if (user.role !== "INSTRUCTOR" || user.instructorStatus !== "APPROVED") {
+  if (user.role !== "INSTRUCTOR") {
     return null;
   }
 

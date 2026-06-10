@@ -14,6 +14,7 @@ import {
   IconNews,
   IconSettings,
   IconReceipt,
+  IconTicket,
 } from "@tabler/icons-react";
 
 export const DEFAULT_PROFILE_IMAGE = "/assets/images/profile-img.jpg";
@@ -114,6 +115,11 @@ export const adminNavLinks: NavLinkProps[] = [
     label: "Enrollments",
     slug: "/a/enrollments",
     icon: IconReceipt,
+  },
+  {
+    label: "Coupons",
+    slug: "/a/coupons",
+    icon: IconTicket,
   },
   {
     label: "Events",

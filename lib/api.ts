@@ -136,12 +136,25 @@ export async function deleteData<T>(url: string): Promise<T> {
   return res.data;
 }
 
-// ── Public (unauthenticated) helper ───────────────────────────────────────────
-// Uses a plain fetch so it never triggers the auth interceptor / redirect.
+// ── Public (unauthenticated) helpers ──────────────────────────────────────────
+// Uses plain fetch so it never triggers the auth interceptor / redirect.
 export async function publicFetch<T>(url: string): Promise<T> {
   const res = await fetch(`${env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
+export async function publicPost<T>(url: string, data: unknown): Promise<T> {
+  const res = await fetch(`${env.NEXT_PUBLIC_BACKEND_URL}${url}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as any)?.message ?? `Request failed: ${res.status}`);
+  }
   return res.json() as Promise<T>;
 }

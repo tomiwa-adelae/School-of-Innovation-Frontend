@@ -29,9 +29,12 @@ import {
   IconCurrencyDollar,
   IconStar,
   IconStarFilled,
+  IconTag,
+  IconX,
 } from "@tabler/icons-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader } from "@/components/Loader";
 import { NairaIcon } from "@/components/NairaIcon";
@@ -188,6 +191,18 @@ export default function CourseDetailPage() {
   const [enrolling, setEnrolling] = useState(false);
   const [checkingEnrollment, setCheckingEnrollment] = useState(false);
 
+  // Coupon state
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountValue: number;
+    originalPrice: number;
+    discountedPrice: number;
+    amountSaved: number;
+  } | null>(null);
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState<string | null>(null);
+
   // Reviews state
   const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [avgRating, setAvgRating] = useState<number | null>(null);
@@ -258,6 +273,37 @@ export default function CourseDetailPage() {
     } finally {
       setEnrolling(false);
     }
+  }
+
+  async function handleApplyCoupon() {
+    if (!course || !couponInput.trim()) return;
+    setApplyingCoupon(true);
+    setCouponError(null);
+    try {
+      const data = await postData<{
+        code: string;
+        discountValue: number;
+        originalPrice: number;
+        discountedPrice: number;
+        amountSaved: number;
+      }>("/coupons/validate", {
+        code: couponInput.trim(),
+        courseId: course.id,
+      });
+      setAppliedCoupon(data);
+      toast.success(`Coupon applied — ${data.discountValue}% off!`);
+    } catch (err: any) {
+      setAppliedCoupon(null);
+      setCouponError(err?.response?.data?.message ?? "Invalid coupon code");
+    } finally {
+      setApplyingCoupon(false);
+    }
+  }
+
+  function handleRemoveCoupon() {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponError(null);
   }
 
   if (loading) {
@@ -690,6 +736,20 @@ export default function CourseDetailPage() {
                 <div className="mb-5">
                   {isFree ? (
                     <p className="text-2xl font-semibold">Free</p>
+                  ) : appliedCoupon ? (
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-2xl font-semibold">
+                        {course.currency === "NGN" ? <NairaIcon /> : "$"}
+                        {formatMoneyInput(appliedCoupon.discountedPrice)}
+                      </p>
+                      <p className="text-sm text-muted-foreground line-through">
+                        {course.currency === "NGN" ? <NairaIcon /> : "$"}
+                        {formatMoneyInput(appliedCoupon.originalPrice)}
+                      </p>
+                      <Badge className="bg-green-600 hover:bg-green-600 text-white">
+                        {appliedCoupon.discountValue}% OFF
+                      </Badge>
+                    </div>
                   ) : (
                     <p className="text-2xl font-semibold">
                       {course.currency === "NGN" ? <NairaIcon /> : "$"}
@@ -697,6 +757,61 @@ export default function CourseDetailPage() {
                     </p>
                   )}
                 </div>
+
+                {/* Coupon code */}
+                {!isFree && user && !enrolled && !checkingEnrollment && (
+                  <div className="mb-4">
+                    {appliedCoupon ? (
+                      <div className="flex items-center justify-between gap-2 p-2.5 rounded-lg border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/20">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <IconTag size={15} className="text-green-600 shrink-0" />
+                          <p className="text-sm font-medium text-green-700 dark:text-green-400 truncate">
+                            {appliedCoupon.code} applied
+                          </p>
+                        </div>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-6 w-6 shrink-0"
+                          onClick={handleRemoveCoupon}
+                        >
+                          <IconX size={14} />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            placeholder="Coupon code"
+                            value={couponInput}
+                            onChange={(e) => {
+                              setCouponInput(e.target.value.toUpperCase());
+                              setCouponError(null);
+                            }}
+                            className="uppercase"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            disabled={applyingCoupon || !couponInput.trim()}
+                            onClick={handleApplyCoupon}
+                          >
+                            {applyingCoupon ? (
+                              <IconLoader2 size={14} className="animate-spin" />
+                            ) : (
+                              "Apply"
+                            )}
+                          </Button>
+                        </div>
+                        {couponError && (
+                          <p className="text-xs text-destructive mt-1.5">
+                            {couponError}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* CTA */}
                 {checkingEnrollment ? (
@@ -728,8 +843,9 @@ export default function CourseDetailPage() {
                   <FlutterwavePayButton
                     courseId={course.id}
                     courseTitle={course.title}
-                    price={course.price ?? 0}
+                    price={appliedCoupon ? appliedCoupon.discountedPrice : (course.price ?? 0)}
                     currency={course.currency ?? "NGN"}
+                    couponCode={appliedCoupon?.code}
                     user={{
                       email: user.email,
                       firstName: user.firstName,

@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import React from "react";
-import { Hero } from "./_components/Hero";
-import { FeaturesBridge } from "./_components/FeaturesBridge";
-import { FeaturedCourses } from "./_components/FeaturedCourses";
-import { ExpertSpotlight } from "./_components/ExpertSpotlight";
-import { EventSchedule } from "./_components/EventSchedule";
-import { ImpactStories } from "./_components/ImpactStories";
-import { Pricing } from "./_components/Pricing";
-import { Sponsors } from "@/components/Sponsors";
-import { ClarityHub } from "./_components/ClarityHub";
+import { Hero } from "../school/_components/Hero";
+import { CategoryBrowser } from "../school/_components/CategoryBrowser";
+import { TrendingCourses } from "../school/_components/TrendingCourses";
+import { PlatformAdvantage } from "../school/_components/PlatformAdvantage";
+import { AlumniSuccess } from "../school/_components/AlumniSuccess";
+import { SchoolFinalCTA } from "../school/_components/SchoolFinalCTA";
 
 export const metadata: Metadata = {
-  title: "Learn In-Demand Skills Online",
+  title: "School of Innovation – Learn In-Demand Skills Online",
   description:
-    "Discover hundreds of courses in tech, design, business, and more. Learn from Nigeria's top instructors, earn industry-recognised certificates, and advance your career with School of Innovation.",
+    "Explore all course categories, trending programmes, and the full platform at School of Innovation. From tech and design to business and creative arts — find the right course for your goals.",
   keywords: [
     "online courses Nigeria",
     "learn to code Nigeria",
@@ -21,27 +17,26 @@ export const metadata: Metadata = {
     "design courses",
     "business courses",
     "certificate courses Nigeria",
+    "School of Innovation",
   ],
   openGraph: {
     title: "School of Innovation – Learn In-Demand Skills Online",
     description:
-      "Discover hundreds of courses in tech, design, business, and more. Learn from Nigeria's top instructors and earn industry-recognised certificates.",
+      "Browse all course categories and trending programmes at School of Innovation. Find the perfect course to advance your career.",
     url: "https://innovationconference.com.ng",
   },
+  alternates: { canonical: "https://innovationconference.com.ng" },
 };
 
 const page = () => {
   return (
     <div>
       <Hero />
-      <FeaturesBridge />
-      <FeaturedCourses />
-      <ExpertSpotlight />
-      <EventSchedule />
-      <ImpactStories />
-      <Pricing />
-      <Sponsors />
-      <ClarityHub />
+      <CategoryBrowser />
+      <TrendingCourses />
+      <PlatformAdvantage />
+      <AlumniSuccess />
+      <SchoolFinalCTA />
     </div>
   );
 };

@@ -526,7 +526,7 @@ export default function CoursesPage() {
 
   if (user?.role === "USER") return <StudentMyCourses />;
 
-  if (user?.role === "INSTRUCTOR" && user?.instructorStatus === "APPROVED") {
+  if (user?.role === "INSTRUCTOR") {
     return <InstructorMyCourses />;
   }
 
@@ -539,9 +539,7 @@ export default function CoursesPage() {
         Courses Unavailable
       </h2>
       <p className="text-muted-foreground mb-6">
-        {user?.role !== "INSTRUCTOR"
-          ? "Only instructors can create courses."
-          : "Your instructor application is pending admin approval. You'll be able to create courses once approved."}
+        Only instructors can create courses.
       </p>
       <Button asChild variant="outline" className="rounded-md font-bold">
         <Link href="/dashboard">Back to Dashboard</Link>

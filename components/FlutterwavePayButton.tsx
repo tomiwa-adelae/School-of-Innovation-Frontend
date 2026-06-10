@@ -15,6 +15,7 @@ interface Props {
   courseTitle: string;
   price: number;
   currency: string;
+  couponCode?: string;
   user: {
     email: string;
     firstName: string;
@@ -31,6 +32,7 @@ export function FlutterwavePayButton({
   courseTitle,
   price,
   currency,
+  couponCode,
   user,
   onSuccess,
   disabled,
@@ -78,6 +80,7 @@ export function FlutterwavePayButton({
       await postData(`/enrollments/${courseId}/verify-payment`, {
         transactionId: String(response.transaction_id),
         txRef: response.tx_ref,
+        ...(couponCode && { couponCode }),
       });
       toast.dismiss(loadingToast);
       toast.success("Payment confirmed! You are now enrolled. 🎉");

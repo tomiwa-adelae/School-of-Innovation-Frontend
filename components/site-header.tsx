@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/useAuth";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationBell } from "./NotificationBell";
 
 const roleTitles: Record<string, string> = {
   ADMINISTRATOR: "Admin Panel",
@@ -45,6 +46,7 @@ export function SiteHeader() {
               </Badge>
             )}
         </div>
+        <NotificationBell />
         <ThemeToggle />
       </div>
     </header>

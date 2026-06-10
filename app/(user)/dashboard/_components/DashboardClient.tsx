@@ -10,7 +10,6 @@ import {
   IconBook,
   IconChartHistogram,
   IconFileCertificate,
-  IconArrowRight,
   IconChalkboard,
   IconUsers,
   IconCurrencyDollar,
@@ -30,6 +29,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
+// ── Instructor stats ──────────────────────────────────────────────────────────
+
+interface InstructorStats {
+  totalStudents: number;
+  activeCourses: number;
+  totalEarnings: number;
+  avgRating: number | null;
+}
 
 // ── Student Dashboard ─────────────────────────────────────────────────────────
 
@@ -231,6 +239,12 @@ function InstructorDashboard({
   const isPending = instructorStatus === "PENDING";
   const isApproved = instructorStatus === "APPROVED";
 
+  const { data: stats, isLoading: statsLoading } = useQuery<InstructorStats>({
+    queryKey: ["instructor-stats"],
+    queryFn: () => fetchData("/courses/my/stats"),
+    enabled: isApproved,
+  });
+
   return (
     <div className="space-y-4">
       {/* Status banner */}
@@ -250,15 +264,15 @@ function InstructorDashboard({
                   Hey {firstName}, you&apos;re almost in! ⏳
                 </h1>
                 <p className="text-white max-w-xl leading-relaxed text-sm">
-                  Our admin team is reviewing your instructor application. This
-                  usually takes up to 48 hours. We&apos;ll notify you once a
-                  decision is made.
+                  Our admin team is reviewing your instructor profile. You can
+                  start building your courses right now — they&apos;ll go live
+                  once your account is approved, usually within 48 hours.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {[
                     "Application Submitted ✓",
                     "Admin Review — In Progress",
-                    "Full Access — Pending",
+                    "Course Publishing — Pending Approval",
                   ].map((s, i) => (
                     <span
                       key={s}
@@ -318,112 +332,114 @@ function InstructorDashboard({
         {[
           {
             label: "Total Students",
-            value: "—",
+            value: isApproved
+              ? statsLoading ? null : String(stats?.totalStudents ?? 0)
+              : "—",
             icon: IconUsers,
             color: "text-purple-500",
           },
           {
             label: "Active Courses",
-            value: "—",
+            value: isApproved
+              ? statsLoading ? null : String(stats?.activeCourses ?? 0)
+              : "—",
             icon: IconBook,
             color: "text-blue-500",
           },
           {
             label: "Total Earnings",
-            value: "—",
+            value: isApproved
+              ? statsLoading
+                ? null
+                : `₦${(stats?.totalEarnings ?? 0).toLocaleString("en-NG")}`
+              : "—",
             icon: IconCurrencyDollar,
             color: "text-green-500",
           },
           {
             label: "Avg. Rating",
-            value: "—",
+            value: isApproved
+              ? statsLoading ? null : (stats?.avgRating != null ? `${stats.avgRating} / 5` : "No reviews")
+              : "—",
             icon: IconChartHistogram,
             color: "text-amber-500",
           },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className={cn(isPending && "opacity-50")}>
+          <Card key={label}>
             <CardContent>
               <Icon size={22} className={cn("mb-3", color)} />
-              <p className="text-2xl font-bold">{value}</p>
+              {value === null ? (
+                <div className="h-7 w-16 bg-muted animate-pulse rounded mb-1" />
+              ) : (
+                <p className="text-2xl font-bold">{value}</p>
+              )}
               <p className="text-xs text-muted-foreground font-medium mt-1">
                 {label}
               </p>
-              {isPending && (
-                <p className="text-xs text-amber-500 font-medium mt-1">
-                  Awaiting approval
-                </p>
-              )}
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* While waiting / course creation */}
-      {isPending && (
-        <Card>
-          <CardHeader className="border-b">
-            <CardTitle>While you wait</CardTitle>
-          </CardHeader>
-
-          <CardContent className="grid sm:grid-cols-2 gap-4">
-            {[
-              {
-                title: "Explore our course catalogue",
-                desc: "See how top instructors structure their content.",
-                icon: IconBook,
-                href: "/courses",
-                color: "bg-blue-50 dark:bg-blue-950/40 text-blue-600",
-              },
-              {
-                title: "Complete your profile",
-                desc: "A great bio helps students trust you faster.",
-                icon: IconChalkboard,
-                href: "/settings",
-                color: "bg-purple-50 dark:bg-purple-950/40 text-purple-600",
-              },
-            ].map(({ title, desc, icon: Icon, href, color }) => (
-              <Link
-                key={title}
-                href={href}
-                className="flex gap-4 p-5 rounded-md border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all"
-              >
-                <div
-                  className={cn(
-                    "w-11 h-11 rounded-xl flex items-center justify-center shrink-0",
-                    color,
-                  )}
-                >
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <p className="font-bold text-sm text-gray-900 dark:text-white">
-                    {title}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-                </div>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
-      )}
-
-      {isApproved && (
-        <Card className="text-center py-10">
-          <CardContent>
-            <div className="w-16 h-16 bg-purple-50 dark:bg-purple-950/40 rounded-md flex items-center justify-center mx-auto mb-4">
-              <IconChalkboard size={28} className="text-purple-500" />
-            </div>
-            <CardTitle className="mb-2">No courses yet</CardTitle>
-            <CardDescription className="texttext-sm mb-6 max-w-sm mx-auto">
-              Create your first course to start reaching students and earning
-              revenue.
+      {/* Quick actions */}
+      <Card>
+        <CardHeader className="border-b">
+          <CardTitle>{isPending ? "Get a head start" : "Quick actions"}</CardTitle>
+          {isPending && (
+            <CardDescription>
+              Your courses will go live once your account is approved — start building now.
             </CardDescription>
-            <Button asChild>
-              <Link href="/dashboard/courses/create">Create a Course</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </CardHeader>
+        <CardContent className="grid sm:grid-cols-3 gap-4">
+          {[
+            {
+              title: "Create a Course",
+              desc: isPending
+                ? "Build your first course — it'll publish once you're approved."
+                : "Start building and reach thousands of students.",
+              icon: IconChalkboard,
+              href: "/dashboard/courses/create",
+              color: "bg-purple-50 dark:bg-purple-950/40 text-purple-600",
+            },
+            {
+              title: "Explore the catalogue",
+              desc: "See how top instructors structure their content.",
+              icon: IconBook,
+              href: "/courses",
+              color: "bg-blue-50 dark:bg-blue-950/40 text-blue-600",
+            },
+            {
+              title: "Complete your profile",
+              desc: "A great bio helps students trust you faster.",
+              icon: IconTrophy,
+              href: "/settings",
+              color: "bg-amber-50 dark:bg-amber-950/40 text-amber-600",
+            },
+          ].map(({ title, desc, icon: Icon, href, color }) => (
+            <Link
+              key={title}
+              href={href}
+              className="flex gap-4 p-5 rounded-md border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all"
+            >
+              <div
+                className={cn(
+                  "w-11 h-11 rounded-xl flex items-center justify-center shrink-0",
+                  color,
+                )}
+              >
+                <Icon size={20} />
+              </div>
+              <div>
+                <p className="font-bold text-sm text-gray-900 dark:text-white">
+                  {title}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
+              </div>
+            </Link>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 }
