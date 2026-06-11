@@ -45,7 +45,7 @@ export const metadata: Metadata = {
       "Nigeria's leading online learning platform. Earn certificates in tech, creative, and professional skills with expert instructors.",
     images: [
       {
-        url: "/assets/images/og-image.jpeg",
+        url: "/assets/images/soi-logo.png",
         width: 1200,
         height: 630,
         alt: `${SITE_NAME} – Learn. Grow. Innovate.`,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     description:
       "Nigeria's leading online learning platform. Earn certificates in tech, creative, and professional skills.",
-    images: ["/assets/images/og-image.jpeg"],
+    images: ["/assets/images/soi-logo.png"],
     creator: "@schoolofinnovation",
     site: "@schoolofinnovation",
   },

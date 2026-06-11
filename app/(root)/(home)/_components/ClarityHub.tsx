@@ -79,8 +79,8 @@ export const ClarityHub = () => {
 
             <h3 className="text-3xl font-bold mb-4">Stay in the Loop</h3>
             <p className="text-blue-100 mb-8 text-lg">
-              Get notified about Innovation 5.0, new course drops, and exclusive
-              scholarship opportunities. No spam, just impact.
+              Get notified about School of Innovation, new course drops, and
+              exclusive scholarship opportunities. No spam, just impact.
             </p>
 
             <form className="relative">

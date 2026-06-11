@@ -341,7 +341,7 @@ const SetNewPasswordContent = () => {
 
         <p className="mt-8 text-center text-muted-foreground text-sm">
           Securing your account for{" "}
-          <span className="text-primary font-medium">Innovation 5.0</span>
+          <span className="text-primary font-medium">School of Innovation</span>
         </p>
       </div>
     </div>

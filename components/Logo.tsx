@@ -14,7 +14,7 @@ export const Logo = ({
   return (
     <Link href="/" className={cn("flex items-center space-x-2")}>
       <Image
-        src={"/assets/images/logo.png"}
+        src={"/assets/images/soi-logo.png"}
         alt="School of Innovation Logo"
         width={1000}
         height={1000}

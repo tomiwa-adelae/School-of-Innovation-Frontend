@@ -207,7 +207,7 @@ const VerifyCodeContent = () => {
         <div className="mt-8 flex items-center justify-center gap-2 text-muted-foreground">
           <IconDeviceMobileCheck size={16} />
           <span className="text-xs font-medium">
-            Secure Verification by Innovation 5.0
+            Secure Verification by School of Innovation
           </span>
         </div>
       </div>

@@ -16,11 +16,11 @@ export const Footer = () => {
   return (
     <footer className="bg-gray-950 text-gray-400 pt-20 pb-10">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
           {/* Brand Column */}
           <div className="space-y-6">
-            <div className="text-2xl font-bold text-white">
-              INNOVATION <span className="text-blue-500">5.0</span>
+            <div className="text-2xl font-bold uppercase text-white">
+              School of <span className="text-blue-500">Innovation</span>
             </div>
             <p className="text-sm leading-relaxed">
               Empowering Africa's next generation of founders, creators, and
@@ -49,7 +49,7 @@ export const Footer = () => {
           </div>
 
           {/* Quick Links: Event */}
-          <div>
+          <div className="hidden">
             <h4 className="text-white font-bold mb-6">The Conference</h4>
             <ul className="space-y-4 text-sm">
               <li>
@@ -111,6 +111,14 @@ export const Footer = () => {
                   LMS Login
                 </a>
               </li>
+              <li>
+                <a
+                  href="/verify"
+                  className="flex items-center gap-1 hover:text-orange-500 transition"
+                >
+                  Verify Certificate
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -142,7 +150,9 @@ export const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase font-medium">
-          <p>© {currentYear} Innovation 5.0. Powered by Cornerstone Intl.</p>
+          <p>
+            © {currentYear} School of Innovation. Powered by Cornerstone Intl.
+          </p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white transition">
               Privacy Policy

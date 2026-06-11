@@ -12,7 +12,7 @@ export const ContactChannels = () => {
     {
       name: "Sponsorship & Partnerships",
       email: "partnership@innovationconference.com.ng",
-      desc: "For brands looking to align with the Innovation 5.0 movement.",
+      desc: "For brands looking to align with the School of Innovation movement.",
       icon: <IconTargetArrow size={24} />,
       color: "text-primary",
     },

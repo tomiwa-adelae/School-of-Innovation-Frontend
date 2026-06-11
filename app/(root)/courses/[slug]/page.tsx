@@ -81,7 +81,7 @@ export async function generateMetadata({
           ]
         : [
             {
-              url: "/assets/images/og-image.jpeg",
+              url: "/assets/images/soi-logo.png",
               width: 1200,
               height: 630,
               alt: course.title,
@@ -94,7 +94,7 @@ export async function generateMetadata({
       description,
       images: course.thumbnail
         ? [course.thumbnail]
-        : ["/assets/images/og-image.jpeg"],
+        : ["/assets/images/soi-logo.png"],
     },
     alternates: { canonical: url },
   };
