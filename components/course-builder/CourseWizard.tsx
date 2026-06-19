@@ -58,12 +58,14 @@ export function CourseWizard({
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (mode === "edit" && propCourseId) {
+    // Start every wizard from a clean slate so a courseId left in the global
+    // store by a previous edit/create session can never leak into this one.
+    if (mode === "create") {
+      reset();
+    } else if (propCourseId) {
       setCourseId(propCourseId);
     }
-    return () => {
-      if (mode === "create") reset();
-    };
+    return () => reset();
   }, [mode, propCourseId]);
 
   async function handleBasicsSubmit(data: CourseBasicsInput) {
