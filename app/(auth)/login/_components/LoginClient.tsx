@@ -60,7 +60,11 @@ const LoginPage = () => {
 
   const onSubmit = async (values: LoginFormInput) => {
     try {
-      const data = await postData<{ user: any; access_token: string; refresh_token: string }>("/auth/login", values);
+      const data = await postData<{
+        user: any;
+        access_token: string;
+        refresh_token: string;
+      }>("/auth/login", values);
       setUser(data.user);
       setAccessToken(data.access_token);
       setRefreshToken(data.refresh_token);
@@ -219,7 +223,7 @@ const LoginPage = () => {
                 Forgot Password?
               </Link>
 
-              <div className="relative py-2">
+              <div className="relative hidden py-2">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-gray-100 dark:border-gray-800" />
                 </div>
@@ -230,7 +234,7 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              <Button type="button" variant="outline" className="w-full">
+              <Button type="button" variant="outline" className="hidden w-full">
                 <IconBrandGoogle />
                 Login with Google
               </Button>

@@ -67,7 +67,11 @@ export function FlutterwavePayButton({
   async function handleCallback(response: FlutterWaveResponse) {
     closePaymentModal();
 
-    if (response.status !== "successful") {
+    // Don't gate on response.status here — the inline modal returns
+    // "successful" in test mode but "completed" (and other strings) in live.
+    // The only reliable signal is that we got a transaction_id back; the
+    // backend re-verifies the real status with Flutterwave's verify API.
+    if (!response.transaction_id) {
       toast.error("Payment was not completed. Please try again.");
       return;
     }
