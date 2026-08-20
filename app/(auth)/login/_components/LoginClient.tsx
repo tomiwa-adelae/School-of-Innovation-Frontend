@@ -72,7 +72,7 @@ const LoginPage = () => {
       if (!data.user?.onboardingCompleted) {
         router.push("/onboarding");
       } else if (data.user?.role === "ADMINISTRATOR") {
-        router.push("/admin");
+        router.push("/a/dashboard");
       } else {
         router.push("/dashboard");
       }

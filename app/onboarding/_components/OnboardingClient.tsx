@@ -695,7 +695,7 @@ export default function OnboardingPage() {
   }, [user, _hasHydrated, router]);
 
   function redirectByRole(role: string) {
-    router.push(role === "ADMINISTRATOR" ? "/admin" : "/dashboard");
+    router.push(role === "ADMINISTRATOR" ? "/a/dashboard" : "/dashboard");
   }
 
   function toggleInterest(label: string) {
