@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ import { ImageUploader } from "./ImageUploader";
 import { VideoUploader } from "./VideoUploader";
 import { ArrayInput } from "./ArrayInput";
 import { PricingSection } from "./PricingSection";
-import { IconArrowRight, IconLoader2 } from "@tabler/icons-react";
+import { IconChevronDown, IconLoader2 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -42,8 +42,15 @@ interface Category {
 
 interface CourseBasicsFormProps {
   initialData?: Partial<CourseBasicsInput>;
-  onSubmit: (data: CourseBasicsInput) => Promise<void>;
+  /** Fired on every edit — the parent debounces and saves. */
+  onChange?: (values: Partial<CourseBasicsInput>) => void;
+  /** Explicit save, for people who want a button to press. */
+  onSubmit?: () => void | Promise<void>;
   isLoading?: boolean;
+  /** Assistants can look but not touch. */
+  readOnly?: boolean;
+  /** Only the owner may change what the course costs. */
+  isOwner?: boolean;
 }
 
 const LEVEL_OPTIONS = [
@@ -68,9 +75,14 @@ const LANGUAGE_OPTIONS = [
 
 export function CourseBasicsForm({
   initialData,
+  onChange,
   onSubmit,
   isLoading,
+  readOnly = false,
+  isOwner = true,
 }: CourseBasicsFormProps) {
+  const [showOptional, setShowOptional] = useState(false);
+
   const form = useForm<CourseBasicsInput>({
     resolver: zodResolver(CourseBasicsSchema as any),
     defaultValues: {
@@ -85,7 +97,7 @@ export function CourseBasicsForm({
       thumbnail: "",
       previewVideo: "",
       tags: [],
-      learningOutcomes: [""],
+      learningOutcomes: [],
       requirements: [],
       targetAudience: [],
       ...initialData,
@@ -96,6 +108,18 @@ export function CourseBasicsForm({
     if (initialData) form.reset({ ...form.getValues(), ...initialData });
   }, [initialData]);
 
+  // Every keystroke, toggle and upload flows straight to the parent, which
+  // debounces it into a PATCH. Nothing waits on a Save button any more.
+  useEffect(() => {
+    if (!onChange || readOnly) return;
+    const subscription = form.watch((values, { type }) => {
+      // `reset()` above also emits; only react to real user edits.
+      if (type === undefined) return;
+      onChange(values as Partial<CourseBasicsInput>);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onChange, readOnly]);
+
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: () => fetchData("/categories"),
@@ -105,7 +129,13 @@ export function CourseBasicsForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void onSubmit?.();
+        }}
+        className="space-y-4"
+      >
         {/* ── Section 1: Core Info ── */}
         <Card>
           <CardHeader className="border-b">
@@ -229,7 +259,9 @@ export function CourseBasicsForm({
           </CardContent>
         </Card>
 
-        {/* ── Section 3: Details ── */}
+        {/* ── Section 3: Details ──
+            Category lives here because the publish checklist requires it;
+            everything below the fold is genuinely optional. */}
         <Card>
           <CardHeader className="border-b">
             <CardTitle>Course Details</CardTitle>
@@ -319,67 +351,99 @@ export function CourseBasicsForm({
               />
             </div>
 
-            <ArrayInput
-              name="tags"
-              control={form.control}
-              label="Tags"
-              placeholder="e.g. React, TypeScript, Web Dev"
-              description="Help students discover your course"
-            />
           </CardContent>
         </Card>
 
-        {/* ── Section 4: Learning Goals ── */}
+        {/* ── Optional details ──
+            Collapsed by default. None of this blocks saving or publishing, so
+            hiding it turns a twelve-field wall into four decisions. */}
         <Card>
-          <CardHeader className="border-b">
-            <CardTitle>Learning Goals</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <ArrayInput
-              name="learningOutcomes"
-              control={form.control}
-              label="What students will learn"
-              placeholder="e.g. Build full-stack web apps with React and Node.js"
-              description="At least 1 outcome required — shown on the course landing page"
+          <button
+            type="button"
+            onClick={() => setShowOptional((v) => !v)}
+            className="w-full flex items-center justify-between px-6 py-4 text-left"
+            aria-expanded={showOptional}
+          >
+            <div>
+              <CardTitle className="text-base">Optional details</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Tags, learning outcomes, requirements and audience — improves
+                discovery, but you can add these any time.
+              </p>
+            </div>
+            <IconChevronDown
+              size={18}
+              className={cn(
+                "shrink-0 text-muted-foreground transition-transform",
+                showOptional && "rotate-180",
+              )}
             />
+          </button>
 
-            <ArrayInput
-              name="requirements"
-              control={form.control}
-              label="Requirements"
-              placeholder="e.g. Basic knowledge of HTML and CSS"
-              description="What students need before taking this course"
-            />
+          {showOptional && (
+            <CardContent className="space-y-6 border-t pt-6">
+              <ArrayInput
+                name="tags"
+                control={form.control}
+                label="Tags"
+                placeholder="e.g. React, TypeScript, Web Dev"
+                description="Help students discover your course"
+              />
 
-            <ArrayInput
-              name="targetAudience"
-              control={form.control}
-              label="Who this course is for"
-              placeholder="e.g. Beginner web developers"
-            />
-          </CardContent>
+              <ArrayInput
+                name="learningOutcomes"
+                control={form.control}
+                label="What students will learn"
+                placeholder="e.g. Build full-stack web apps with React and Node.js"
+                description="Shown on the course landing page"
+              />
+
+              <ArrayInput
+                name="requirements"
+                control={form.control}
+                label="Requirements"
+                placeholder="e.g. Basic knowledge of HTML and CSS"
+                description="What students need before taking this course"
+              />
+
+              <ArrayInput
+                name="targetAudience"
+                control={form.control}
+                label="Who this course is for"
+                placeholder="e.g. Beginner web developers"
+              />
+            </CardContent>
+          )}
         </Card>
 
-        {/* ── Section 5: Pricing ── */}
-        <Card>
-          <CardHeader className="border-b">
-            <CardTitle>Pricing</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <PricingSection control={form.control} />
-          </CardContent>
-        </Card>
+        {/* ── Section 5: Pricing — the owner's call, not a collaborator's ── */}
+        {isOwner && (
+          <Card>
+            <CardHeader className="border-b">
+              <CardTitle>Pricing</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <PricingSection control={form.control} />
+            </CardContent>
+          </Card>
+        )}
 
-        {/* ── Submit ── */}
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <IconLoader2 size={18} className="animate-spin" />
-            ) : (
-              <>Save & Continue</>
-            )}
-          </Button>
-        </div>
+        {/* ── Submit ──
+            Autosave already covers this; the button is for reassurance. */}
+        {!readOnly && (
+          <div className="flex items-center justify-end gap-3">
+            <p className="text-xs text-muted-foreground">
+              Changes save on their own
+            </p>
+            <Button type="submit" variant="secondary" disabled={isLoading}>
+              {isLoading ? (
+                <IconLoader2 size={18} className="animate-spin" />
+              ) : (
+                <>Save now</>
+              )}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

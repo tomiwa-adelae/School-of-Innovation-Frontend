@@ -19,6 +19,10 @@ import {
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  PublishChecklist,
+  usePublishReadiness,
+} from "./PublishChecklist";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
@@ -56,6 +60,10 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
     queryKey: ["course", courseId],
     queryFn: () => fetchData(`/courses/${courseId}`),
   });
+
+  // Same source of truth as the rail checklist and the API, so the button
+  // is never enabled for a submission the server would bounce.
+  const { data: readiness } = usePublishReadiness(courseId);
 
   async function handlePublish() {
     setIsPublishing(true);
@@ -284,7 +292,7 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
         <Button
           type="button"
           onClick={handlePublish}
-          disabled={isPublishing || totalLessons === 0}
+          disabled={isPublishing || readiness?.canPublish === false}
         >
           {isPublishing ? (
             <IconLoader2 size={18} className="animate-spin" />
@@ -296,10 +304,13 @@ export function CourseReview({ courseId, onBack }: CourseReviewProps) {
         </Button>
       </div>
 
-      {totalLessons === 0 && (
-        <p className="text-xs text-center text-muted-foreground">
-          Add at least 1 lesson before publishing
-        </p>
+      {readiness && !readiness.canPublish && (
+        <div className="pt-2">
+          <p className="text-xs text-center text-muted-foreground mb-3">
+            Finish these before submitting:
+          </p>
+          <PublishChecklist courseId={courseId} className="max-w-sm mx-auto" />
+        </div>
       )}
     </div>
   );

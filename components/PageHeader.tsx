@@ -64,7 +64,9 @@ export function PageHeader({
             {badges && (
               <div className="flex gap-2 mt-2.5">
                 {badges.map((badge) => (
-                  <Badge variant={"secondary"}>{badge}</Badge>
+                  <Badge key={badge} variant={"secondary"}>
+                    {badge}
+                  </Badge>
                 ))}
               </div>
             )}

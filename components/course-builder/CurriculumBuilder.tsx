@@ -19,6 +19,7 @@ import { fetchData } from "@/lib/api";
 import { useCourseMutations } from "@/hooks/useCourseMutations";
 import { ChapterCard } from "./ChapterCard";
 import { ChapterEditor } from "./ChapterEditor";
+import { BulkVideoDrop } from "./BulkVideoDrop";
 import { LessonEditor } from "./LessonEditor";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,6 +54,8 @@ interface Lesson {
   isPublished: boolean;
   isDownloadable: boolean;
   resources?: any[];
+  /** Echoed back on save so a collaborator's concurrent edit is not clobbered. */
+  updatedAt?: string;
 }
 
 interface Chapter {
@@ -145,8 +148,15 @@ export function CurriculumBuilder({
   // ── Lesson save ─────────────────────────────────────────────────────────────
 
   function handleSaveLesson(id: string, data: Partial<LessonInput>) {
+    // Send back the version this editor was opened with. If another
+    // collaborator has saved since, the API returns 409 instead of
+    // silently overwriting their work.
+    const expectedUpdatedAt = localChapters
+      .flatMap((c) => c.lessons)
+      .find((l) => l.id === id)?.updatedAt;
+
     mutations.updateLesson.mutate(
-      { id, data },
+      { id, data: { ...data, ...(expectedUpdatedAt && { expectedUpdatedAt }) } },
       {
         onSuccess: () => {
           setEditingLesson(null);
@@ -201,6 +211,17 @@ export function CurriculumBuilder({
         </CardHeader>
       </Card>
 
+      {/* Bulk video drop — the fast path.
+          Targets the last section so a flat course needs no chapter thinking;
+          fine-grained edits still happen per lesson below. */}
+      {localChapters.length > 0 && (
+        <BulkVideoDrop
+          courseId={courseId}
+          chapterId={localChapters[localChapters.length - 1].id}
+          chapterTitle={localChapters[localChapters.length - 1].title}
+        />
+      )}
+
       {/* Chapter list */}
       <DndContext
         sensors={sensors}
@@ -229,14 +250,15 @@ export function CurriculumBuilder({
         </SortableContext>
       </DndContext>
 
-      {/* Empty state */}
+      {/* Empty state — new courses ship with "Section 1", so this only shows
+          if every section was deleted. */}
       {localChapters.length === 0 && (
         <div className="text-center py-16 rounded-md border-2 border-dashed border-gray-200 dark:border-gray-700">
           <p className="text-muted-foreground font-semibold mb-2">
-            No chapters yet
+            No sections yet
           </p>
           <p className="text-sm text-muted-foreground mb-6">
-            Add your first chapter to start building the curriculum
+            Add a section, then drop your videos in to create lessons
           </p>
         </div>
       )}
@@ -254,7 +276,7 @@ export function CurriculumBuilder({
         ) : (
           <IconPlus size={16} />
         )}
-        Add Chapter
+        Add Section
       </Button>
 
       {/* Navigation */}

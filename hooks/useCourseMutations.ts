@@ -7,7 +7,26 @@ export function useCourseMutations(courseId: string | null) {
   const qc = useQueryClient();
 
   function invalidate() {
-    if (courseId) qc.invalidateQueries({ queryKey: ["course", courseId] });
+    if (!courseId) return;
+    qc.invalidateQueries({ queryKey: ["course", courseId] });
+    // The publish checklist counts lessons and videos, so it moves whenever
+    // the curriculum does.
+    qc.invalidateQueries({ queryKey: ["course-readiness", courseId] });
+  }
+
+  /** A 409 here means a collaborator saved first — say so plainly. */
+  function conflictAwareError(fallback: string) {
+    return (err: any) => {
+      if (err?.response?.status === 409) {
+        toast.error(
+          err?.response?.data?.message ??
+            "Someone else saved this while you were editing. Reload before saving again.",
+        );
+        invalidate();
+        return;
+      }
+      toast.error(fallback);
+    };
   }
 
   // ─── Chapters ───────────────────────────────────────────────────────────────
@@ -23,7 +42,7 @@ export function useCourseMutations(courseId: string | null) {
     mutationFn: ({ id, data }: { id: string; data: Partial<ChapterInput> & { isPublished?: boolean } }) =>
       updateData(`/chapters/${id}`, data),
     onSuccess: invalidate,
-    onError: () => toast.error("Failed to update chapter"),
+    onError: conflictAwareError("Failed to update chapter"),
   });
 
   const deleteChapter = useMutation({
@@ -52,10 +71,19 @@ export function useCourseMutations(courseId: string | null) {
   });
 
   const updateLesson = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<LessonInput> & { isPublished?: boolean } }) =>
-      updateData(`/lessons/${id}`, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<LessonInput> & {
+        isPublished?: boolean;
+        /** The updatedAt the editor was opened with — see assertNotStale. */
+        expectedUpdatedAt?: string;
+      };
+    }) => updateData(`/lessons/${id}`, data),
     onSuccess: invalidate,
-    onError: () => toast.error("Failed to update lesson"),
+    onError: conflictAwareError("Failed to update lesson"),
   });
 
   const deleteLesson = useMutation({

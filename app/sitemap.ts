@@ -7,6 +7,24 @@ interface CourseSlug {
   updatedAt: string;
 }
 
+async function fetchLiveSessionSlugs(): Promise<CourseSlug[]> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/public/live?limit=100`,
+      { next: { revalidate: 3600 } },
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const sessions: any[] = Array.isArray(data) ? data : (data.sessions ?? []);
+    return sessions.map((s: any) => ({
+      slug: s.slug,
+      updatedAt: s.startsAt ?? new Date().toISOString(),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchPublishedCourseSlugs(): Promise<CourseSlug[]> {
   try {
     const res = await fetch(
@@ -45,10 +63,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/school`,
+      url: `${SITE_URL}/live`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
+      changeFrequency: "daily",
+      priority: 0.85,
     },
     {
       url: `${SITE_URL}/about`,
@@ -88,7 +106,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const courseSlugs = await fetchPublishedCourseSlugs();
+  const [courseSlugs, liveSlugs] = await Promise.all([
+    fetchPublishedCourseSlugs(),
+    fetchLiveSessionSlugs(),
+  ]);
+
   const courseRoutes: MetadataRoute.Sitemap = courseSlugs.map(
     ({ slug, updatedAt }) => ({
       url: `${SITE_URL}/courses/${slug}`,
@@ -98,5 +120,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  return [...staticRoutes, ...courseRoutes];
+  // Live classes are time-boxed, so they get a daily crawl hint.
+  const liveRoutes: MetadataRoute.Sitemap = liveSlugs.map(
+    ({ slug, updatedAt }) => ({
+      url: `${SITE_URL}/live/${slug}`,
+      lastModified: new Date(updatedAt),
+      changeFrequency: "daily",
+      priority: 0.8,
+    }),
+  );
+
+  return [...staticRoutes, ...courseRoutes, ...liveRoutes];
 }

@@ -1,5 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LiveClassBanner } from "@/components/LiveClassBanner";
 
 export default function Layout({
   children,
@@ -9,7 +10,11 @@ export default function Layout({
   return (
     <div>
       <Header />
-      <div className="pt-20">{children}</div>
+      {/* Sits under the fixed header; renders nothing when no class is near. */}
+      <div className="pt-20">
+        <LiveClassBanner />
+        {children}
+      </div>
       <Footer />
     </div>
   );

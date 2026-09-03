@@ -1,22 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCourseWizard } from "@/hooks/useCourseWizard";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateData } from "@/lib/api";
+import { CourseBasicsInput } from "@/lib/zodSchemas";
+import { useAutosave } from "@/hooks/useAutosave";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { CourseQuickStart } from "./CourseQuickStart";
 import { CourseBasicsForm } from "./CourseBasicsForm";
 import { CurriculumBuilder } from "./CurriculumBuilder";
 import { CourseReview } from "./CourseReview";
-import { CourseBasicsInput } from "@/lib/zodSchemas";
-import { postData, updateData } from "@/lib/api";
-import { toast } from "sonner";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { IconCheck } from "@tabler/icons-react";
+import { PublishChecklist, readinessKey } from "./PublishChecklist";
+import { CollaboratorsPanel } from "./CollaboratorsPanel";
+import { SaveIndicator } from "./SaveIndicator";
 
-const STEPS = [
-  { label: "Course Basics", number: 1 },
-  { label: "Curriculum", number: 2 },
-  { label: "Review & Publish", number: 3 },
+type Tab = "details" | "curriculum" | "publish";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "details", label: "Details" },
+  { id: "curriculum", label: "Curriculum" },
+  { id: "publish", label: "Publish" },
 ];
 
 interface CourseWizardProps {
@@ -39,9 +45,7 @@ function mapCourseToForm(course: any): Partial<CourseBasicsInput> {
     thumbnail: course.thumbnail ?? "",
     previewVideo: course.previewVideo ?? "",
     tags: course.tags ?? [],
-    learningOutcomes: course.learningOutcomes?.length
-      ? course.learningOutcomes
-      : [""],
+    learningOutcomes: course.learningOutcomes ?? [],
     requirements: course.requirements ?? [],
     targetAudience: course.targetAudience ?? [],
   };
@@ -49,100 +53,116 @@ function mapCourseToForm(course: any): Partial<CourseBasicsInput> {
 
 export function CourseWizard({
   mode,
-  courseId: propCourseId,
+  courseId,
   initialData,
 }: CourseWizardProps) {
   const router = useRouter();
-  const { currentStep, courseId, setStep, setCourseId, reset } =
-    useCourseWizard();
-  const [isSaving, setIsSaving] = useState(false);
+  const qc = useQueryClient();
+  const [tab, setTab] = useState<Tab>("details");
 
-  useEffect(() => {
-    // Start every wizard from a clean slate so a courseId left in the global
-    // store by a previous edit/create session can never leak into this one.
-    if (mode === "create") {
-      reset();
-    } else if (propCourseId) {
-      setCourseId(propCourseId);
-    }
-    return () => reset();
-  }, [mode, propCourseId]);
+  // A course is created from its title alone, then lives at its own URL so a
+  // refresh or a closed tab can never discard it.
+  const handleCreated = useCallback(
+    (newId: string) => {
+      qc.invalidateQueries({ queryKey: ["my-courses"] });
+      router.replace(`/dashboard/courses/${newId}/edit`);
+    },
+    [qc, router],
+  );
 
-  async function handleBasicsSubmit(data: CourseBasicsInput) {
-    setIsSaving(true);
+  const persist = useCallback(
+    async (values: Partial<CourseBasicsInput>) => {
+      if (!courseId) return;
+      await updateData(`/courses/${courseId}`, values);
+      qc.invalidateQueries({ queryKey: readinessKey(courseId) });
+    },
+    [courseId, qc],
+  );
+
+  const { save, saveNow, status, lastSavedAt } = useAutosave<
+    Partial<CourseBasicsInput>
+  >({
+    onSave: persist,
+    enabled: !!courseId,
+  });
+
+  if (mode === "create" || !courseId) {
+    return <CourseQuickStart onCreated={handleCreated} />;
+  }
+
+  const isOwner = initialData?.myRole
+    ? initialData.myRole === "OWNER"
+    : true;
+  const canEdit = initialData?.canEdit ?? true;
+
+  async function handleManualSave() {
     try {
-      if (mode === "create" && !courseId) {
-        const res = await postData<{ id: string }>("/courses", data);
-        setCourseId(res.id);
-        setStep(2);
-        toast.success("Course created! Now build your curriculum.");
-      } else if (courseId) {
-        await updateData(`/courses/${courseId}`, data);
-        setStep(2);
-        toast.success("Course details saved.");
-      }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message;
-      toast.error(
-        Array.isArray(msg) ? msg[0] : (msg ?? "Failed to save course"),
-      );
-    } finally {
-      setIsSaving(false);
+      await saveNow();
+      toast.success("Saved");
+    } catch {
+      toast.error("Could not save — check your connection");
     }
   }
 
   return (
-    <div className="py-8 space-y-8">
-      {/* Step progress */}
-      <div className="flex items-center justify-center gap-2">
-        {STEPS.map((step, i) => (
-          <div key={step.number} className="flex items-center gap-2">
-            <div
+    <div className="py-6 space-y-6">
+      {/* Tabs — free navigation, no forced back/forward through a wizard */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b">
+        <div className="flex items-center gap-1">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
               className={cn(
-                "flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all",
-                currentStep > step.number
-                  ? "bg-blue-600 text-white"
-                  : currentStep === step.number
-                    ? "bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 ring-2 ring-blue-600"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-400",
+                "px-4 py-2.5 text-sm font-semibold border-b-2 -mb-px transition-colors",
+                tab === t.id
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
-              {currentStep > step.number ? (
-                <IconCheck size={12} />
-              ) : (
-                <span className="w-4 h-4 rounded-full bg-current/20 flex items-center justify-center text-[10px]">
-                  {step.number}
-                </span>
-              )}
-              {step.label}
-            </div>
-            {i < STEPS.length - 1 && (
-              <div className="w-8 h-px bg-gray-200 dark:bg-gray-700" />
-            )}
-          </div>
-        ))}
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <SaveIndicator
+          status={status}
+          lastSavedAt={lastSavedAt}
+          className="pb-2"
+        />
       </div>
 
-      {/* Step content */}
-      {currentStep === 1 && (
-        <CourseBasicsForm
-          initialData={initialData ? mapCourseToForm(initialData) : undefined}
-          onSubmit={handleBasicsSubmit}
-          isLoading={isSaving}
-        />
-      )}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
+        <div className="min-w-0">
+          {tab === "details" && (
+            <CourseBasicsForm
+              initialData={initialData ? mapCourseToForm(initialData) : undefined}
+              onChange={save}
+              onSubmit={handleManualSave}
+              readOnly={!canEdit}
+              isOwner={isOwner}
+            />
+          )}
 
-      {currentStep === 2 && courseId && (
-        <CurriculumBuilder
-          courseId={courseId}
-          onBack={() => setStep(1)}
-          onContinue={() => setStep(3)}
-        />
-      )}
+          {tab === "curriculum" && (
+            <CurriculumBuilder
+              courseId={courseId}
+              onBack={() => setTab("details")}
+              onContinue={() => setTab("publish")}
+            />
+          )}
 
-      {currentStep === 3 && courseId && (
-        <CourseReview courseId={courseId} onBack={() => setStep(2)} />
-      )}
+          {tab === "publish" && (
+            <CourseReview courseId={courseId} onBack={() => setTab("curriculum")} />
+          )}
+        </div>
+
+        {/* Persistent rail: what is left to do, and who is working on it */}
+        <aside className="space-y-4 lg:sticky lg:top-24">
+          <PublishChecklist courseId={courseId} />
+          <CollaboratorsPanel courseId={courseId} isOwner={isOwner} />
+        </aside>
+      </div>
     </div>
   );
 }

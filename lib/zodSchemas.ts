@@ -131,6 +131,14 @@ export const NewPasswordSchema = z
 
 // ─── Course Builder Schemas ───────────────────────────────────────────────────
 
+// Only the title gates creating a draft. Everything else is filled in over
+// time and enforced at publish time by GET /courses/:id/readiness — so an
+// instructor is never blocked by a field they have not thought about yet.
+export const CourseTitleSchema = z.object({
+  title: z.string().min(5, "Give your course a title of at least 5 characters").max(120),
+});
+export type CourseTitleInput = z.infer<typeof CourseTitleSchema>;
+
 export const CourseBasicsSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters").max(120),
   shortDescription: z.string().max(200, "Keep under 200 characters").optional().or(z.literal("")),
@@ -144,7 +152,9 @@ export const CourseBasicsSchema = z.object({
   thumbnail: z.string().optional().or(z.literal("")),
   previewVideo: z.string().optional().or(z.literal("")),
   tags: z.array(z.string()).default([]),
-  learningOutcomes: z.array(z.string().min(5, "Each outcome needs at least 5 characters")).min(1, "Add at least 1 learning outcome"),
+  // Not required to save a draft — the publish checklist is what enforces
+  // completeness, so a half-finished course still autosaves cleanly.
+  learningOutcomes: z.array(z.string()).default([]),
   requirements: z.array(z.string()).default([]),
   targetAudience: z.array(z.string()).default([]),
 });
@@ -197,3 +207,31 @@ export const OnboardingProfileFormSchema = z.object({
     .optional()
     .or(z.literal("")), // allow blank but treat as invalid
 });
+
+// ─── Live Class Schema ────────────────────────────────────────────────────────
+// Deliberately short: six decisions, not the twelve a course asks for. The
+// meeting link is only required at publish time, so a draft can be roughed out
+// before the host has created the Zoom/Meet room.
+
+export const LiveSessionSchema = z
+  .object({
+    title: z.string().min(5, "Give the class a title of at least 5 characters").max(140),
+    description: z.string().max(4000).optional().or(z.literal("")),
+    coverImage: z.string().optional().or(z.literal("")),
+    date: z.string().min(1, "Pick a date"),
+    startTime: z.string().min(1, "Pick a start time"),
+    durationMinutes: z.number().int().min(15, "At least 15 minutes").max(720),
+    timezone: z.string().default("Africa/Lagos"),
+    capacity: z.number().int().min(1).optional(),
+    isFree: z.boolean().default(false),
+    price: z.number().min(0).optional(),
+    currency: z.string().default("NGN"),
+    meetingUrl: z.string().url("Enter a valid meeting link").optional().or(z.literal("")),
+    passcode: z.string().max(64).optional().or(z.literal("")),
+  })
+  .refine((data) => data.isFree || (data.price !== undefined && data.price > 0), {
+    message: "Set a price, or mark the class as free",
+    path: ["price"],
+  });
+
+export type LiveSessionInput = z.infer<typeof LiveSessionSchema>;

@@ -15,6 +15,8 @@ import {
   IconSettings,
   IconReceipt,
   IconTicket,
+  IconMail,
+  IconBroadcast,
 } from "@tabler/icons-react";
 
 export const DEFAULT_PROFILE_IMAGE = "/assets/images/profile-img.jpg";
@@ -38,6 +40,11 @@ export const userNavLinks: NavLinkProps[] = [
     label: "My Courses",
     slug: "/dashboard/courses",
     icon: IconBook,
+  },
+  {
+    label: "Live Classes",
+    slug: "/dashboard/live",
+    icon: IconBroadcast,
   },
   {
     label: "Progress",
@@ -68,6 +75,16 @@ export const instructorNavLinks: NavLinkProps[] = [
     label: "My Courses",
     slug: "/dashboard/courses",
     icon: IconBook,
+  },
+  {
+    label: "Invitations",
+    slug: "/dashboard/courses/invitations",
+    icon: IconMail,
+  },
+  {
+    label: "Live Classes",
+    slug: "/dashboard/live",
+    icon: IconBroadcast,
   },
   {
     label: "My Students",
@@ -120,6 +137,11 @@ export const adminNavLinks: NavLinkProps[] = [
     label: "Coupons",
     slug: "/a/coupons",
     icon: IconTicket,
+  },
+  {
+    label: "Live Classes",
+    slug: "/a/live",
+    icon: IconBroadcast,
   },
   {
     label: "Events",

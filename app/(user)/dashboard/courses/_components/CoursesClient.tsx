@@ -304,7 +304,24 @@ interface Course {
   category?: { id: string; name: string } | null;
   _count: { chapters: number };
   updatedAt: string;
+  instructor?: { id: string; firstName: string; lastName: string } | null;
+  myRole?: "OWNER" | "CO_INSTRUCTOR" | "ASSISTANT" | null;
+  myRevenueShare?: number | null;
+  canEdit?: boolean;
 }
+
+const ROLE_BADGE: Record<string, { label: string; className: string }> = {
+  CO_INSTRUCTOR: {
+    label: "Co-instructor",
+    className:
+      "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  },
+  ASSISTANT: {
+    label: "Assistant",
+    className:
+      "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300",
+  },
+};
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   DRAFT: {
@@ -336,6 +353,12 @@ function InstructorMyCourses() {
     queryFn: () => fetchData("/courses/my"),
   });
 
+  const { data: invitations = [] } = useQuery<unknown[]>({
+    queryKey: ["collaboration-invitations"],
+    queryFn: () => fetchData("/collaborations/invitations"),
+  });
+  const invitationCount = invitations.length;
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteData(`/courses/${id}`),
     onSuccess: () => {
@@ -354,9 +377,21 @@ function InstructorMyCourses() {
           description={`${courses.length} course${courses.length !== 1 ? "s" : ""} created`}
         />
 
-        <Button asChild className="w-full md:w-auto">
-          <Link href="/dashboard/courses/create">Create Course</Link>
-        </Button>
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <Button asChild variant="outline" className="flex-1 md:flex-none">
+            <Link href="/dashboard/courses/invitations">
+              Invitations
+              {invitationCount > 0 && (
+                <span className="ml-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-purple-600 text-white text-[10px] font-bold">
+                  {invitationCount}
+                </span>
+              )}
+            </Link>
+          </Button>
+          <Button asChild className="flex-1 md:flex-none">
+            <Link href="/dashboard/courses/create">Create Course</Link>
+          </Button>
+        </div>
       </div>
 
       {/* Loading */}
@@ -432,6 +467,18 @@ function InstructorMyCourses() {
                   >
                     {status.label}
                   </span>
+                  {/* Shown only on courses someone else owns, so the
+                      instructor can tell their own work apart at a glance. */}
+                  {course.myRole && course.myRole !== "OWNER" && (
+                    <span
+                      className={cn(
+                        "absolute top-2 left-2 text-[10px] font-bold px-2.5 py-1 rounded-full",
+                        ROLE_BADGE[course.myRole]?.className,
+                      )}
+                    >
+                      {ROLE_BADGE[course.myRole]?.label}
+                    </span>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -460,6 +507,16 @@ function InstructorMyCourses() {
                     )}
                   </div>
 
+                  {course.myRole && course.myRole !== "OWNER" && (
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Owned by {course.instructor?.firstName}{" "}
+                      {course.instructor?.lastName}
+                      {typeof course.myRevenueShare === "number" &&
+                        course.myRevenueShare > 0 &&
+                        ` · your share ${course.myRevenueShare}%`}
+                    </p>
+                  )}
+
                   <div className="flex items-center gap-2">
                     <Button
                       asChild
@@ -468,18 +525,23 @@ function InstructorMyCourses() {
                       className="flex-1"
                     >
                       <Link href={`/dashboard/courses/${course.id}/edit`}>
-                        <IconPencil /> Edit
+                        <IconPencil />{" "}
+                        {course.myRole === "ASSISTANT" ? "View" : "Edit"}
                       </Link>
                     </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="text-muted-foreground hover:text-destructive"
-                      onClick={() => setDeletingId(course.id)}
-                    >
-                      <IconTrash size={14} />
-                    </Button>
+                    {/* Deleting is the owner's call — the API rejects it for
+                        collaborators, so do not offer the button. */}
+                    {(!course.myRole || course.myRole === "OWNER") && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="text-muted-foreground hover:text-destructive"
+                        onClick={() => setDeletingId(course.id)}
+                      >
+                        <IconTrash size={14} />
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

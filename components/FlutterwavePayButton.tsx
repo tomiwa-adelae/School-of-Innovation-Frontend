@@ -6,11 +6,33 @@ import type { FlutterWaveResponse } from "flutterwave-react-v3/dist/types";
 import { postData } from "@/lib/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { IconLoader2, IconCurrencyDollar } from "@tabler/icons-react";
 import { env } from "@/lib/env";
 import { NairaIcon } from "./NairaIcon";
 
+/**
+ * What is being bought. Decides the tx_ref prefix and the `meta` key, both of
+ * which the backend uses to bind the transaction to this exact product — see
+ * PaymentsService.verifyAndCapture.
+ */
+export type ProductKind = "course" | "live-session";
+
+const REF_PREFIX: Record<ProductKind, string> = {
+  course: "course",
+  "live-session": "live",
+};
+
+const META_KEY: Record<ProductKind, string> = {
+  course: "courseId",
+  "live-session": "liveSessionId",
+};
+
+const VERIFY_PATH: Record<ProductKind, (id: string) => string> = {
+  course: (id) => `/enrollments/${id}/verify-payment`,
+  "live-session": (id) => `/live/${id}/verify-payment`,
+};
+
 interface Props {
+  productKind?: ProductKind;
   courseId: string;
   courseTitle: string;
   price: number;
@@ -28,6 +50,7 @@ interface Props {
 }
 
 export function FlutterwavePayButton({
+  productKind = "course",
   courseId,
   courseTitle,
   price,
@@ -40,8 +63,9 @@ export function FlutterwavePayButton({
 }: Props) {
   const verifying = useRef(false);
 
-  // Build a unique tx_ref for this attempt
-  const txRef = `course-${courseId}-${Date.now()}`;
+  // Prefixed with the product id so the backend can bind the transaction even
+  // if `meta` does not come back on the verify response.
+  const txRef = `${REF_PREFIX[productKind]}-${courseId}-${Date.now()}`;
 
   const config = {
     public_key: env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY,
@@ -59,7 +83,7 @@ export function FlutterwavePayButton({
       description: `Payment for: ${courseTitle}`,
       logo: "", // fill with your logo URL if desired
     },
-    meta: { courseId },
+    meta: { [META_KEY[productKind]]: courseId },
   };
 
   const handleFlutterPayment = useFlutterwave(config);
@@ -81,7 +105,7 @@ export function FlutterwavePayButton({
 
     const loadingToast = toast.loading("Confirming your payment…");
     try {
-      await postData(`/enrollments/${courseId}/verify-payment`, {
+      await postData(VERIFY_PATH[productKind](courseId), {
         transactionId: String(response.transaction_id),
         txRef: response.tx_ref,
         ...(couponCode && { couponCode }),
@@ -92,9 +116,13 @@ export function FlutterwavePayButton({
     } catch (err: any) {
       toast.dismiss(loadingToast);
       const msg = err?.response?.data?.message;
-      if (msg === "Already enrolled") {
-        // Edge case: payment went through but enrollment already existed
-        toast.success("You are already enrolled in this course.");
+      if (msg === "Already enrolled" || msg === "You are already registered") {
+        // Edge case: payment went through but access already existed
+        toast.success(
+          productKind === "course"
+            ? "You are already enrolled in this course."
+            : "You are already registered for this class.",
+        );
         onSuccess();
       } else {
         toast.error(
